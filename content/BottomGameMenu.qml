@@ -108,6 +108,9 @@ Item {
 
     function loadAndRefresh(index) {
         ObjModpacksContent.loadModlist(index);
+
+        modlist.onEnable();
+
         modlist.refreshModlist();
     }
 }

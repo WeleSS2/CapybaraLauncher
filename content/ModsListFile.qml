@@ -13,6 +13,7 @@ MouseArea {
     property int mousePositionY
     property string currentName
     property string currentId
+    property alias overModList : overModList
 
     ListView {
         id: modsList
@@ -204,6 +205,11 @@ MouseArea {
     Rectangle {
         id: overModList
         y: 100
+
+        property alias enableCanvas : enableCanvas
+        property alias nameCanvas : nameCanvas
+        property alias dateCanvas : dateCanvas
+        property alias packnameCanvas : packnameCanvas
         Text {
             width: 62
             height: 30
@@ -246,16 +252,7 @@ MouseArea {
                                    refreshModlist();
 
 
-                                   parent.clicked = true;
-                                   parent.requestPaint();
-                                   //enableCanvas.clicked = false;
-                                   //enableCanvas.requestPaint();
-                                   nameCanvas.clicked = false;
-                                   nameCanvas.requestPaint();
-                                   dateCanvas.clicked = false;
-                                   dateCanvas.requestPaint();
-                                   packnameCanvas.clicked = false;
-                                   packnameCanvas.requestPaint();
+                                   onEnable();
                                }
                 }
             }
@@ -518,5 +515,18 @@ MouseArea {
     }
     function refreshModlist() {
         modsList.model.refreshList();
+    }
+
+    function onEnable(){
+        Objcmodslistfilling.sortByActive();
+        modlist.refreshModlist();
+        enableCanvas.clicked = true;
+        enableCanvas.requestPaint();
+        nameCanvas.clicked = false;
+        nameCanvas.requestPaint();
+        dateCanvas.clicked = false;
+        dateCanvas.requestPaint();
+        packnameCanvas.clicked = false;
+        packnameCanvas.requestPaint();
     }
 }
