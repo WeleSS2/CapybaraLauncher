@@ -19,7 +19,7 @@ MouseArea {
         x: 8
         y: 130
         width: 1200
-        height: mainwindow.height * 0.8
+        height: mainwindow.height - 150
         clip: true
         model: CModsListFile {
             list: Objcmodslistfilling
@@ -59,7 +59,7 @@ MouseArea {
                     clip: true
                     font.bold: true
                     font.pixelSize: 16
-                    color: ((local_hover || local_hover2 || mouseRow) && !globalActionMenuOpen) ? highlightTextColor : mainTextColor
+                    color: ((local_hover || local_hover2 || mouseRow) && !globalActionMenuOpen) ? highlightTextColor : colorWarn
                 }
                 CheckBox {
                     id: mod_id
@@ -79,7 +79,7 @@ MouseArea {
                     clip: (local_hover && !globalActionMenuOpen) ? false : true
                     font.bold: true
                     font.pixelSize: 16
-                    color: ((local_hover || local_hover2 || mouseRow) && !globalActionMenuOpen) ? highlightTextColor : mainTextColor
+                    color: ((local_hover || local_hover2 || mouseRow) && !globalActionMenuOpen) ? highlightTextColor : colorWarn
                     MouseArea {
                         y: -8
                         width: 315
@@ -104,7 +104,7 @@ MouseArea {
                     clip: true
                     font.bold: true
                     font.pixelSize: 16
-                    color: ((local_hover || local_hover2 || mouseRow) && !globalActionMenuOpen) ? highlightTextColor : mainTextColor
+                    color: ((local_hover || local_hover2 || mouseRow) && !globalActionMenuOpen) ? highlightTextColor : colorWarn
                 }
                 Text {
                     id: steam_packname
@@ -113,7 +113,7 @@ MouseArea {
                     clip: (local_hover2 && !globalActionMenuOpen) ? false : true
                     font.bold: true
                     font.pixelSize: 16
-                    color: ((local_hover || local_hover2 || mouseRow) && !globalActionMenuOpen) ? highlightTextColor : mainTextColor
+                    color: ((local_hover || local_hover2 || mouseRow) && !globalActionMenuOpen) ? highlightTextColor : colorWarn
                     MouseArea {
                         y: -8
                         width: 315
@@ -137,7 +137,7 @@ MouseArea {
                     clip: true
                     font.bold: true
                     font.pixelSize: 16
-                    color: ((local_hover || local_hover2 || mouseRow) && !globalActionMenuOpen) ? highlightTextColor : mainTextColor
+                    color: ((local_hover || local_hover2 || mouseRow) && !globalActionMenuOpen) ? highlightTextColor : colorWarn
                 }
                 //Text {
                 //    width: 200

@@ -14,6 +14,7 @@ class CSteamTools : public QObject
     Q_OBJECT
 public:
     uint32 Ui_NumberOfItems;
+    QVector<bool> isAvailable;
     QVector<uint32> laucherItemId;
     QVector<std::string> localModName;
     QVector<uint64> VUi_ItemsId;

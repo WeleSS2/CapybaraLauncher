@@ -1,7 +1,10 @@
 #include "qtgeneralbackend.h"
-#include "iostream"
 #include "globaldata.h"
-#include "fstream"
+#include "qDebug.h"
+#include "qguiapplication.h"
+#include <cstdlib>
+#include <filesystem>
+#include <QClipboard>
 
 QtGeneralBackend::QtGeneralBackend(QObject *parent)
     : QObject{parent}
@@ -11,40 +14,73 @@ QtGeneralBackend::QtGeneralBackend(QObject *parent)
 
 void QtGeneralBackend::startGame()
 {
-    std::string path = SharedGlobalDataObj->Global_LocalSettingsObj.gamepath +
-            "\\steamapps\\common\\Total War WARHAMMER III";
-    //std::cout << SharedGlobalDataObj->Global_LocalSettingsObj.gamepath << std::endl;
-    std::fstream file;
-    file.open(path + "\\used_mods.txt", std::ios::out);
+    bool steamOn = SteamAPI_Init();
+    std::string run = "";
 
-    std::string modsPath = "add_working_directory \"" + SharedGlobalDataObj->Global_LocalSettingsObj.gamepath
-            + "/steamapps/workshop/content/1142710/";
-    modsPath.replace(modsPath.begin() + 25, modsPath.begin() + 26, "/");
+    run += "start \"\" \"" + SharedGlobalDataObj->Global_LocalSettingsObj.gamepath
+            + "\\steamapps\\common\\Total War WARHAMMER III\\Warhammer3.exe\"";
 
-    //std::cout << modsPath << std::endl;
-    for(int i = 0; i < SharedGlobalDataObj->Global_LocalSettingsObj.modsAmount; ++i)
-    {
-        if(SharedGlobalDataObj->Global_ModsDataObj[i].done)
-        {
-            file << modsPath + std::to_string(SharedGlobalDataObj->Global_ModsDataObj[i].steamModGameId) + "\";" << std::endl;
-        }
-    }
-    for(int i = 0; i < SharedGlobalDataObj->Global_LocalSettingsObj.modsAmount; ++i)
-    {
-        if(SharedGlobalDataObj->Global_ModsDataObj[i].done)
-        {
-            file << "mod \"" + SharedGlobalDataObj->Global_ModsDataObj[i].steamPackname + "\";" << std::endl;
+    for(auto& i: SharedGlobalDataObj->Global_ModsDataObj){
+        if(i.done){
+            run += "  add_working_directory  \"" +
+                    SharedGlobalDataObj->Global_LocalSettingsObj.gamepath +
+                    "\\steamapps\\workshop\\content\\1142710\\" +
+                    std::to_string(i.steamModGameId) +
+                    "\";" +
+                    " mod \"" + i.steamPackname + "\";";
         }
     }
 
-        SteamAPI_Shutdown();
-        //std::fstream file2;
-        //file2.open("steam_appid.txt", std::ios::out);
-        //file2 << std::endl;
-        //file2.close();
-        //SteamAPI_Init();
-        SteamAPI_RestartAppIfNecessary(1142710);
-    {
-        std::cout << "Api disabled" << std::endl;
+    qDebug() << QString::fromStdString(run);
+    int result = system(run.c_str());
+}
+
+void QtGeneralBackend::exportPack(){
+    std::string exportString = "";
+    for(auto& i: SharedGlobalDataObj->Global_ModsDataObj){
+        if(i.done){
+            exportString += std::to_string(i.steamModGameId) + " ";
+        }
     }
+    QClipboard *clip = QGuiApplication::clipboard();
+    clip->setText(QString::fromStdString(exportString));
+}
+
+void QtGeneralBackend::importPack(){
+
+    QClipboard *clip = QGuiApplication::clipboard();
+
+      // Create a string from the clipboard data
+    std::string importList{QString(clip->text()).toStdString()};
+
+      std::vector<uint32_t> mods;
+      std::string number = "";
+      qDebug() << QString::fromStdString(importList);
+      for(int i = 0; i < importList.size(); ++i){
+            number+= importList[i];
+            qDebug() << QString::fromStdString(number) << "    " << importList[i];
+
+            if(importList[i] == ' '){
+                mods.emplace_back(std::stoul(number));
+                number = "";
+                qDebug() << QString::fromStdString(number) << "-----------";
+            }
+      }
+      for(auto& i: SharedGlobalDataObj->Global_ModsDataObj)
+      {
+          for(int j = 0; j < mods.size() ; ++j){
+              if(i.steamModGameId == mods[j])
+              {
+                  i.done = true;
+              }
+          }
+      }
+}
+
+void QtGeneralBackend::removeModpack(QString name){
+        std::string path = SharedGlobalDataObj->Global_LocalSettingsObj.localPath +
+                "\\Modpacks\\" + name.toStdString() + ".txt";
+        if(std::filesystem::exists(path)){
+            std::filesystem::remove(path);
+        }
 }

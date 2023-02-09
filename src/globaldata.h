@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QSharedDataPointer>
+#include "QColor.h"
 
 inline int* modpacksAmount = nullptr;
 
@@ -19,6 +20,7 @@ struct LocalSettings {
 struct ModsData {
     ModsData();
     bool done;
+    QColor color;
     int laucherId;
     uint64_t steamModGameId;
     int steamDataInSeconds;

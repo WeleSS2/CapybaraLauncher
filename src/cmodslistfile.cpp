@@ -27,6 +27,8 @@ QVariant CModsListFile::data(const QModelIndex &index, int role) const
     const ItemsData item = mList->Vs_ItemsData().at(index.row());
     switch (role)
     {
+    case ColorRole:
+    { return QVariant(item.color); }
     case IdRole:
     { return QVariant(item.id); }
     case DoneRole:
@@ -53,6 +55,8 @@ bool CModsListFile::setData(const QModelIndex &index, const QVariant &value, int
     ItemsData item = mList->Vs_ItemsData().at(index.row());
     switch (role)
     {
+    case ColorRole:
+    { }
     case IdRole:
     { }
     case DoneRole:
@@ -79,7 +83,6 @@ bool CModsListFile::setData(const QModelIndex &index, const QVariant &value, int
     { }
     }
     if (mList->setItemAt(index.row(), item)) {
-        // FIXME: Implement me!
         emit dataChanged(index, index, {role});
         return true;
     }
@@ -97,6 +100,7 @@ Qt::ItemFlags CModsListFile::flags(const QModelIndex &index) const
 QHash<int, QByteArray> CModsListFile::roleNames() const
 {
     QHash<int, QByteArray> names;
+    names[ColorRole] = "colorWarn";
     names[IdRole] = "id";
     names[DoneRole] = "done";
     names[NameRole] = "name";
@@ -143,5 +147,11 @@ void CModsListFile::setList(cmodslistfilling *list)
 void CModsListFile::refreshList()
 {
     beginResetModel();
+    for(auto& i: SharedGlobalDataObj->Global_ModsDataObj)
+    {
+        if(i.done){
+            mList->mItemsData[i.laucherId].done = true;
+        }
+    }
     endResetModel();
 }

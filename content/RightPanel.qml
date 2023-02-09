@@ -4,9 +4,9 @@ Rectangle {
     id: right_panel
     ListView {
         id: gameNews
-        x: 1175
+        x: 1075
         y: 100
-        width: Window.width - 1180
+        width: Window.width - 1080
         height: 300
         clip: true
         orientation: Qt.Horizontal
@@ -61,9 +61,9 @@ Rectangle {
     }
     ListView {
         id: laucherNews
-        x: 1175
+        x: 1075
         y: 460
-        width: Window.width - 1180
+        width: Window.width - 1080
         height: 320
         clip: true
         orientation: Qt.Horizontal

@@ -11,6 +11,9 @@ public:
     explicit QtGeneralBackend(QObject *parent = nullptr);
 
     Q_INVOKABLE void startGame();
+    Q_INVOKABLE void exportPack();
+    Q_INVOKABLE void importPack();
+    Q_INVOKABLE void removeModpack(QString name);
 signals:
 
 };

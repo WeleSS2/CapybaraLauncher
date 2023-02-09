@@ -71,17 +71,20 @@ void ModpacksContent::saveModlist(QString name)
     std::string path = SharedGlobalDataObj->Global_LocalSettingsObj.localPath + "\\Modpacks\\"
             + name.toStdString() + ".txt";
     std::fstream file;
+    QVector<uint32_t> modsId;
     file.open(path, std::ios::out);
 
     for(int i = 0; i < SharedGlobalDataObj->Global_LocalSettingsObj.modsAmount; ++i)
     {
         if(mListGlobalPtr->mItemsData[i].done)
         {
+            modsId.emplaceBack(mListGlobalPtr->mItemsData[i].modgameid);
             file << mListGlobalPtr->mItemsData[i].modgameid << std::endl;
         }
     }
     file.close();
-    appendItem(name);
+    SharedGlobalDataObj->Global_LocalSettingsObj.modpacksAmount++;
+    mModpacksData.append({name, modsId});
 }
 
 void ModpacksContent::loadModlist(uint64_t index)

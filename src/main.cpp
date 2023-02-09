@@ -46,6 +46,27 @@
 #include "modpackslist.h"
 #include "qtgeneralbackend.h"
 
+class steam
+{
+public:
+    steam()
+    {
+        if(SteamAPI_Init())
+        {
+            CSteamTools steamOperations;
+            SharedSteamToolsObj->LoadItemsToQuery();
+            SharedSteamToolsObj->LoadItemsDataFromQuery();
+            std::cout << "SteamAPI Loaded" << std::endl;
+        }
+    };
+    ~steam()
+    {
+        SteamAPI_Shutdown();
+        std::cout << "SteamApi Destroyed" << std::endl;
+    }
+};
+
+
 void settingsLoading()
 {
     localFiles temp;
@@ -66,7 +87,6 @@ int main(int argc, char *argv[])
 
     QGuiApplication app(argc, argv);
 
-
     QQmlApplicationEngine engine;
 
     cexit exit_obj;
@@ -77,18 +97,12 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("localFilesObj", &localFilesObj);
 
     settingsLoading();
-
-    if(SteamAPI_Init())
     {
-        CSteamTools steamOperations;
-        SharedSteamToolsObj->LoadItemsToQuery();
-        SharedSteamToolsObj->LoadItemsDataFromQuery();
-        std::cout << "SteamAPI Loaded" << std::endl;
+        steam runSteam;
     }
 
     QtGeneralBackend qtGeneralBackendObj;
     engine.rootContext()->setContextProperty("qtGeneralBackendObj", &qtGeneralBackendObj);
-
 
     qmlRegisterType<CModsListFile>("CModsList", 1, 0, "CModsListFile");
     qmlRegisterUncreatableType<cmodslistfilling>("CModsList", 1, 0, "Cmodslistfilling", QString("Sometthing"));
@@ -101,7 +115,6 @@ int main(int argc, char *argv[])
 
     ModpacksContent ObjModpacksContent;
     engine.rootContext()->setContextProperty("ObjModpacksContent", &ObjModpacksContent);
-
 
     const QUrl url(u"qrc:Main/main.qml"_qs);
     QObject::connect(

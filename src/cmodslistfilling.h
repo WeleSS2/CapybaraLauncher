@@ -4,10 +4,12 @@
 #include <QObject>
 #include <QVector>
 #include "steam_api.h"
+#include "QColor.h"
 
 struct ItemsData
 {
     bool done;
+    QColor color;
     QString id;
     QString name;
     QString date;

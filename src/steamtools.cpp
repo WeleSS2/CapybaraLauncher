@@ -34,7 +34,6 @@ void CSteamTools::LoadItemsDataFromQuery()
                      this,
                      &CSteamTools::ItemsCallback);
     SteamAPI_RunCallbacks();
-
     // Waiting on load, synchronising
     bool finished = SteamUtils()->IsAPICallCompleted(hSteamApiCall, &finished);
     while(!finished)
@@ -46,23 +45,33 @@ void CSteamTools::LoadItemsDataFromQuery()
 
 
 
-
     std::string path = SharedGlobalDataObj->Global_LocalSettingsObj.gamepath + "\\steamapps\\workshop\\content\\1142710";
     for (int i = 0; i < SharedSteamToolsObj->VUi_ItemsId.size(); ++i)
         {
         std::string folder_path{path + "\\" + std::to_string(SharedSteamToolsObj->VUi_ItemsId[i])};
-        for (auto const& dir_entry : std::filesystem::directory_iterator{folder_path})
+        //qDebug() << QString::fromStdString(folder_path);
+        //qDebug()<< QString::fromStdString(SharedSteamToolsObj->Vs_ItemsData[i].m_rgchTitle);
+        if(std::filesystem::exists(folder_path)){
+            for (auto const& dir_entry : std::filesystem::directory_iterator{folder_path})
             {
                 std::string temp{dir_entry.path().string()};
                 std::string s2 = temp.substr(temp.size() - 4, 4);
                 if (s2 == "pack")
                 {
+                    SharedSteamToolsObj->isAvailable.emplaceBack(1);
+                    SharedGlobalDataObj->Global_ModsDataObj[i].color = {255, 255, 255};
                     temp.erase(0, folder_path.size() + 1);
                     SharedSteamToolsObj->localModName.emplaceBack(temp);
                 }
             }
         }
-
+        else
+        {
+            SharedSteamToolsObj->isAvailable.emplaceBack(0);
+            SharedGlobalDataObj->Global_ModsDataObj[i].color = {255, 55, 55};
+            SharedSteamToolsObj->localModName.emplaceBack("This modpack is not avialable locally");
+            }
+        }
 
 
 
@@ -76,6 +85,10 @@ void CSteamTools::LoadItemsDataFromQuery()
         SharedGlobalDataObj->Global_ModsDataObj[i].steamPackname = SharedSteamToolsObj->localModName[i];
         SharedGlobalDataObj->Global_ModsDataObj[i].steamModGameId = SharedSteamToolsObj->VUi_ItemsId[i];
         SharedGlobalDataObj->Global_ModsDataObj[i].steamAuthor = SharedSteamToolsObj->Vs_ItemsData[i].m_ulSteamIDOwner;
+        //qDebug() << QString::fromStdString(SharedGlobalDataObj->Global_ModsDataObj[i].steamModName);
+        //qDebug() << QString::fromStdString(SharedGlobalDataObj->Global_ModsDataObj[i].steamPackname);
+        //qDebug() << QString::fromStdString(std::to_string(SharedGlobalDataObj->Global_ModsDataObj[i].steamModGameId));
+        //qDebug() << QString::fromStdString(std::to_string(i)) << " ---------------------------------------------------------------------------------------";
     }
 }
 

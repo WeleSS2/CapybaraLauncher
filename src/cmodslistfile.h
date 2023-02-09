@@ -13,6 +13,7 @@ public:
     explicit CModsListFile(QObject *parent = nullptr);
 
     enum {
+        ColorRole,
         IdRole,
         DoneRole = Qt::UserRole,
         ModIdRole,

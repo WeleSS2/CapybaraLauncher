@@ -19,6 +19,7 @@ cmodslistfilling::cmodslistfilling(QObject *parent)
         string steamData = format("{:%Y.%m.%d}", sys_seconds{ dur });
         mItemsData.append( {
                                SharedGlobalDataObj->Global_ModsDataObj[i].done,
+                               SharedGlobalDataObj->Global_ModsDataObj[i].color,
                                QString::fromUtf8(to_string(i).c_str()),
                                QString::fromUtf8(SharedGlobalDataObj->Global_ModsDataObj[i].steamModName.c_str()),
                                QString::fromUtf8(steamData.c_str()),
@@ -91,6 +92,7 @@ void cmodslistfilling::sortByActive()
         string steamData = format("{:%Y.%m.%d}", sys_seconds{ dur });
         mItemsData.append( {
                                SharedGlobalDataObj->Global_ModsDataObj[i].done,
+                               SharedGlobalDataObj->Global_ModsDataObj[i].color,
                                QString::fromUtf8(to_string(i).c_str()),
                                QString::fromUtf8(SharedGlobalDataObj->Global_ModsDataObj[i].steamModName.c_str()),
                                QString::fromUtf8(steamData.c_str()),
@@ -119,6 +121,7 @@ void cmodslistfilling::sortByDate()
         string steamData = format("{:%Y.%m.%d}", sys_seconds{ dur });
         mItemsData.append( {
                                SharedGlobalDataObj->Global_ModsDataObj[i].done,
+                               SharedGlobalDataObj->Global_ModsDataObj[i].color,
                                QString::fromUtf8(to_string(i).c_str()),
                                QString::fromUtf8(SharedGlobalDataObj->Global_ModsDataObj[i].steamModName.c_str()),
                                QString::fromUtf8(steamData.c_str()),
@@ -147,6 +150,7 @@ void cmodslistfilling::sortByName()
         string steamData = format("{:%Y.%m.%d}", sys_seconds{ dur });
         mItemsData.append( {
                                SharedGlobalDataObj->Global_ModsDataObj[i].done,
+                               SharedGlobalDataObj->Global_ModsDataObj[i].color,
                                QString::fromUtf8(to_string(i).c_str()),
                                QString::fromUtf8(SharedGlobalDataObj->Global_ModsDataObj[i].steamModName.c_str()),
                                QString::fromUtf8(steamData.c_str()),
@@ -175,6 +179,7 @@ void cmodslistfilling::sortByPackname()
         string steamData = format("{:%Y.%m.%d}", sys_seconds{ dur });
         mItemsData.append( {
                                SharedGlobalDataObj->Global_ModsDataObj[i].done,
+                               SharedGlobalDataObj->Global_ModsDataObj[i].color,
                                QString::fromUtf8(to_string(i).c_str()),
                                QString::fromUtf8(SharedGlobalDataObj->Global_ModsDataObj[i].steamModName.c_str()),
                                QString::fromUtf8(steamData.c_str()),
