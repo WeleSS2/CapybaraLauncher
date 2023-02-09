@@ -47,46 +47,6 @@ Rectangle {
         }
     }
 
-    Rectangle {
-        id: top_right_menu
-        Button {
-            id: gamesite
-            x: Window.width - this.width - workshop.width - settings.width - patreon.width - 40
-            y: 0
-            width: 120
-            height: 30
-            font.pixelSize: 20
-            text: qsTr("Gamesite")
-        }
-        Button {
-            id: workshop
-            x: Window.width - this.width - settings.width - patreon.width - 30
-            y: 0
-            width: 120
-            height: 30
-            font.pixelSize: 20
-            text: qsTr("Workshop")
-        }
-        Button {
-            id: settings
-            x: Window.width - this.width - patreon.width - 20
-            y: 0
-            width: 120
-            height: 30
-            font.pixelSize: 20
-            text: qsTr("Settings")
-        }
-        Button {
-            id: patreon
-            x: Window.width - this.width - 10
-            y: 0
-            width: 120
-            height: 30
-            font.pixelSize: 20
-            text: qsTr("Patreon")
-        }
-    }
-
 
 
 }

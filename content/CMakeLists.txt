@@ -17,4 +17,8 @@ qt6_add_qml_module(content
         fonts/fonts.txt
         images/background.jpg
         images/capybara.png
+        images/discord.png
+        images/discordLight.png
+        images/patreon.png
+        images/patreonLight.png
 )

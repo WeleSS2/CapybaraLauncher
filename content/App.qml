@@ -69,6 +69,14 @@ Window {
 
     }
 
+    TopMenu {
+
+    }
+
+    SettingsModule
+    {
+        id: settingsModule
+    }
 
     onClosing: {
         console.log("Closing")
