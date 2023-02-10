@@ -20,7 +20,18 @@ void QtGeneralBackend::startGame()
     run += "start \"\" \"" + SharedGlobalDataObj->Global_LocalSettingsObj.gamepath
             + "\\steamapps\\common\\Total War WARHAMMER III\\Warhammer3.exe\"";
 
-    for(auto& i: SharedGlobalDataObj->Global_ModsDataObj){
+    std::vector<ModsData> localModsList = SharedGlobalDataObj->Global_ModsDataObj;
+
+
+    std::sort(localModsList.begin(),
+              localModsList.end(),
+              [](const ModsData& first, const ModsData& second) -> bool
+    {
+        return first.steamPackname < second.steamPackname;
+    });
+
+
+    for(auto& i: localModsList){
         if(i.done){
             run += "  add_working_directory  \"" +
                     SharedGlobalDataObj->Global_LocalSettingsObj.gamepath +

@@ -11,7 +11,7 @@ Rectangle {
     Button {
         id: closeSettings
         x: parent.width - 30
-        y: parent.height - 30
+        y: 0
         width: 30
         height: 30
         onClicked: {

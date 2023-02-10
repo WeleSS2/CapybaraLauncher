@@ -69,7 +69,7 @@ void CSteamTools::LoadItemsDataFromQuery()
         {
             SharedSteamToolsObj->isAvailable.emplaceBack(0);
             SharedGlobalDataObj->Global_ModsDataObj[i].color = {255, 55, 55};
-            SharedSteamToolsObj->localModName.emplaceBack("This modpack is not avialable locally");
+            SharedSteamToolsObj->localModName.emplaceBack("This mod is not available locally");
             }
         }
 
@@ -85,6 +85,10 @@ void CSteamTools::LoadItemsDataFromQuery()
         SharedGlobalDataObj->Global_ModsDataObj[i].steamPackname = SharedSteamToolsObj->localModName[i];
         SharedGlobalDataObj->Global_ModsDataObj[i].steamModGameId = SharedSteamToolsObj->VUi_ItemsId[i];
         SharedGlobalDataObj->Global_ModsDataObj[i].steamAuthor = SharedSteamToolsObj->Vs_ItemsData[i].m_ulSteamIDOwner;
+        if(SharedSteamToolsObj->isAvailable[i] == false){
+            SharedGlobalDataObj->Global_ModsDataObj[i].steamModName = "Mod has been removed from steam";
+        }
+
         //qDebug() << QString::fromStdString(SharedGlobalDataObj->Global_ModsDataObj[i].steamModName);
         //qDebug() << QString::fromStdString(SharedGlobalDataObj->Global_ModsDataObj[i].steamPackname);
         //qDebug() << QString::fromStdString(std::to_string(SharedGlobalDataObj->Global_ModsDataObj[i].steamModGameId));
