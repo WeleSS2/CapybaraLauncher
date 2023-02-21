@@ -14,6 +14,8 @@ public:
     Q_INVOKABLE void exportPack();
     Q_INVOKABLE void importPack();
     Q_INVOKABLE void removeModpack(QString name);
+    Q_INVOKABLE bool updateAvialable();
+    Q_INVOKABLE void updateLauncher();
 signals:
 
 };

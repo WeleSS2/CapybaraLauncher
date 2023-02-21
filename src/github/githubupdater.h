@@ -5,7 +5,7 @@ class GithubUpdater
 {
 public:
     GithubUpdater();
-    void getVersionInfo();
+    bool getVersionInfo();
     void downloadPatch();
     void openPatchFile();
     void patchAndResetApp();

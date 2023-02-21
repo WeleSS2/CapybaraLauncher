@@ -47,6 +47,51 @@ Item {
         }
     }
 
+    property bool updatestatus: qtGeneralBackendObj.updateAvialable()
+    Rectangle {
+        id: launcherupdate
+        x: parent.parent.width - 135
+        y: 0
+        width: 35
+        height: 35
+        color: "transparent"
+        MouseArea {
+            anchors.fill: parent
+            hoverEnabled: true
+            onEntered: {
+                if(updatestatus){
+                    launcherupdateImage.source = "images/icons/downloadGreenLight.png";
+                }
+                else
+                {
+                    launcherupdateImage.source = "images/icons/downloadRed.png";
+                }
+            }
+            onExited: {
+                if(updatestatus){
+                    launcherupdateImage.source = "images/icons/downloadGreen.png";
+                }
+                else
+                {
+                    launcherupdateImage.source = "images/icons/downloadRed.png";
+                }
+            }
+            onClicked: {
+                if(Qt.LeftButton){
+                    if(updatestatus)
+                    {
+                        qtGeneralBackendObj.updateLauncher();
+                    }
+                }
+            }
+        }
+        Image {
+            id: launcherupdateImage
+            anchors.fill: parent
+            source: updatestatus ? "images/icons/downloadGreen.png" : "images/icons/downloadRed.png"
+        }
+    }
+
     Rectangle {
         id: discord
         x: parent.parent.width - 90
@@ -104,4 +149,5 @@ Item {
             source: "images/patreon.png"
         }
     }
+
 }

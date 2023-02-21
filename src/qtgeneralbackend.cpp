@@ -1,10 +1,12 @@
-#include "qtgeneralbackend.h"
-#include "globaldata.h"
 #include "qDebug.h"
 #include "qguiapplication.h"
 #include <cstdlib>
 #include <filesystem>
 #include <QClipboard>
+
+#include "qtgeneralbackend.h"
+#include "globaldata.h"
+#include "github/githubupdater.h"
 
 QtGeneralBackend::QtGeneralBackend(QObject *parent)
     : QObject{parent}
@@ -96,3 +98,15 @@ void QtGeneralBackend::removeModpack(QString name){
         }
 }
 
+bool QtGeneralBackend::updateAvialable(){
+    GithubUpdater obj;
+    return obj.getVersionInfo();
+}
+
+void QtGeneralBackend::updateLauncher(){
+    GithubUpdater obj;
+    obj.getVersionInfo();
+    obj.downloadPatch();
+    obj.openPatchFile();
+    obj.patchAndResetApp();
+}

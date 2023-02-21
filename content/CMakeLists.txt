@@ -15,11 +15,20 @@ qt6_add_qml_module(content
         GameSelector.qml
 InfoPopup.qml
     RESOURCES
+# fonts
         fonts/fonts.txt
-images/background0.jpg
+
+# backgrounds
+        images/background0.jpg
+
+
+# icons
         images/capybaraIcon.png
         images/discord.png
         images/discordLight.png
         images/patreon.png
         images/patreonLight.png
+images/icons/downloadGreen.png
+images/icons/downloadRed.png
+images/icons/downloadGreenLight.png
 )

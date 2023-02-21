@@ -13,7 +13,7 @@ GithubUpdater::GithubUpdater()
 
 }
 
-void GithubUpdater::getVersionInfo(){
+bool GithubUpdater::getVersionInfo(){
     menager = new QNetworkAccessManager();
     QNetworkRequest request(QUrl("https://api.github.com/repos/WeleSS2/WH3_Mod_Menager/releases/latest"));
 
@@ -31,12 +31,14 @@ void GithubUpdater::getVersionInfo(){
         QString currentVersion = QCoreApplication::applicationVersion();
         if (latestVersion == currentVersion) {
             qDebug() << "You are already running the latest version.";
+            return false;
         } else {
             qDebug() << "A new version (" << latestVersion << ") is available. You should update.";
-            //downloadPatch();
+            return true;
         }
     } else {
         qDebug() << "Error getting version information: " << reply->errorString();
+        return false;
     }
 }
 
@@ -51,7 +53,6 @@ void GithubUpdater::downloadPatch(){
 
     QAbstractSocket::connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
     loop.exec();
-    openPatchFile();
 }
 
 void GithubUpdater::openPatchFile(){
@@ -60,7 +61,6 @@ void GithubUpdater::openPatchFile(){
         file.write(reply->readAll());
         file.close();
     }
-    patchAndResetApp();
 }
 
 void GithubUpdater::patchAndResetApp(){
