@@ -38,7 +38,7 @@ Window {
     height: mainScreen.height
 
     visible: true
-    title: "WH3_Mod_Menager"
+    title: "TW Capybara Laucher"
 
     property var mainTextColor: Qt.rgba(0.95, 0.95, 0.95, 1)
     property var highlightTextColor:  Qt.rgba(0, 0.7, 0.95, 0.9)
@@ -54,6 +54,10 @@ Window {
         height: Screen.height
         x: 0
         y: 0
+    }
+
+    GameSelector {
+
     }
 
     ModsListFile {
@@ -76,6 +80,10 @@ Window {
     SettingsModule
     {
         id: settingsModule
+    }
+
+    InfoPopup {
+        id: infoPopup
     }
 
     onClosing: {

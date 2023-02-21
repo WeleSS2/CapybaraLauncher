@@ -11,41 +11,7 @@ import QtQuick.Controls
 import WH3_Mod_Menager
 
 Rectangle {
-    property var mainTextColor: Qt.rgba(1, 1, 1, 1)
-    Image {
-        id: background
-        x: 0
-        y: 0
-        width: Window.width
-        height: Window.height
-        source: "images/background.jpg"
-        fillMode: Image.Stretch
-    }
 
-    Image {
-        id: logo
-        x: 0
-        y: 0
-        width: 120
-        height: 80
-        source: "images/capybara.png"
-        fillMode: Image.Stretch
-        Text {
-            id: title
-            x: parent.width + 90
-            y: 20
-            width: 812
-            height: 50
-            color: mainTextColor
-            text: qsTr("Total War Warhammer 3 Capybara Launcher")
-            font.pixelSize: 40
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignTop
-            lineHeight: 1
-            wrapMode: Text.NoWrap
-            font.family: "Courier"
-        }
-    }
 
 
 

@@ -42,7 +42,7 @@ void QtGeneralBackend::startGame()
         }
     }
 
-    qDebug() << QString::fromStdString(run);
+    //qDebug() << QString::fromStdString(run);
     int result = system(run.c_str());
 }
 
@@ -66,15 +66,15 @@ void QtGeneralBackend::importPack(){
 
       std::vector<uint32_t> mods;
       std::string number = "";
-      qDebug() << QString::fromStdString(importList);
+      //qDebug() << QString::fromStdString(importList);
       for(int i = 0; i < importList.size(); ++i){
             number+= importList[i];
-            qDebug() << QString::fromStdString(number) << "    " << importList[i];
+            //qDebug() << QString::fromStdString(number) << "    " << importList[i];
 
             if(importList[i] == ' '){
                 mods.emplace_back(std::stoul(number));
                 number = "";
-                qDebug() << QString::fromStdString(number) << "-----------";
+                //qDebug() << QString::fromStdString(number) << "-----------";
             }
       }
       for(auto& i: SharedGlobalDataObj->Global_ModsDataObj)
@@ -95,3 +95,4 @@ void QtGeneralBackend::removeModpack(QString name){
             std::filesystem::remove(path);
         }
 }
+

@@ -26,7 +26,17 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
-
+/* TODO:
+ * 1. Przeniesc lokalizacje WH3 z jednokrotnego na kazde uruchomienie
+ * 2. Napraw ustawienia po usunieciu zeby sie odtwarzaly
+ * 3. Napraw nadpisywnie listy modow, aktualnie nie nadpisuje sie
+ *
+ *
+ *
+ *
+ *
+ *
+ */
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 
@@ -37,7 +47,7 @@
 #include "import_qml_plugins.h"
 #include "steam_api.h"
 
-
+#include "github/githubupdater.h"
 #include "localfiles.h"
 #include "globaldata.h"
 #include "exit.h"
@@ -82,12 +92,15 @@ void settingsLoading()
 
 int main(int argc, char *argv[])
 {
-    std::cout << "1" << std::endl;
     set_qt_environment();
 
     QGuiApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
+
+    GithubUpdater update;
+    update.getVersionInfo();
+
 
     cexit exit_obj;
     engine.rootContext()->setContextProperty("exit_obj", &exit_obj);

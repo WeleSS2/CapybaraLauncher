@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.18)
 
-project(WH3_Mod_MenagerApp LANGUAGES CXX)
+project(WH3_Mod_MenagerApp LANGUAGES CXX VERSION 0.1)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
@@ -8,19 +8,14 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(QML_IMPORT_TRACE = 1)
 find_package(Qt6 COMPONENTS Gui Qml Quick)
-qt_add_executable(WH3_Mod_MenagerApp src/main.cpp
-    src/exit.cpp
-    src/steamtools.cpp
-    src/cmodslistfile.cpp
-    src/cmodslistfilling.cpp
-    src/windowsfunctions.cpp
-    src/localfiles.cpp
-    src/globaldata.cpp
-    src/sortingmodlist.cpp
-    src/modpackslist.cpp
-    src/modpackscontent.cpp
-    src/qtgeneralbackend.cpp
-)
+set(ICON_FILE ${CMAKE_CURRENT_SOURCE_DIR}/content/resources/capybaraIcon.ico)
+set(RC_FILE ${CMAKE_CURRENT_SOURCE_DIR}/content/resources/capybaraIcon.rc)
+
+
+file(GLOB_RECURSE CPPEXECFILES "src/*.cpp")
+
+qt_add_executable(WH3_Mod_MenagerApp ${CPPEXECFILES}
+                                     ${RC_FILE})
 
 qt_add_resources(WH3_Mod_MenagerApp "configuration"
     PREFIX "/"
@@ -38,6 +33,8 @@ target_link_libraries(WH3_Mod_MenagerApp PRIVATE
     Qt${QT_VERSION_MAJOR}::Qml
     ${STEAMAPI_LIBRARIES}
 )
+
+target_link_options(${PROJECT_NAME} PRIVATE "/SUBSYSTEM:WINDOWS" "/ENTRY:mainCRTStartup")
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/qmlmodules)
 set( LIST_NEEDED_DLL
