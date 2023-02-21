@@ -4,7 +4,7 @@ import QtQuick.Controls
 Item {
     Button {
         id: gamesite
-        x: Window.width - 550
+        x: Window.width - 600
         y: 0
         width: 120
         height: 30
@@ -19,7 +19,7 @@ Item {
     }
     Button {
         id: workshop
-        x: Window.width - 400
+        x: Window.width - 450
         y: 0
         width: 120
         height: 30
@@ -33,7 +33,7 @@ Item {
     }
     Button {
         id: settings
-        x: Window.width - 250
+        x: Window.width - 300
         y: 0
         width: 120
         height: 30

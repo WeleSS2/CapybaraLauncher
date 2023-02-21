@@ -12,4 +12,5 @@ public:
 private:
     QNetworkAccessManager *menager;
     QNetworkReply *reply;
+    QString latestUrl;
 };

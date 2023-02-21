@@ -34,7 +34,7 @@ target_link_libraries(WH3_Mod_MenagerApp PRIVATE
     ${STEAMAPI_LIBRARIES}
 )
 
-target_link_options(${PROJECT_NAME} PRIVATE "/SUBSYSTEM:WINDOWS" "/ENTRY:mainCRTStartup")
+#target_link_options(${PROJECT_NAME} PRIVATE "/SUBSYSTEM:WINDOWS" "/ENTRY:mainCRTStartup")
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/qmlmodules)
 set( LIST_NEEDED_DLL

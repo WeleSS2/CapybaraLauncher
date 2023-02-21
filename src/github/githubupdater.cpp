@@ -33,7 +33,8 @@ bool GithubUpdater::getVersionInfo(){
             qDebug() << "You are already running the latest version.";
             return false;
         } else {
-            qDebug() << "A new version (" << latestVersion << ") is available. You should update.";
+            qDebug() << "A new version (" << latestVersion << ") is available. You should update. Current version: " + currentVersion;
+            latestUrl = doc["assets"].toArray()[0].toObject()["browser_download_url"].toString();
             return true;
         }
     } else {
@@ -43,15 +44,11 @@ bool GithubUpdater::getVersionInfo(){
 }
 
 void GithubUpdater::downloadPatch(){
-    QJsonDocument doc = QJsonDocument::fromJson(reply->readAll());
-    QJsonObject latestRelease = doc.object();
-    QString downloadUrl = latestRelease["assets"].toArray()[0].toObject()["browser_download_url"].toString();
-
-    reply = menager->get(QNetworkRequest(QUrl(downloadUrl)));
+    reply = menager->get(QNetworkRequest(QUrl(latestUrl)));
 
     QEventLoop loop;
 
-    QAbstractSocket::connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
+    QObject::connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
     loop.exec();
 }
 
@@ -63,11 +60,12 @@ void GithubUpdater::openPatchFile(){
     }
 }
 
-void GithubUpdater::patchAndResetApp(){
+void GithubUpdater::patchAndResetApp() {
     QString path = QCoreApplication::applicationDirPath();
-    QProcess process;
-    process.start("unzip -o temp_download.zip -d " + path);
-    process.waitForFinished();
+
+    std::string command = "unzip -j -o temp_download.zip TWCapybara/* -d \"" +
+            path.toStdString() + "\"";
+    int result = system(command.c_str());
 
     QCoreApplication::quit();
     QProcess::startDetached(qApp->arguments()[0], qApp->arguments());

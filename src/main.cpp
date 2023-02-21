@@ -98,9 +98,7 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
 
-    GithubUpdater update;
-    update.getVersionInfo();
-
+    QCoreApplication::setApplicationVersion("v0.0.2.4");
 
     cexit exit_obj;
     engine.rootContext()->setContextProperty("exit_obj", &exit_obj);
