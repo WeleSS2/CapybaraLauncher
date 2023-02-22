@@ -1,4 +1,5 @@
 #include "cmodslistfile.h"
+#include "qqml.h"
 #include "steam_api.h"
 #include "globaldata.h"
 
@@ -145,7 +146,12 @@ void CModsListFile::setList(cmodslistfilling *list)
 }
 
 void CModsListFile::refreshList()
-{
+{    
+    QQuickItem* listView = mList->getListPointer();
+    QModelIndex currentIndex = listView->property("currentIndex").value<QModelIndex>();
+
+    qDebug() << currentIndex.row();
+
     beginResetModel();
     for(auto& i: SharedGlobalDataObj->Global_ModsDataObj)
     {
@@ -154,4 +160,7 @@ void CModsListFile::refreshList()
         }
     }
     endResetModel();
+
+    listView->setProperty("currentIndex", QVariant::fromValue(currentIndex));
+    listView->setProperty("positionViewAtIndex", QVariant::fromValue(currentIndex.row()));
 }

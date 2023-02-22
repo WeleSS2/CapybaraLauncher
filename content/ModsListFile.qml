@@ -11,6 +11,7 @@ Item {
     property int baseW: 1200
     property int mousePositionX
     property int mousePositionY
+    property int currentIndexPos
     property string currentName
     property string currentId
     property alias overModList : overModList
@@ -23,6 +24,10 @@ Item {
         width: 1200
         height: mainwindow.height - 150
         clip: true
+        Component.onCompleted: {
+                // Set the pointer to the ListView instance
+                Objcmodslistfilling.setListViewPointer(modsList);
+        }
         model: CModsListFile {
             list: Objcmodslistfilling
         }
@@ -179,6 +184,7 @@ Item {
                                mousePositionY = position.y;
                                currentName = model.name;
                                currentId = model.modgameid;
+                               currentIndexPos = model.id;
                                actionMenu.visible = true;
                           }
                           else
@@ -190,6 +196,7 @@ Item {
                               mousePositionY = position.y;
                               currentName = model.name;
                               currentId = model.modgameid;
+                              currentIndexPos = model.id;
                               actionMenu.visible = true;
                           }
                       }
@@ -261,7 +268,7 @@ Item {
                     y: -10
                     onClicked: (mouse)=>{
                                    Objcmodslistfilling.sortByActive();
-                                   refreshModlist();
+                                   refreshModlistTo0();
 
 
                                    onEnable();
@@ -309,7 +316,7 @@ Item {
                     y: -10
                     onClicked: (mouse)=>{
                                    Objcmodslistfilling.sortByName();
-                                   refreshModlist();
+                                   refreshModlistTo0();
                                    parent.clicked = true;
                                    parent.requestPaint();
                                    enableCanvas.clicked = false;
@@ -364,7 +371,7 @@ Item {
                     y: -10
                     onClicked: (mouse)=>{
                                    Objcmodslistfilling.sortByDate();
-                                   refreshModlist();
+                                   refreshModlistTo0();
                                    parent.clicked = true;
                                    parent.requestPaint();
                                    enableCanvas.clicked = false;
@@ -419,7 +426,7 @@ Item {
                     y: -10
                     onClicked: (mouse)=>{
                                    Objcmodslistfilling.sortByPackname();
-                                   refreshModlist();
+                                   refreshModlistTo0();
                                    parent.clicked = true;
                                    parent.requestPaint();
                                    enableCanvas.clicked = false;
@@ -445,14 +452,32 @@ Item {
             font.bold: true
         }
 
-        Button {
-            x: 950
-            width: 100
+        Rectangle {
+            id: refreshButton
+            x: 980
+            width: 30
             height: 30
-            text: "Refresh"
-            onClicked: {
-                Objcmodslistfilling.refreshModlistVector();
-                refreshModlist();
+            color: "transparent"
+            MouseArea{
+                anchors.fill: parent
+                hoverEnabled: true
+                onClicked: {
+                    if(Qt.LeftButton){
+                        Objcmodslistfilling.refreshModlistVector();
+                        refreshModlistTo0();
+                    }
+                }
+                onEntered: {
+                    refreshButtonImage.source = "images/icons/refreshIcon64Light.png"
+                }
+                onExited: {
+                    refreshButtonImage.source = "images/icons/refreshIcon64.png"
+                }
+            }
+            Image {
+                id: refreshButtonImage
+                anchors.fill: parent
+                source: "images/icons/refreshIcon64.png"
             }
         }
 
@@ -472,7 +497,7 @@ Item {
     Rectangle {
         id: actionMenu
         x: mousePositionX - 25
-        y: mousePositionY - 40
+        y: ((mousePositionY - 40) < (mainScreen.height - 300)) ? mousePositionY - 40 : mousePositionY - 250
         width: 175
         height: 250
         visible: false
@@ -538,6 +563,7 @@ Item {
             y: 125
             text: "Unsubscribe"
             onClicked: {
+                modsList.currentIndex = currentIndexPos;
                 qtGeneralBackendObj.removeMod(currentId);
                 Objcmodslistfilling.refreshModlistVector();
                 refreshModlist();
@@ -549,6 +575,7 @@ Item {
             y: 155
             text: "Resubsribe"
             onClicked: {
+                modsList.currentIndex = currentIndexPos;
                 qtGeneralBackendObj.removeMod(currentId);
                 qtGeneralBackendObj.addMod(currentId);
                 Objcmodslistfilling.refreshModlistVector();
@@ -558,6 +585,10 @@ Item {
 
     }
     function refreshModlist() {
+        modsList.model.refreshList();
+    }
+    function refreshModlistTo0(){
+        modsList.currentIndex = 0;
         modsList.model.refreshList();
     }
 

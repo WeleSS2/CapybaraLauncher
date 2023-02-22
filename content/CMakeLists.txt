@@ -31,4 +31,6 @@ InfoPopup.qml
 images/icons/downloadGreen.png
 images/icons/downloadRed.png
 images/icons/downloadGreenLight.png
+images/icons/refreshIcon64.png
+images/icons/refreshIcon64Light.png
 )

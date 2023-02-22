@@ -27,7 +27,7 @@ Item {
         text: qsTr("Workshop")
         onClicked: {
             if(Qt.LeftButton){
-                Qt.openUrlExternally("https://steamcommunity.com/app/1142710/workshop/")
+                Qt.openUrlExternally("steam://openurl/https://steamcommunity.com/app/1142710/workshop/")
             }
         }
     }

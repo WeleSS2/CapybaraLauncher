@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QVector>
+#include <QQUickItem>
 #include "steam_api.h"
 #include "QColor.h"
 
@@ -46,8 +47,14 @@ public slots:
 
     void refreshModlistVector();
 
+
+    void setListViewPointer(QQuickItem *List);
+    QQuickItem* getListPointer();
 public:
     QVector<ItemsData> mItemsData;
+
+private:
+    QQuickItem *mListView;
 };
 
 #endif // CMODSLISTFILLING_H

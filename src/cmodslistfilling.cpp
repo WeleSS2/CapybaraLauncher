@@ -132,3 +132,12 @@ void cmodslistfilling::refreshModlistVector(){
                            });
     }
 }
+
+void cmodslistfilling::setListViewPointer(QQuickItem* list)
+{
+    mListView = list;
+}
+
+QQuickItem* cmodslistfilling::getListPointer(){
+    return mListView;
+}

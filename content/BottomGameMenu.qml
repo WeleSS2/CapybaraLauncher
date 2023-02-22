@@ -87,7 +87,7 @@ Item {
                 {
                     qtGeneralBackendObj.importPack();
                     Objcmodslistfilling.refreshModlistVector();
-                    modlist.refreshModlist();
+                    modlist.refreshModlistTo0();
                 }
             }
         }
@@ -113,6 +113,6 @@ Item {
 
         modlist.onEnable();
 
-        modlist.refreshModlist();
+        modlist.refreshModlistTo0();
     }
 }
