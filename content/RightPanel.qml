@@ -1,7 +1,8 @@
 import QtQuick
 
-Rectangle {
+Item {
     id: right_panel
+    enabled : rightPanelEnabled
     ListView {
         id: gameNews
         x: 1075

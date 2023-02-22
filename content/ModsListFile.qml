@@ -4,7 +4,7 @@ import WH3_Mod_Menager
 
 import CModsList
 
-MouseArea {
+Item {
     id: mainMouseArea
     anchors.fill: parent
     property bool globalActionMenuOpen: false
@@ -14,6 +14,7 @@ MouseArea {
     property string currentName
     property string currentId
     property alias overModList : overModList
+    enabled: modListEnabled
 
     ListView {
         id: modsList
@@ -179,6 +180,17 @@ MouseArea {
                                currentName = model.name;
                                currentId = model.modgameid;
                                actionMenu.visible = true;
+                          }
+                          else
+                          {
+                              globalActionMenuOpen = false;
+                              actionMenu.visible = false;
+
+                              mousePositionX = position.x;
+                              mousePositionY = position.y;
+                              currentName = model.name;
+                              currentId = model.modgameid;
+                              actionMenu.visible = true;
                           }
                       }
                       else if (mouse.button === Qt.LeftButton)
@@ -433,6 +445,17 @@ MouseArea {
             font.bold: true
         }
 
+        Button {
+            x: 950
+            width: 100
+            height: 30
+            text: "Refresh"
+            onClicked: {
+                Objcmodslistfilling.refreshModlistVector();
+                refreshModlist();
+            }
+        }
+
         //Text {
         //    x: 977
         //    y: 100
@@ -453,24 +476,25 @@ MouseArea {
         width: 175
         height: 250
         visible: false
-        HoverHandler {
+        MouseArea {
             id: mouse2
-            acceptedDevices: PointerDevice.Mouse
+            anchors.fill: parent
             cursorShape: Qt.PointingHandCursor
 
+            hoverEnabled: true
+            property point position: mapToGlobal(mouseX, mouseY);
             onHoveredChanged: (mouse2)=> {
-                 if(actionMenu.visible)
-                 {
-                     if(globalActionMenuOpen)
-                     {
-                          globalActionMenuOpen = false;
-                          actionMenu.visible = false;
-                     }
-                     else
-                     {
-                         globalActionMenuOpen = true;
-                     }
-                 }
+                 position = mapToGlobal(mouseX, mouseY);
+                 if(actionMenu.visible){
+                    if(position.x !== 0){
+                        if(position.x > actionMenu.x + 175 || position.x < actionMenu.x + 20
+                           || position.y > actionMenu.y + 250 || position.y < actionMenu.y + 40)
+                        {
+                            actionMenu.visible = false;
+                            globalActionMenuOpen = false;
+                        }
+                    }
+                }
             }
         }
         Text {
@@ -498,10 +522,6 @@ MouseArea {
             }
         }
 
-        TextEdit{
-                id: textEdit
-                visible: false
-            }
         Button {
             x: 15
             y: 95
@@ -512,6 +532,30 @@ MouseArea {
                 textEdit.copy()
             }
         }
+
+        Button {
+            x: 15
+            y: 125
+            text: "Unsubscribe"
+            onClicked: {
+                qtGeneralBackendObj.removeMod(currentId);
+                Objcmodslistfilling.refreshModlistVector();
+                refreshModlist();
+            }
+        }
+
+        Button {
+            x: 15
+            y: 155
+            text: "Resubsribe"
+            onClicked: {
+                qtGeneralBackendObj.removeMod(currentId);
+                qtGeneralBackendObj.addMod(currentId);
+                Objcmodslistfilling.refreshModlistVector();
+                refreshModlist();
+            }
+        }
+
     }
     function refreshModlist() {
         modsList.model.refreshList();

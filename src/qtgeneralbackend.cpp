@@ -7,6 +7,7 @@
 #include "qtgeneralbackend.h"
 #include "globaldata.h"
 #include "github/githubupdater.h"
+#include "steamtools.h"
 
 QtGeneralBackend::QtGeneralBackend(QObject *parent)
     : QObject{parent}
@@ -52,7 +53,7 @@ void QtGeneralBackend::exportPack(){
     std::string exportString = "";
     for(auto& i: SharedGlobalDataObj->Global_ModsDataObj){
         if(i.done){
-            exportString += std::to_string(i.steamModGameId) + " ";
+            exportString += std::to_string(i.steamModGameId) + "|";
         }
     }
     QClipboard *clip = QGuiApplication::clipboard();
@@ -66,26 +67,37 @@ void QtGeneralBackend::importPack(){
       // Create a string from the clipboard data
     std::string importList{QString(clip->text()).toStdString()};
 
-      std::vector<uint32_t> mods;
+    std::vector<std::pair<uint64_t, bool>> mods;
+
       std::string number = "";
-      //qDebug() << QString::fromStdString(importList);
+
+
+      // Load mods
       for(int i = 0; i < importList.size(); ++i){
             number+= importList[i];
-            //qDebug() << QString::fromStdString(number) << "    " << importList[i];
-
-            if(importList[i] == ' '){
-                mods.emplace_back(std::stoul(number));
+            if(importList[i] == '|'){
+                mods.emplace_back(std::stoul(number), false);
                 number = "";
-                //qDebug() << QString::fromStdString(number) << "-----------";
             }
       }
+
+      // Enable mods
       for(auto& i: SharedGlobalDataObj->Global_ModsDataObj)
       {
           for(int j = 0; j < mods.size() ; ++j){
-              if(i.steamModGameId == mods[j])
+              if(i.steamModGameId == mods.data()->first)
               {
                   i.done = true;
+                  mods.data()->second = true;
               }
+          }
+      }
+      // Check did all of the mods are downloaded and available if not download them
+      steamAPIAccess SteamAPI;
+      for(int i = 0; i < mods.size() ; ++i){
+          if(!mods[i].second)
+          {
+              addMod(mods[i].first);
           }
       }
 }
@@ -109,4 +121,63 @@ void QtGeneralBackend::updateLauncher(){
     obj.downloadPatch();
     obj.openPatchFile();
     obj.patchAndResetApp();
+}
+
+void QtGeneralBackend::addMod(uint64_t id){
+    steamAPIAccess SteamAPI;
+    SteamAPI.subscribeMod(id);
+
+    SteamUGCDetails_t modDetails = SteamAPI.getModDetails(id);
+
+
+    // Download the item
+    SteamAPICall_t hDownloadItemResult = SteamUGC()->DownloadItem(id, true);
+    SteamAPI_RunCallbacks();
+
+
+    SteamAPI.waitUntilCallNotFinished(&hDownloadItemResult);
+
+    // Insert item into launcher
+    SharedGlobalDataObj->Global_LocalSettingsObj.modsAmount++;
+
+
+    SharedGlobalDataObj->Global_ModsDataObj.emplace_back();
+    int modPosition = SharedGlobalDataObj->Global_ModsDataObj.size() - 1;
+
+    SharedGlobalDataObj->Global_ModsDataObj[modPosition].laucherId = modPosition;
+    SharedGlobalDataObj->Global_ModsDataObj[modPosition].done = false;
+    SharedGlobalDataObj->Global_ModsDataObj[modPosition].color = {255, 255, 255};
+    SharedGlobalDataObj->Global_ModsDataObj[modPosition].steamModName = modDetails.m_rgchTitle;
+    SharedGlobalDataObj->Global_ModsDataObj[modPosition].steamDataInSeconds = modDetails.m_rtimeUpdated;
+    std::string path = SharedGlobalDataObj->Global_LocalSettingsObj.gamepath +
+            "\\steamapps\\workshop\\content\\1142710\\" + std::to_string(id);
+    if(std::filesystem::exists(path)){
+        for (auto const& dir_entry : std::filesystem::directory_iterator{path})
+        {
+            std::string temp{dir_entry.path().string()};
+            std::string s2 = temp.substr(temp.size() - 4, 4);
+            if(s2 == "pack"){
+                SharedGlobalDataObj->Global_ModsDataObj[modPosition].steamPackname = temp;
+            }
+        }
+    }
+
+    SharedGlobalDataObj->Global_ModsDataObj[modPosition].steamModGameId = id;
+    SharedGlobalDataObj->Global_ModsDataObj[modPosition].steamAuthor = modDetails.m_ulSteamIDOwner;
+
+}
+
+void QtGeneralBackend::removeMod(uint64_t id){
+    steamAPIAccess SteamAPI;
+    for(int i = 0; i < SharedGlobalDataObj->Global_ModsDataObj.size(); ++i){
+        if(SharedGlobalDataObj->Global_ModsDataObj[i].steamModGameId == id)
+        {
+            SharedGlobalDataObj->Global_ModsDataObj.erase(SharedGlobalDataObj->Global_ModsDataObj.begin() + i);
+        }
+    }
+    SharedGlobalDataObj->Global_LocalSettingsObj.modsAmount--;
+    std::string path = SharedGlobalDataObj->Global_LocalSettingsObj.gamepath +
+            "\\steamapps\\workshop\\content\\1142710\\" + std::to_string(id);
+    std::filesystem::remove_all(path);
+    SteamAPI.unsubscribeMod(id);
 }

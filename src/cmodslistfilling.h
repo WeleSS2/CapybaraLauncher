@@ -36,13 +36,15 @@ signals:
 
 public slots:
     void appendItem();
-    void removeItem();
+    void removeItem(int position);
 
 
     void sortByActive();
     void sortByDate();
     void sortByName();
     void sortByPackname();
+
+    void refreshModlistVector();
 
 public:
     QVector<ItemsData> mItemsData;

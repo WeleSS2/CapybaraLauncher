@@ -69,11 +69,6 @@ public:
             std::cout << "SteamAPI Loaded" << std::endl;
         }
     };
-    ~steam()
-    {
-        SteamAPI_Shutdown();
-        std::cout << "SteamApi Destroyed" << std::endl;
-    }
 };
 
 
@@ -98,7 +93,7 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
 
-    QCoreApplication::setApplicationVersion("v0.0.2.4");
+    QCoreApplication::setApplicationVersion("v0.0.3");
 
     cexit exit_obj;
     engine.rootContext()->setContextProperty("exit_obj", &exit_obj);

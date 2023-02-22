@@ -42,6 +42,9 @@ Window {
 
     property var mainTextColor: Qt.rgba(0.95, 0.95, 0.95, 1)
     property var highlightTextColor:  Qt.rgba(0, 0.7, 0.95, 0.9)
+    property bool modListEnabled: true
+    property bool rightPanelEnabled: true
+    property bool bottomGameMenuEnabled: true
 
     Connections {
         target: localFilesObj
@@ -74,7 +77,7 @@ Window {
     }
 
     TopMenu {
-
+        id: topMenu
     }
 
     SettingsModule

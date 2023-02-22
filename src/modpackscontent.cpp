@@ -74,7 +74,7 @@ void ModpacksContent::saveModlist(QString name)
     QVector<uint32_t> modsId;
     file.open(path, std::ios::out);
 
-    for(int i = 0; i < SharedGlobalDataObj->Global_LocalSettingsObj.modsAmount; ++i)
+    for(int i = 0; i < SharedGlobalDataObj->Global_ModsDataObj.size(); ++i)
     {
         if(mListGlobalPtr->mItemsData[i].done)
         {

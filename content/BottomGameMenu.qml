@@ -5,6 +5,7 @@ import ModPacksList
 
 
 Item {
+    enabled: bottomGameMenuEnabled
     Rectangle {
         id: empty_holder_mods
         ComboBox {
@@ -85,6 +86,7 @@ Item {
                 if(Qt.LeftButton)
                 {
                     qtGeneralBackendObj.importPack();
+                    Objcmodslistfilling.refreshModlistVector();
                     modlist.refreshModlist();
                 }
             }

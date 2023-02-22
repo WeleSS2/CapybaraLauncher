@@ -16,6 +16,11 @@ public:
     Q_INVOKABLE void removeModpack(QString name);
     Q_INVOKABLE bool updateAvialable();
     Q_INVOKABLE void updateLauncher();
+
+
+
+    Q_INVOKABLE void addMod(uint64_t id);
+    Q_INVOKABLE void removeMod(uint64_t id);
 signals:
 
 };

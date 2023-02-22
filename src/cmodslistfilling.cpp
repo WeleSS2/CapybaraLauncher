@@ -9,7 +9,7 @@ cmodslistfilling::cmodslistfilling(QObject *parent)
     {
         return first.steamPackname < second.steamPackname;
     });
-    for(int i = 0; i < SharedGlobalDataObj->Global_LocalSettingsObj.modsAmount; ++i)
+    for(int i = 0; i < SharedGlobalDataObj->Global_ModsDataObj.size(); ++i)
     {
         using namespace std;
         using namespace std::chrono;
@@ -59,18 +59,15 @@ void cmodslistfilling::appendItem()
     emit postItemAppened();
 }
 
-void cmodslistfilling::removeItem()
+void cmodslistfilling::removeItem(int position)
 {
     for(int i = 0; i < mItemsData.size(); ++i)
     {
-        //if(mItemsData.at(i).done)
-        {
-            emit preItemRemoved(i);
+        emit preItemRemoved(position);
 
-            mItemsData.removeAt(i);
+        mItemsData.removeAt(position);
 
-            emit postItemRemoved();
-        }
+        emit postItemRemoved();
     }
 }
 
@@ -81,26 +78,7 @@ void cmodslistfilling::sortByActive()
         return first.done > second.done;
     });
 
-    mItemsData.clear();
-    for(int i = 0; i < SharedGlobalDataObj->Global_LocalSettingsObj.modsAmount; ++i)
-    {
-        using namespace std;
-        using namespace std::chrono;
-
-        duration<long> dur(SharedGlobalDataObj->Global_ModsDataObj[i].steamDataInSeconds);
-        SharedGlobalDataObj->Global_ModsDataObj[i].laucherId = i;
-        string steamData = format("{:%Y.%m.%d}", sys_seconds{ dur });
-        mItemsData.append( {
-                               SharedGlobalDataObj->Global_ModsDataObj[i].done,
-                               SharedGlobalDataObj->Global_ModsDataObj[i].color,
-                               QString::fromUtf8(to_string(i).c_str()),
-                               QString::fromUtf8(SharedGlobalDataObj->Global_ModsDataObj[i].steamModName.c_str()),
-                               QString::fromUtf8(steamData.c_str()),
-                               QString::fromUtf8(SharedGlobalDataObj->Global_ModsDataObj[i].steamPackname.c_str()),
-                               SharedGlobalDataObj->Global_ModsDataObj[i].steamModGameId,
-                               QString::fromUtf8(to_string(SharedGlobalDataObj->Global_ModsDataObj[i].steamAuthor).c_str())
-                           });
-    }
+    refreshModlistVector();
 }
 
 void cmodslistfilling::sortByDate()
@@ -110,26 +88,7 @@ void cmodslistfilling::sortByDate()
         return first.steamDataInSeconds > second.steamDataInSeconds;
     });
 
-    mItemsData.clear();
-    for(int i = 0; i < SharedGlobalDataObj->Global_LocalSettingsObj.modsAmount; ++i)
-    {
-        using namespace std;
-        using namespace std::chrono;
-
-        duration<long> dur(SharedGlobalDataObj->Global_ModsDataObj[i].steamDataInSeconds);
-        SharedGlobalDataObj->Global_ModsDataObj[i].laucherId = i;
-        string steamData = format("{:%Y.%m.%d}", sys_seconds{ dur });
-        mItemsData.append( {
-                               SharedGlobalDataObj->Global_ModsDataObj[i].done,
-                               SharedGlobalDataObj->Global_ModsDataObj[i].color,
-                               QString::fromUtf8(to_string(i).c_str()),
-                               QString::fromUtf8(SharedGlobalDataObj->Global_ModsDataObj[i].steamModName.c_str()),
-                               QString::fromUtf8(steamData.c_str()),
-                               QString::fromUtf8(SharedGlobalDataObj->Global_ModsDataObj[i].steamPackname.c_str()),
-                               SharedGlobalDataObj->Global_ModsDataObj[i].steamModGameId,
-                               QString::fromUtf8(to_string(SharedGlobalDataObj->Global_ModsDataObj[i].steamAuthor).c_str())
-                           });
-    }
+    refreshModlistVector();
 }
 
 void cmodslistfilling::sortByName()
@@ -139,26 +98,7 @@ void cmodslistfilling::sortByName()
         return first.steamModName < second.steamModName;
     });
 
-    mItemsData.clear();
-    for(int i = 0; i < SharedGlobalDataObj->Global_LocalSettingsObj.modsAmount; ++i)
-    {
-        using namespace std;
-        using namespace std::chrono;
-
-        duration<long> dur(SharedGlobalDataObj->Global_ModsDataObj[i].steamDataInSeconds);
-        SharedGlobalDataObj->Global_ModsDataObj[i].laucherId = i;
-        string steamData = format("{:%Y.%m.%d}", sys_seconds{ dur });
-        mItemsData.append( {
-                               SharedGlobalDataObj->Global_ModsDataObj[i].done,
-                               SharedGlobalDataObj->Global_ModsDataObj[i].color,
-                               QString::fromUtf8(to_string(i).c_str()),
-                               QString::fromUtf8(SharedGlobalDataObj->Global_ModsDataObj[i].steamModName.c_str()),
-                               QString::fromUtf8(steamData.c_str()),
-                               QString::fromUtf8(SharedGlobalDataObj->Global_ModsDataObj[i].steamPackname.c_str()),
-                               SharedGlobalDataObj->Global_ModsDataObj[i].steamModGameId,
-                               QString::fromUtf8(to_string(SharedGlobalDataObj->Global_ModsDataObj[i].steamAuthor).c_str())
-                           });
-    }
+    refreshModlistVector();
 }
 
 void cmodslistfilling::sortByPackname()
@@ -168,16 +108,19 @@ void cmodslistfilling::sortByPackname()
         return first.steamPackname < second.steamPackname;
     });
 
+    refreshModlistVector();
+}
+
+void cmodslistfilling::refreshModlistVector(){
     mItemsData.clear();
-    for(int i = 0; i < SharedGlobalDataObj->Global_LocalSettingsObj.modsAmount; ++i)
+    for(int i = 0; i < SharedGlobalDataObj->Global_ModsDataObj.size(); ++i)
     {
         using namespace std;
         using namespace std::chrono;
-
         duration<long> dur(SharedGlobalDataObj->Global_ModsDataObj[i].steamDataInSeconds);
         SharedGlobalDataObj->Global_ModsDataObj[i].laucherId = i;
         string steamData = format("{:%Y.%m.%d}", sys_seconds{ dur });
-        mItemsData.append( {
+        mItemsData.append({
                                SharedGlobalDataObj->Global_ModsDataObj[i].done,
                                SharedGlobalDataObj->Global_ModsDataObj[i].color,
                                QString::fromUtf8(to_string(i).c_str()),

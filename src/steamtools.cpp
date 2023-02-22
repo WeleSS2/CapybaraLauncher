@@ -16,15 +16,19 @@ void CSteamTools::LoadItemsToQuery()
     SharedGlobalDataObj->Global_LocalSettingsObj.modsAmount = SteamUGC()->GetNumSubscribedItems();
     for(int i = 0; i < SharedGlobalDataObj->Global_LocalSettingsObj.modsAmount; ++i)
     {
-        laucherItemId.emplace_back(i);
-        VUi_ItemsId.emplace_back();
-        Vs_ItemsData.emplace_back();
-        SharedGlobalDataObj->Global_ModsDataObj.emplace_back();
+        pushVectors(i);
     }
 
     SteamUGC()->GetSubscribedItems(&VUi_ItemsId[0], SharedGlobalDataObj->Global_LocalSettingsObj.modsAmount);
 
     qHandle = SteamUGC()->CreateQueryUGCDetailsRequest(&VUi_ItemsId[0], SharedGlobalDataObj->Global_LocalSettingsObj.modsAmount);
+}
+
+void CSteamTools::pushVectors(int value){
+    laucherItemId.emplace_back(value);
+    VUi_ItemsId.emplace_back();
+    Vs_ItemsData.emplace_back();
+    SharedGlobalDataObj->Global_ModsDataObj.emplace_back();
 }
 
 void CSteamTools::LoadItemsDataFromQuery()
@@ -49,8 +53,7 @@ void CSteamTools::LoadItemsDataFromQuery()
     for (int i = 0; i < SharedSteamToolsObj->VUi_ItemsId.size(); ++i)
         {
         std::string folder_path{path + "\\" + std::to_string(SharedSteamToolsObj->VUi_ItemsId[i])};
-        //qDebug() << QString::fromStdString(folder_path);
-        //qDebug()<< QString::fromStdString(SharedSteamToolsObj->Vs_ItemsData[i].m_rgchTitle);
+
         if(std::filesystem::exists(folder_path)){
             for (auto const& dir_entry : std::filesystem::directory_iterator{folder_path})
             {
@@ -88,11 +91,6 @@ void CSteamTools::LoadItemsDataFromQuery()
         if(SharedSteamToolsObj->isAvailable[i] == false){
             SharedGlobalDataObj->Global_ModsDataObj[i].steamModName = "Mod has been removed from steam";
         }
-
-        //qDebug() << QString::fromStdString(SharedGlobalDataObj->Global_ModsDataObj[i].steamModName);
-        //qDebug() << QString::fromStdString(SharedGlobalDataObj->Global_ModsDataObj[i].steamPackname);
-        //qDebug() << QString::fromStdString(std::to_string(SharedGlobalDataObj->Global_ModsDataObj[i].steamModGameId));
-        //qDebug() << QString::fromStdString(std::to_string(i)) << " ---------------------------------------------------------------------------------------";
     }
 }
 
@@ -107,4 +105,82 @@ void CSteamTools::ItemsCallback(SteamUGCQueryCompleted_t * result, bool fail)
     }
 
     SteamUGC()->ReleaseQueryUGCRequest(qHandle);
+}
+
+
+void steamAPIAccess::subscribeMod(uint64_t id){
+    SteamAPICall_t hAPICall;
+    bool bItemSubscribed = SteamUGC()->SubscribeItem(id);
+    if (bItemSubscribed)
+    {
+        uint64_t downloadBytes, totalBytes;
+        while (true)
+        {
+            SteamUGC()->GetItemDownloadInfo(id, &downloadBytes, &totalBytes);
+            if (downloadBytes == totalBytes)
+            {
+                break;
+            }
+
+            Sleep(10);
+        }
+    }
+}
+
+void steamAPIAccess::unsubscribeMod(uint64_t id){
+    SteamAPICall_t hApiCall;
+    bool bItemUnSubscribed = SteamUGC()->UnsubscribeItem(id);
+    if (bItemUnSubscribed)
+    {
+        uint64_t downloadBytes, totalBytes;
+        while (true)
+        {
+            SteamUGC()->GetItemDownloadInfo(id, &downloadBytes, &totalBytes);
+            if (downloadBytes == 0 && totalBytes == 0)
+            {
+                break;
+            }
+
+            Sleep(10);
+        }
+    }
+}
+
+SteamUGCDetails_t steamAPIAccess::getModDetails(uint64_t id){
+    SteamUGCDetails_t data;
+    UGCQueryHandle_t qHandle;
+    qHandle = SteamUGC()->CreateQueryUGCDetailsRequest(&id, 1);
+
+    SteamAPICall_t hSteamApiCall = SteamUGC()->SendQueryUGCRequest(qHandle);
+    CCallResult<steamAPIAccess, SteamUGCQueryCompleted_t> sContentCall;
+    sContentCall.Set(hSteamApiCall, this, &steamAPIAccess::modCallback);
+
+    SteamAPI_RunCallbacks();
+    waitUntilCallNotFinished(&hSteamApiCall);
+
+    SteamUGC()->GetQueryUGCResult(qHandle, 0, &data);
+    SteamUGC()->ReleaseQueryUGCRequest(qHandle);
+
+
+    return data;
+}
+
+void steamAPIAccess::modCallback(SteamUGCQueryCompleted_t* result, bool fail)
+{
+    if(fail)
+        std::cout << "Failed steam UGC query for mod";
+}
+
+bool steamAPIAccess::waitUntilCallNotFinished(SteamAPICall_t *call)
+{
+    // Wait until the download is completed
+    bool callCompleted = false;
+    bool finished = SteamUtils()->IsAPICallCompleted(*call, &callCompleted);
+
+    while (!callCompleted) {
+        SteamAPI_RunCallbacks();
+        finished = SteamUtils()->IsAPICallCompleted(*call, &callCompleted);
+        std::this_thread::sleep_for(std::chrono::milliseconds(10)); // Add a small delay to reduce CPU usage
+    }
+    return callCompleted;
 }

@@ -16,6 +16,7 @@ Rectangle {
         height: 30
         onClicked: {
             if(Qt.LeftButton){
+                topMenu.enableLeftRightBottom();
                 parent.visible = false;
             }
         }

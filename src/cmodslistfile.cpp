@@ -16,7 +16,7 @@ int CModsListFile::rowCount(const QModelIndex &parent) const
         return 0;
 
     // FIXME: Implement me!
-    return SharedGlobalDataObj->Global_LocalSettingsObj.modsAmount;
+    return SharedGlobalDataObj->Global_ModsDataObj.size();
 }
 
 QVariant CModsListFile::data(const QModelIndex &index, int role) const

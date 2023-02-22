@@ -1,6 +1,4 @@
-#ifndef steam_on_h
-#define steam_on_h
-
+#pragma once
 #include <QObject>
 #include <QVariant>
 
@@ -25,6 +23,9 @@ public:
 
     explicit CSteamTools(QObject *parent = nullptr){};
 
+
+    void pushVectors(int value);
+
 public slots:
     void LoadItemsToQuery();
     void LoadItemsDataFromQuery();
@@ -32,4 +33,15 @@ public slots:
 };
 inline auto SharedSteamToolsObj = std::make_shared<CSteamTools>();
 
-#endif
+class steamAPIAccess {
+public:
+    void subscribeMod(uint64_t id);
+    void unsubscribeMod(uint64_t id);
+    SteamUGCDetails_t getModDetails(uint64_t id);
+    void modCallback(SteamUGCQueryCompleted_t* result, bool fail);
+    bool waitUntilCallNotFinished(SteamAPICall_t* call);
+
+protected:
+
+private:
+};

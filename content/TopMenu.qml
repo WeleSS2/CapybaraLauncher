@@ -42,6 +42,7 @@ Item {
 
         onClicked: {
             if(Qt.LeftButton){
+                disableLeftRightBottom();
                 settingsModule.showSettings();
             }
         }
@@ -149,5 +150,14 @@ Item {
             source: "images/patreon.png"
         }
     }
-
+    function disableLeftRightBottom(){
+        modListEnabled = false
+        rightPanelEnabled = false
+        bottomGameMenuEnabled = false
+    }
+    function enableLeftRightBottom(){
+        modListEnabled = true
+        rightPanelEnabled = true
+        bottomGameMenuEnabled = true
+    }
 }
