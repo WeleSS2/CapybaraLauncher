@@ -150,7 +150,6 @@ void CModsListFile::refreshList()
     QQuickItem* listView = mList->getListPointer();
     QModelIndex currentIndex = listView->property("currentIndex").value<QModelIndex>();
 
-    qDebug() << currentIndex.row();
 
     beginResetModel();
     for(auto& i: SharedGlobalDataObj->Global_ModsDataObj)

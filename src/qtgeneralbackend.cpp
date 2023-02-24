@@ -85,10 +85,10 @@ void QtGeneralBackend::importPack(){
       for(auto& i: SharedGlobalDataObj->Global_ModsDataObj)
       {
           for(int j = 0; j < mods.size() ; ++j){
-              if(i.steamModGameId == mods.data()->first)
+              if(i.steamModGameId == mods[j].first)
               {
                   i.done = true;
-                  mods.data()->second = true;
+                  mods[j].second = true;
               }
           }
       }
@@ -98,6 +98,11 @@ void QtGeneralBackend::importPack(){
           if(!mods[i].second)
           {
               addMod(mods[i].first);
+              for(auto& j: SharedGlobalDataObj->Global_ModsDataObj)
+              {
+                  if(j.steamModGameId == mods[i].first)
+                  j.done = true;
+              }
           }
       }
 }
