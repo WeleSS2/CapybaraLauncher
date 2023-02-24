@@ -1,5 +1,6 @@
 #include "qDebug.h"
 #include "qguiapplication.h"
+#include <Windows.h>
 #include <cstdlib>
 #include <filesystem>
 #include <QClipboard>
@@ -156,14 +157,22 @@ void QtGeneralBackend::addMod(uint64_t id){
     SharedGlobalDataObj->Global_ModsDataObj[modPosition].steamDataInSeconds = modDetails.m_rtimeUpdated;
     std::string path = SharedGlobalDataObj->Global_LocalSettingsObj.gamepath +
             "\\steamapps\\workshop\\content\\1142710\\" + std::to_string(id);
-    if(std::filesystem::exists(path)){
-        for (auto const& dir_entry : std::filesystem::directory_iterator{path})
-        {
-            std::string temp{dir_entry.path().string()};
-            std::string s2 = temp.substr(temp.size() - 4, 4);
-            if(s2 == "pack"){
-                SharedGlobalDataObj->Global_ModsDataObj[modPosition].steamPackname = temp;
+    while(1){
+        if(std::filesystem::exists(path)){
+            for (auto const& dir_entry : std::filesystem::directory_iterator{path})
+            {
+                std::string temp{dir_entry.path().string()};
+                std::string s2 = temp.substr(temp.size() - 4, 4);
+                if(s2 == "pack"){
+                    temp = temp.erase(0, path.size() + 1);
+                    SharedGlobalDataObj->Global_ModsDataObj[modPosition].steamPackname = temp;
+                }
             }
+            break;
+        }
+        else
+        {
+            Sleep(100);
         }
     }
 
