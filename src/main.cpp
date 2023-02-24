@@ -93,7 +93,7 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
 
-    QCoreApplication::setApplicationVersion("v0.0.3");
+    QCoreApplication::setApplicationVersion("v0.0.3.3");
 
     cexit exit_obj;
     engine.rootContext()->setContextProperty("exit_obj", &exit_obj);

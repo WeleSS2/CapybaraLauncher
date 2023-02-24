@@ -135,7 +135,6 @@ void QtGeneralBackend::addMod(uint64_t id){
 
     SteamUGCDetails_t modDetails = SteamAPI.getModDetails(id);
 
-
     // Download the item
     SteamAPICall_t hDownloadItemResult = SteamUGC()->DownloadItem(id, true);
     SteamAPI_RunCallbacks();
@@ -157,7 +156,12 @@ void QtGeneralBackend::addMod(uint64_t id){
     SharedGlobalDataObj->Global_ModsDataObj[modPosition].steamDataInSeconds = modDetails.m_rtimeUpdated;
     std::string path = SharedGlobalDataObj->Global_LocalSettingsObj.gamepath +
             "\\steamapps\\workshop\\content\\1142710\\" + std::to_string(id);
+    int count = 0;
     while(1){
+        if(count >= 36000)
+        {
+            break;
+        }
         if(std::filesystem::exists(path)){
             for (auto const& dir_entry : std::filesystem::directory_iterator{path})
             {
@@ -173,12 +177,12 @@ void QtGeneralBackend::addMod(uint64_t id){
         else
         {
             Sleep(100);
+            count++;
         }
     }
 
     SharedGlobalDataObj->Global_ModsDataObj[modPosition].steamModGameId = id;
     SharedGlobalDataObj->Global_ModsDataObj[modPosition].steamAuthor = modDetails.m_ulSteamIDOwner;
-
 }
 
 void QtGeneralBackend::removeMod(uint64_t id){
