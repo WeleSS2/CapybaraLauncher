@@ -27,14 +27,41 @@
 **
 ****************************************************************************/
 /* TODO:
- * 1. Przeniesc lokalizacje WH3 z jednokrotnego na kazde uruchomienie
+ *
  * 2. Napraw ustawienia po usunieciu zeby sie odtwarzaly
  * 3. Napraw nadpisywnie listy modow, aktualnie nie nadpisuje sie
  *
  *
+ * Patch 0.0.4 + fixes ^ Unti; 01.03
+ * - Popup/Infobox for downlading update and mods by import
+ * - Open mod locally
+ * -
+ *
+ * Patch 0.0.5 Until 05.03
+ * - Custom server layer
+ * - Add news in right panel
  *
  *
+ * Closed public alpha
  *
+ * Patch 0.0.6 Until 07.03
+ * - Game menagement
+ * - Update game/mods
+ * - Crashifier, check did game is running if crashed disable half of the mods and check until game is not running correctly.
+ *
+ *
+ * Patch 0.0.7 Until 12.03
+ * - Web layer
+ *
+ *
+ * Patch 0.0.8 Until 15.03
+ * - Neccesary add-ons and fixes
+ * - Idk what exactly, to be added
+ *
+ * Open Alpha Relase
+ *
+ * Patch 0.1.1
+ * - Reworking code, multigame support alpha version
  *
  */
 #include <QGuiApplication>
@@ -93,7 +120,7 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
 
-    QCoreApplication::setApplicationVersion("v0.0.3.3");
+    QCoreApplication::setApplicationVersion("v0.0.3.4");
 
     cexit exit_obj;
     engine.rootContext()->setContextProperty("exit_obj", &exit_obj);

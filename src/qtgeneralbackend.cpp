@@ -46,7 +46,7 @@ void QtGeneralBackend::startGame()
         }
     }
 
-    //qDebug() << QString::fromStdString(run);
+    qDebug() << QString::fromStdString(run);
     int result = system(run.c_str());
 }
 

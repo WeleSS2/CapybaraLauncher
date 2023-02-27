@@ -38,13 +38,13 @@ Item {
             font.family: "Courier"
         }
     }
-    ComboBox {
-        id: selectGame
-        editable: false
+    //ComboBox {
+    //    id: selectGame
+    //    editable: false
 
-        x: (Window.width /2) - 125
-        y: 0
-        width: 250
-        height: 30
-    }
+    //    x: (Window.width /2) - 125
+    //    y: 0
+    //    width: 250
+    //    height: 30
+    //}
 }

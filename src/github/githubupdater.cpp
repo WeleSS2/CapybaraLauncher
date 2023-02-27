@@ -63,9 +63,21 @@ void GithubUpdater::openPatchFile(){
 void GithubUpdater::patchAndResetApp() {
     QString path = QCoreApplication::applicationDirPath();
 
-    std::string command = "unzip -j -o temp_download.zip TWCapybara/* -d \"" +
-            path.toStdString() + "\"";
-    int result = system(command.c_str());
+    std::string script = R"(
+            :loop
+            tasklist /FI "IMAGENAME eq WH3_Mod_MenagerApp.exe" 2>NUL | find /I /N "WH3_Mod_MenagerApp.exe">NUL
+            if "%ERRORLEVEL%"=="0" (
+                timeout /T 1 > NUL
+                goto loop
+            ) else (
+                tar -xzf temp_download.zip --strip-components=1 -C . TWCapybara
+                del temp_download.zip
+                start WH3_Mod_MenagerApp.exe
+                exit
+            )
+        )";
+
+    int result = system(script.c_str());
 
     QCoreApplication::quit();
     QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
