@@ -29,12 +29,12 @@
 /* TODO:
  *
  * 2. Napraw ustawienia po usunieciu zeby sie odtwarzaly
- * 3. Napraw nadpisywnie listy modow, aktualnie nie nadpisuje sie
+ * 3. Napraw nadpisywnie listy modow, aktualnie nie nadpisuje sie +
  *
  *
- * Patch 0.0.4 + fixes ^ Unti; 01.03
- * - Popup/Infobox for downlading update and mods by import
- * - Open mod locally
+ * Patch 0.0.4 + fixes ^ Until 01.03
+ * - Popup/Infobox for downlading update and mods by import || DELAYED
+ * - Open mod locally +
  * -
  *
  * Patch 0.0.5 Until 05.03
@@ -65,10 +65,10 @@
  *
  */
 #include <QGuiApplication>
-#include <QQmlApplicationEngine>
 
 #include <QObject>
 #include <QQmlContext>
+#include <QQmlProperty>
 
 #include "app_environment.h"
 #include "import_qml_plugins.h"
@@ -82,6 +82,7 @@
 #include "cmodslistfilling.h"
 #include "modpackslist.h"
 #include "qtgeneralbackend.h"
+#include "qt/customModules/infobox.h""
 
 class steam
 {
@@ -119,6 +120,7 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
+    SharedGlobalDataObj->enginePtr = &engine;
 
     QCoreApplication::setApplicationVersion("v0.0.3.4");
 
@@ -163,6 +165,7 @@ int main(int argc, char *argv[])
     engine.addImportPath(":/");
 
     engine.load(url);
+
 
     if (engine.rootObjects().isEmpty()) {
         return -1;

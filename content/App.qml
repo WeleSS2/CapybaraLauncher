@@ -85,8 +85,8 @@ Window {
         id: settingsModule
     }
 
-    InfoPopup {
-        id: infoPopup
+    InfoBox {
+        id: infoBoxQML
     }
 
     onClosing: {

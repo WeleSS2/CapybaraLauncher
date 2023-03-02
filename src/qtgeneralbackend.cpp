@@ -3,12 +3,16 @@
 #include <Windows.h>
 #include <cstdlib>
 #include <filesystem>
-#include <QClipboard>
 
+#include <QClipboard>
+#include <QDesktopServices>
+
+#include "qqmlcontext.h"
 #include "qtgeneralbackend.h"
 #include "globaldata.h"
 #include "github/githubupdater.h"
 #include "steamtools.h"
+#include "qt/customModules/infobox.h"
 
 QtGeneralBackend::QtGeneralBackend(QObject *parent)
     : QObject{parent}
@@ -46,7 +50,7 @@ void QtGeneralBackend::startGame()
         }
     }
 
-    qDebug() << QString::fromStdString(run);
+    //qDebug() << QString::fromStdString(run);
     int result = system(run.c_str());
 }
 
@@ -198,4 +202,13 @@ void QtGeneralBackend::removeMod(uint64_t id){
             "\\steamapps\\workshop\\content\\1142710\\" + std::to_string(id);
     std::filesystem::remove_all(path);
     SteamAPI.unsubscribeMod(id);
+}
+
+void QtGeneralBackend::openLocalFiles(uint64_t id){
+    std::string path = SharedGlobalDataObj->Global_LocalSettingsObj.gamepath +
+            "\\steamapps\\workshop\\content\\1142710\\" + std::to_string(id);
+    if(std::filesystem::exists(path)){
+        QUrl folderUrl = QUrl::fromLocalFile(QString::fromStdString(path));
+        QDesktopServices::openUrl(folderUrl);
+    }
 }

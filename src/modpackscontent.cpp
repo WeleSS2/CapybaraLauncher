@@ -71,20 +71,41 @@ void ModpacksContent::saveModlist(QString name)
     std::string path = SharedGlobalDataObj->Global_LocalSettingsObj.localPath + "\\Modpacks\\"
             + name.toStdString() + ".txt";
     std::fstream file;
-    QVector<uint32_t> modsId;
+    QVector<uint32_t> localModsId;
+
+    bool exist = false;
+    if(std::filesystem::exists(path))
+    {
+        exist = true;
+        std::filesystem::remove(path);
+
+    }
+    qDebug() << name << QString::fromStdString(path);
+
     file.open(path, std::ios::out);
 
     for(int i = 0; i < SharedGlobalDataObj->Global_ModsDataObj.size(); ++i)
     {
         if(mListGlobalPtr->mItemsData[i].done)
         {
-            modsId.emplaceBack(mListGlobalPtr->mItemsData[i].modgameid);
+            localModsId.emplaceBack(mListGlobalPtr->mItemsData[i].modgameid);
             file << mListGlobalPtr->mItemsData[i].modgameid << std::endl;
         }
     }
     file.close();
-    SharedGlobalDataObj->Global_LocalSettingsObj.modpacksAmount++;
-    mModpacksData.append({name, modsId});
+    if(!exist){
+        SharedGlobalDataObj->Global_LocalSettingsObj.modpacksAmount++;
+        mModpacksData.append({name, localModsId});
+    }
+    else
+    {
+        for(auto &i: mModpacksData){
+            if(i.modpackName == name){
+                i.modsId.clear();
+                i.modsId = localModsId;
+            }
+        }
+    }
 }
 
 void ModpacksContent::loadModlist(uint64_t index)
@@ -106,6 +127,10 @@ void ModpacksContent::loadModlist(uint64_t index)
             }
         }
     }
+}
+
+QString ModpacksContent::getModlistName(uint64_t index){
+    return mModpacksData[index].modpackName;
 }
 
 void ModpacksContent::modlistAmount()

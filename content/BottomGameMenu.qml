@@ -34,7 +34,7 @@ Item {
             onClicked: {
                if(Qt.LeftButton)
                    {
-                       if (selectModpack.find(selectModpack.editText) === -1)
+                       if (selectModpack.editText !== "")
                        {
                            ObjModpacksContent.saveModlist(selectModpack.editText)
                            selectModpack.model.refreshList()
@@ -110,6 +110,8 @@ Item {
 
     function loadAndRefresh(index) {
         ObjModpacksContent.loadModlist(index);
+        var modlistName = ObjModpacksContent.getModlistName(index);
+        selectModpack.editText = modlistName;
 
         modlist.onEnable();
 

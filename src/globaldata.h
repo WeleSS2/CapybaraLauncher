@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QSharedDataPointer>
+#include <QQmlApplicationEngine>
 #include "QColor.h"
 
 inline int* modpacksAmount = nullptr;
@@ -41,6 +42,7 @@ public:
     LocalSettings Global_LocalSettingsObj;
     std::vector<ModsData> Global_ModsDataObj;
     GlobalModpacksData Global_ModpackDataObj;
+    QQmlApplicationEngine* enginePtr = nullptr;
 
 };
 inline auto SharedGlobalDataObj = std::make_shared<GlobalDataData>();

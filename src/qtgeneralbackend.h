@@ -21,6 +21,7 @@ public:
 
     Q_INVOKABLE void addMod(uint64_t id);
     Q_INVOKABLE void removeMod(uint64_t id);
+    Q_INVOKABLE void openLocalFiles(uint64_t id);
 signals:
 
 };
