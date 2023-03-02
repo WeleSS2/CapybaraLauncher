@@ -62,7 +62,7 @@ Item {
                 Text {
                     id: lau_id
                     width: this.implicitWidth > 20 ? this.implicitWidth : 20
-                    text: id
+                    text: (Number(id) + 1).toString()
                     clip: true
                     font.bold: true
                     font.pixelSize: 16
@@ -580,6 +580,16 @@ Item {
                 qtGeneralBackendObj.addMod(currentId);
                 Objcmodslistfilling.refreshModlistVector();
                 refreshModlist();
+            }
+        }
+
+        Button {
+            x: 15
+            y: 185
+            text: "Open Local Files"
+            onClicked: {
+                modsList.currentIndex = currentIndexPos;
+                qtGeneralBackendObj.openLocalFiles(currentId);
             }
         }
 

@@ -85,8 +85,26 @@ Window {
         id: settingsModule
     }
 
-    InfoPopup {
-        id: infoPopup
+    InfoBox{
+        id: infoBoxHolder
+    }
+
+    Button {
+        text: "Testst"
+        x: 100
+        onClicked: {
+            if(Qt.LeftButton){
+                if(infoBox.enabled)
+                {
+
+                    infoBox.setEnabled(false);
+                }
+                else
+                {
+                    qtGeneralBackendObj.testInfo()
+                }
+            }
+        }
     }
 
     onClosing: {

@@ -3,12 +3,17 @@
 #include <Windows.h>
 #include <cstdlib>
 #include <filesystem>
-#include <QClipboard>
 
+#include <QClipboard>
+#include <QDesktopServices>
+#include <QTimer>
+
+#include "qqmlcontext.h"
 #include "qtgeneralbackend.h"
 #include "globaldata.h"
 #include "github/githubupdater.h"
 #include "steamtools.h"
+#include "qt/customModules/infobox.h"
 
 QtGeneralBackend::QtGeneralBackend(QObject *parent)
     : QObject{parent}
@@ -46,7 +51,7 @@ void QtGeneralBackend::startGame()
         }
     }
 
-    qDebug() << QString::fromStdString(run);
+    //qDebug() << QString::fromStdString(run);
     int result = system(run.c_str());
 }
 
@@ -94,17 +99,32 @@ void QtGeneralBackend::importPack(){
           }
       }
       // Check did all of the mods are downloaded and available if not download them
+      qDebug() << "1";
       steamAPIAccess SteamAPI;
       for(int i = 0; i < mods.size() ; ++i){
           if(!mods[i].second)
           {
-              addMod(mods[i].first);
-              for(auto& j: SharedGlobalDataObj->Global_ModsDataObj)
-              {
-                  if(j.steamModGameId == mods[i].first)
-                  j.done = true;
-              }
-          }
+              InfoBox infoBox;
+              infoBox.setText("Downloading mod with id: " + QString::fromStdString(std::to_string(mods[i].first)));
+              infoBox.setEnabled(true);
+
+
+              // Show the InfoBox
+                      QTimer::singleShot(0, &infoBox, [&infoBox]() {
+                          infoBox.show();
+                      });
+
+                      // Delay downloading until after the InfoBox is shown
+                      QTimer::singleShot(1000, [this, mods, i, &infoBox]() {
+                          addMod(mods[i].first);
+                          for(auto& j: SharedGlobalDataObj->Global_ModsDataObj) {
+                              if(j.steamModGameId == mods[i].first)
+                                  j.done = true;
+                          }
+                          // Hide the InfoBox
+                          infoBox.setEnabled(false);
+                      });
+                  }
       }
 }
 
@@ -130,6 +150,7 @@ void QtGeneralBackend::updateLauncher(){
 }
 
 void QtGeneralBackend::addMod(uint64_t id){
+    qDebug() << "Synchronzied 2";
     steamAPIAccess SteamAPI;
     SteamAPI.subscribeMod(id);
 
@@ -198,4 +219,13 @@ void QtGeneralBackend::removeMod(uint64_t id){
             "\\steamapps\\workshop\\content\\1142710\\" + std::to_string(id);
     std::filesystem::remove_all(path);
     SteamAPI.unsubscribeMod(id);
+}
+
+void QtGeneralBackend::openLocalFiles(uint64_t id){
+    std::string path = SharedGlobalDataObj->Global_LocalSettingsObj.gamepath +
+            "\\steamapps\\workshop\\content\\1142710\\" + std::to_string(id);
+    if(std::filesystem::exists(path)){
+        QUrl folderUrl = QUrl::fromLocalFile(QString::fromStdString(path));
+        QDesktopServices::openUrl(folderUrl);
+    }
 }

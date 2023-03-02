@@ -13,7 +13,7 @@ qt6_add_qml_module(content
         BottomGameMenu.qml
         SettingsModule.qml
         GameSelector.qml
-InfoPopup.qml
+InfoBox.qml
     RESOURCES
 # fonts
         fonts/fonts.txt
