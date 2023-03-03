@@ -33,10 +33,10 @@
  *
  *
  * Patch 0.0.4 + fixes ^ Until 01.03
- * - Popup/Infobox for downlading update and mods by import || DELAYED
+ * - Popup/Infobox for downlading update and mods by import +
  * - Open mod locally +
  * -
- *
+ * ------------------------- FINISHED 03.03.2023 22:30
  * Patch 0.0.5 Until 05.03
  * - Custom server layer
  * - Add news in right panel
@@ -150,6 +150,10 @@ int main(int argc, char *argv[])
 
     ModpacksContent ObjModpacksContent;
     engine.rootContext()->setContextProperty("ObjModpacksContent", &ObjModpacksContent);
+
+    InfoBox ObjInfoBox;
+    engine.rootContext()->setContextProperty("ObjInfoBox", &ObjInfoBox);
+
 
     const QUrl url(u"qrc:Main/main.qml"_qs);
     QObject::connect(

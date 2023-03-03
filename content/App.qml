@@ -89,6 +89,17 @@ Window {
         id: infoBoxQML
     }
 
+    Button{
+        width: 100
+        height: 100
+        text: "Test"
+        onClicked: {
+            if(Qt.LeftArrow){
+                qtGeneralBackendObj.testInfoBox();
+            }
+        }
+    }
+
     onClosing: {
         console.log("Closing")
         localFilesObj.saveLocalSettings()

@@ -1,6 +1,7 @@
 #include "infobox.h"
 
-InfoBox::InfoBox()
+
+InfoBox::InfoBox(QObject *parent)
 {
 
 }

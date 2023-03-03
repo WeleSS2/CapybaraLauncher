@@ -8,6 +8,10 @@
 #include "qprocess.h"
 #include "qcoreapplication.h"
 
+#include "../qt/customModules/infobox.h"
+#include "../utility/utility.h"
+#include "../globaldata.h"
+
 GithubUpdater::GithubUpdater()
 {
 
@@ -44,6 +48,9 @@ bool GithubUpdater::getVersionInfo(){
 }
 
 void GithubUpdater::downloadPatch(){
+    Utility objUtility;
+    objUtility.showSimpleInfoBox("Downloading a patch, please wait. Program can look like not responding but patch will be downloaded in this time.");
+
     reply = menager->get(QNetworkRequest(QUrl(latestUrl)));
 
     QEventLoop loop;

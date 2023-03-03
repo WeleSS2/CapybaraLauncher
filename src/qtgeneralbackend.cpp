@@ -13,6 +13,7 @@
 #include "github/githubupdater.h"
 #include "steamtools.h"
 #include "qt/customModules/infobox.h"
+#include "utility/utility.h"
 
 QtGeneralBackend::QtGeneralBackend(QObject *parent)
     : QObject{parent}
@@ -134,6 +135,9 @@ void QtGeneralBackend::updateLauncher(){
 }
 
 void QtGeneralBackend::addMod(uint64_t id){
+    Utility objUtility;
+    objUtility.showSimpleInfoBox("Downloading mod with id: " + QString::fromStdString(std::to_string(id)));
+
     steamAPIAccess SteamAPI;
     SteamAPI.subscribeMod(id);
 
@@ -211,4 +215,15 @@ void QtGeneralBackend::openLocalFiles(uint64_t id){
         QUrl folderUrl = QUrl::fromLocalFile(QString::fromStdString(path));
         QDesktopServices::openUrl(folderUrl);
     }
+}
+
+void QtGeneralBackend::testInfoBox(){
+    InfoBox* ObjInfoBox = new InfoBox;
+    ObjInfoBox->setBoxText("Testing");
+    ObjInfoBox->setButton(1);
+    ObjInfoBox->setButtonText("Click");
+
+
+    ObjInfoBox->setBoxStatus(1);
+    SharedGlobalDataObj->enginePtr->rootContext()->setContextProperty("ObjInfoBox", ObjInfoBox);
 }
