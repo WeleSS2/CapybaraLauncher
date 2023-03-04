@@ -4,6 +4,10 @@
 #include <filesystem>
 #include <algorithm>
 
+
+// Depraceted due to using now .js files to save/load data
+
+
 bool localFiles::findLocalFolder()
 {
     bool success = false;
@@ -77,18 +81,6 @@ void localFiles::saveLocalSettings()
         file << "\"gamepath\" " << SharedGlobalDataObj->Global_LocalSettingsObj.gamepath << "\n";
         file.close();
     }
-
-    /*    std::ranges::for_each( std::filesystem::directory_iterator{pathline},
-                               [](const auto& dir_entry) {
-                                 std::cout << dir_entry << '\n';
-                               } );
-
-    for(auto i: std::filesystem::directory_iterator{pathline})
-    {
-        //asd
-    }
-
-    */
 }
 
 void localFiles::saveLocalModlist()
@@ -137,3 +129,4 @@ void localFiles::loadLocalModlist()
 {
 
 }
+

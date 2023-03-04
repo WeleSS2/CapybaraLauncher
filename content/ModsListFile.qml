@@ -512,7 +512,7 @@ Item {
                  position = mapToGlobal(mouseX, mouseY);
                  if(actionMenu.visible){
                     if(position.x !== 0){
-                        if(position.x > actionMenu.x + 175 || position.x < actionMenu.x + 20
+                        if(position.x > actionMenu.x + 175 || position.x < actionMenu.x + 25
                            || position.y > actionMenu.y + 250 || position.y < actionMenu.y + 40)
                         {
                             actionMenu.visible = false;

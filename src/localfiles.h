@@ -6,6 +6,9 @@
 #include <string>
 #include <cstdlib>
 
+// Depraceted due to using now .js files to save/load data
+
+
 class localFiles: public QObject
 {
     Q_OBJECT

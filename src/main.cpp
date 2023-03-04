@@ -37,31 +37,32 @@
  * - Open mod locally +
  * -
  * ------------------------- FINISHED 03.03.2023 22:30
- * Patch 0.0.5 Until 05.03
+ *
+ *
+ *
+ *
+ * Patch 0.0.5 Until 07.03
+ * - Local mods support
+ * - Add mods to steam support
+ * - Multigame support Alpha
+ *
+ * Patch 0.0.6 Until 12.03
+ * - Web layer
+ *
+ *
+ *  Patch 0.0.7 Until 15.03
  * - Custom server layer
  * - Add news in right panel
- *
- *
- * Closed public alpha
- *
- * Patch 0.0.6 Until 07.03
  * - Game menagement
  * - Update game/mods
  * - Crashifier, check did game is running if crashed disable half of the mods and check until game is not running correctly.
  *
  *
- * Patch 0.0.7 Until 12.03
- * - Web layer
- *
- *
- * Patch 0.0.8 Until 15.03
+ * Patch 0.0.8 Until 20.03
  * - Neccesary add-ons and fixes
  * - Idk what exactly, to be added
  *
  * Open Alpha Relase
- *
- * Patch 0.1.1
- * - Reworking code, multigame support alpha version
  *
  */
 #include <QGuiApplication>
@@ -75,14 +76,16 @@
 #include "steam_api.h"
 
 #include "github/githubupdater.h"
-#include "localfiles.h"
 #include "globaldata.h"
 #include "exit.h"
 #include "cmodslistfile.h"
 #include "cmodslistfilling.h"
 #include "modpackslist.h"
 #include "qtgeneralbackend.h"
-#include "qt/customModules/infobox.h""
+#include "qt/customModules/infobox.h"
+#include "utility/filesoperations.h"
+
+#include "localfiles.h"
 
 class steam
 {
@@ -98,7 +101,6 @@ public:
         }
     };
 };
-
 
 void settingsLoading()
 {
@@ -122,11 +124,11 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
     SharedGlobalDataObj->enginePtr = &engine;
 
-    QCoreApplication::setApplicationVersion("v0.0.3.4");
+    QCoreApplication::setApplicationVersion("v0.0.4.1");
+
 
     cexit exit_obj;
     engine.rootContext()->setContextProperty("exit_obj", &exit_obj);
-
 
     localFiles localFilesObj;
     engine.rootContext()->setContextProperty("localFilesObj", &localFilesObj);
@@ -135,7 +137,6 @@ int main(int argc, char *argv[])
     {
         steam runSteam;
     }
-
     QtGeneralBackend qtGeneralBackendObj;
     engine.rootContext()->setContextProperty("qtGeneralBackendObj", &qtGeneralBackendObj);
 
@@ -150,6 +151,7 @@ int main(int argc, char *argv[])
 
     ModpacksContent ObjModpacksContent;
     engine.rootContext()->setContextProperty("ObjModpacksContent", &ObjModpacksContent);
+
 
     InfoBox ObjInfoBox;
     engine.rootContext()->setContextProperty("ObjInfoBox", &ObjInfoBox);

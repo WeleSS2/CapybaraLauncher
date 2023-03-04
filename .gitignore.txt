@@ -35,3 +35,4 @@
 Custom 
 /vs
 /out
+src/private/

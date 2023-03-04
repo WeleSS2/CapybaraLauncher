@@ -49,7 +49,10 @@ bool GithubUpdater::getVersionInfo(){
 
 void GithubUpdater::downloadPatch(){
     Utility objUtility;
-    objUtility.showSimpleInfoBox("Downloading a patch, please wait. Program can look like not responding but patch will be downloaded in this time.");
+    objUtility.showSimpleInfoBox( R"(
+                                Downloading a patch, please wait until app will not restart.
+                                Program can look like not responding but patch will be downloaded in this time.
+                                )");
 
     reply = menager->get(QNetworkRequest(QUrl(latestUrl)));
 

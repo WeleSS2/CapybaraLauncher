@@ -166,7 +166,7 @@ void QtGeneralBackend::addMod(uint64_t id){
             "\\steamapps\\workshop\\content\\1142710\\" + std::to_string(id);
     int count = 0;
     while(1){
-        if(count >= 36000)
+        if(count >= 3600)
         {
             break;
         }
@@ -215,15 +215,4 @@ void QtGeneralBackend::openLocalFiles(uint64_t id){
         QUrl folderUrl = QUrl::fromLocalFile(QString::fromStdString(path));
         QDesktopServices::openUrl(folderUrl);
     }
-}
-
-void QtGeneralBackend::testInfoBox(){
-    InfoBox* ObjInfoBox = new InfoBox;
-    ObjInfoBox->setBoxText("Testing");
-    ObjInfoBox->setButton(1);
-    ObjInfoBox->setButtonText("Click");
-
-
-    ObjInfoBox->setBoxStatus(1);
-    SharedGlobalDataObj->enginePtr->rootContext()->setContextProperty("ObjInfoBox", ObjInfoBox);
 }

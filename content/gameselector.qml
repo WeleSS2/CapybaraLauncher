@@ -3,14 +3,14 @@ import QtQuick.Controls
 
 Item {
     property var mainTextColor: Qt.rgba(1, 1, 1, 1)
-    property int currentGameId: 0
+    property int currentGameId: 1142710
     Image {
         id: background
         x: 0
         y: 0
         width: Window.width
         height: Window.height
-        source: "images/background" + currentGameId + ".jpg"
+        source: "images/gameBackgrounds/background_" + currentGameId + ".png"
         fillMode: Image.Stretch
     }
 
@@ -38,13 +38,13 @@ Item {
             font.family: "Courier"
         }
     }
-    //ComboBox {
-    //    id: selectGame
-    //    editable: false
+    ComboBox {
+        id: selectGame
+        editable: false
 
-    //    x: (Window.width /2) - 125
-    //    y: 0
-    //    width: 250
-    //    height: 30
-    //}
+        x: (Window.width /2) - 125
+        y: 0
+        width: 250
+        height: 30
+    }
 }
