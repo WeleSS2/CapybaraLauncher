@@ -28,7 +28,7 @@
 ****************************************************************************/
 /* TODO:
  *
- * 2. Napraw ustawienia po usunieciu zeby sie odtwarzaly
+ * 2. Napraw ustawienia po usunieciu zeby sie odtwarzaly +
  * 3. Napraw nadpisywnie listy modow, aktualnie nie nadpisuje sie +
  *
  *
@@ -37,8 +37,9 @@
  * - Open mod locally +
  * -
  * ------------------------- FINISHED 03.03.2023 22:30
- *
- *
+ * - If sorting enabled is on, enbalind another sorting will sort only enabled mods.
+ * - Last changelog for mod (hiperlink)
+ * - Divide Update Date to Latest version and Your version
  *
  *
  * Patch 0.0.5 Until 07.03
@@ -87,6 +88,7 @@
 #include "utility/loggingsystem.h"
 
 #include "localfiles.h"
+#include "windowsfunctions.h"
 
 class steam
 {
@@ -145,6 +147,14 @@ int main(int argc, char *argv[])
 
     localFiles localFilesObj;
     engine.rootContext()->setContextProperty("localFilesObj", &localFilesObj);
+
+
+    // Temporary must be fired always
+    WindowsFunctions winFun;
+    winFun.getSteamPathFromRegistry();
+
+    // Temporary solution to set current game
+    SharedGlobalDataObj->Global_LocalSettingsObj.currentGame = SharedGlobalDataObj->getGameById(1142710);
 
     settingsLoading();
     {

@@ -12,7 +12,7 @@
 //    if(parent.isValid() || !mList)
 //        return 0;
 //
-//    return SharedGlobalDataObj->Global_LocalSettingsObj.numInstalledGames;
+//    return SharedGlobalDataObj->Global_LocalSettingsObj.installedGames.size();
 //}
 //
 //QVariant GameChanger::data(const QModelIndex &index, int role) const
@@ -22,6 +22,14 @@
 //        return QVariant();
 //    };
 //
+//    const sGamesData item = mList->vsGamesData().at(index.row());
+//    switch(role)
+//    {
+//        case NameRole:
+//        {
+//            return QVariant(item.gameId);
+//        }
+//    }
 //}
 //
 //bool GameChanger::setData(const QModelIndex &index, const QVariant &value, int role)

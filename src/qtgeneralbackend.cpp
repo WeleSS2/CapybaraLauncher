@@ -26,7 +26,7 @@ void QtGeneralBackend::startGame()
     bool steamOn = SteamAPI_Init();
     std::string run = "";
 
-    run += "start \"\" \"" + SharedGlobalDataObj->Global_LocalSettingsObj.gamepath
+    run += "start \"\" \"" + SharedGlobalDataObj->Global_LocalSettingsObj.currentGame.gamePath.toStdString()
             + "\\steamapps\\common\\Total War WARHAMMER III\\Warhammer3.exe\"";
 
     std::vector<ModsData> localModsList = SharedGlobalDataObj->Global_ModsDataObj;
@@ -43,7 +43,7 @@ void QtGeneralBackend::startGame()
     for(auto& i: localModsList){
         if(i.done){
             run += "  add_working_directory  \"" +
-                    SharedGlobalDataObj->Global_LocalSettingsObj.gamepath +
+                    SharedGlobalDataObj->Global_LocalSettingsObj.currentGame.gamePath.toStdString() +
                     "\\steamapps\\workshop\\content\\1142710\\" +
                     std::to_string(i.steamModGameId) +
                     "\";" +
@@ -162,7 +162,7 @@ void QtGeneralBackend::addMod(uint64_t id){
     SharedGlobalDataObj->Global_ModsDataObj[modPosition].color = {255, 255, 255};
     SharedGlobalDataObj->Global_ModsDataObj[modPosition].steamModName = modDetails.m_rgchTitle;
     SharedGlobalDataObj->Global_ModsDataObj[modPosition].steamDataInSeconds = modDetails.m_rtimeUpdated;
-    std::string path = SharedGlobalDataObj->Global_LocalSettingsObj.gamepath +
+    std::string path = SharedGlobalDataObj->Global_LocalSettingsObj.currentGame.gamePath.toStdString() +
             "\\steamapps\\workshop\\content\\1142710\\" + std::to_string(id);
     int count = 0;
     while(1){
@@ -202,14 +202,14 @@ void QtGeneralBackend::removeMod(uint64_t id){
         }
     }
     SharedGlobalDataObj->Global_LocalSettingsObj.modsAmount--;
-    std::string path = SharedGlobalDataObj->Global_LocalSettingsObj.gamepath +
+    std::string path = SharedGlobalDataObj->Global_LocalSettingsObj.currentGame.gamePath.toStdString() +
             "\\steamapps\\workshop\\content\\1142710\\" + std::to_string(id);
     std::filesystem::remove_all(path);
     SteamAPI.unsubscribeMod(id);
 }
 
 void QtGeneralBackend::openLocalFiles(uint64_t id){
-    std::string path = SharedGlobalDataObj->Global_LocalSettingsObj.gamepath +
+    std::string path = SharedGlobalDataObj->Global_LocalSettingsObj.currentGame.gamePath.toStdString() +
             "\\steamapps\\workshop\\content\\1142710\\" + std::to_string(id);
     if(std::filesystem::exists(path)){
         QUrl folderUrl = QUrl::fromLocalFile(QString::fromStdString(path));

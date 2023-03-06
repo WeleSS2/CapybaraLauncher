@@ -127,6 +127,13 @@ bool WindowsFunctions::getSteamPathFromRegistry()
 
     if(file.is_open())
     {
+        SharedGlobalDataObj->Global_LocalSettingsObj.installedGames.emplaceBack("gamepath", "", 1142710);
+        SharedGlobalDataObj->Global_LocalSettingsObj.installedGames.emplaceBack("wh1Path", "", 364360);
+        SharedGlobalDataObj->Global_LocalSettingsObj.installedGames.emplaceBack("wh2Path", "", 594570);
+        SharedGlobalDataObj->Global_LocalSettingsObj.installedGames.emplaceBack("wh3KingPath", "", 779340);
+        SharedGlobalDataObj->Global_LocalSettingsObj.installedGames.emplaceBack("whTroyPath", "", 1099410);
+        SharedGlobalDataObj->Global_LocalSettingsObj.installedGames.emplaceBack("whRomeRemPath", "", 885970);
+
         while(file >> text)
         {
             if(text == "\"path\"")
@@ -138,27 +145,27 @@ bool WindowsFunctions::getSteamPathFromRegistry()
             }
             if(text == "\"1142710\"")
             {
-                SharedGlobalDataObj->Global_LocalSettingsObj.installedGames.emplaceBack("gamepath", QString::fromStdString(pathline), 1142710);
+                SharedGlobalDataObj->getGameById(1142710).gamePath = QString::fromStdString(pathline);
             }
             else if(text == "\"364360\"")
             {
-                SharedGlobalDataObj->Global_LocalSettingsObj.installedGames.emplaceBack("wh1Path", QString::fromStdString(pathline), 364360);
+                SharedGlobalDataObj->getGameById(364360).gamePath = QString::fromStdString(pathline);
             }
             else if(text == "\"594570\"")
             {
-                SharedGlobalDataObj->Global_LocalSettingsObj.installedGames.emplaceBack("wh2Path", QString::fromStdString(pathline), 594570);
+                SharedGlobalDataObj->getGameById(594570).gamePath = QString::fromStdString(pathline);
             }
             else if(text == "\"779340\"")
             {
-                SharedGlobalDataObj->Global_LocalSettingsObj.installedGames.emplaceBack("wh3KingPath", QString::fromStdString(pathline), 779340);
+                SharedGlobalDataObj->getGameById(779340).gamePath = QString::fromStdString(pathline);
             }
             else if(text == "\"1099410\"")
             {
-                SharedGlobalDataObj->Global_LocalSettingsObj.installedGames.emplaceBack("whTroyPath", QString::fromStdString(pathline), 1099410);
+                SharedGlobalDataObj->getGameById(1099410).gamePath = QString::fromStdString(pathline);
             }
             else if(text == "\"885970\"")
             {
-                SharedGlobalDataObj->Global_LocalSettingsObj.installedGames.emplaceBack("whRomeRemPath", QString::fromStdString(pathline), 885970);
+                SharedGlobalDataObj->getGameById(995070).gamePath = QString::fromStdString(pathline);
             }
         }
     }
@@ -168,7 +175,6 @@ bool WindowsFunctions::getSteamPathFromRegistry()
         return false;
     }
     SharedGlobalDataObj->Global_LocalSettingsObj.steampath = steampath;
-    SharedGlobalDataObj->Global_LocalSettingsObj.gamepath = pathline;
 
     return true;
 }

@@ -6,6 +6,13 @@
 #include <QQmlApplicationEngine>
 #include "QColor.h"
 
+// wh1Id 364360
+// wh2Id 594570
+// wh3Id 1132710
+// wh4KingId 779340
+// whTroyId 1099410
+// whRomeRemId 885970
+
 inline int* modpacksAmount = nullptr;
 
 struct sGamesData {
@@ -22,17 +29,11 @@ struct LocalSettings {
     uint64_t defaultGame;
     std::string localPath;
 
-    // To replace later
-    std::string gamepath;
-    std::string wh2Path;
-    std::string wh1Path;
-    std::string wh3KingPath;
-    std::string whTroyPath;
-    std::string whRomeRemPath;
     int numInstalledGames;
 
     sGamesData currentGame;
     QVector<sGamesData> installedGames;
+
     uint32_t modsAmount;
 };
 
@@ -62,6 +63,8 @@ public:
     GlobalModpacksData Global_ModpackDataObj;
     QQmlApplicationEngine* enginePtr = nullptr;
 
+
+    sGamesData& getGameById(uint64_t id);
 };
 inline auto SharedGlobalDataObj = std::make_shared<GlobalDataData>();
 

@@ -25,7 +25,7 @@ public slots:
     void saveLocalModlist();
 
 private:
-    bool saveTo(std::string& target, std::string& value);
+    bool saveTo(std::string target, std::string& value);
     //bool loadSetting(const std::fstream& file, const std::string& target, const std::string value);
 };
 

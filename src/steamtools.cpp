@@ -7,11 +7,12 @@
 
 void CSteamTools::LoadItemsToQuery()
 {
-    if(!SharedGlobalDataObj->Global_LocalSettingsObj.settingsLoaded)
-    {
-        WindowsFunctions winFun;
-        winFun.getSteamPathFromRegistry();
-    }
+    //if(!SharedGlobalDataObj->Global_LocalSettingsObj.settingsLoaded)
+    //{
+    //    WindowsFunctions winFun;
+    //    winFun.getSteamPathFromRegistry();
+    //}
+
 
     SharedGlobalDataObj->Global_LocalSettingsObj.modsAmount = SteamUGC()->GetNumSubscribedItems();
     for(int i = 0; i < SharedGlobalDataObj->Global_LocalSettingsObj.modsAmount; ++i)
@@ -49,7 +50,7 @@ void CSteamTools::LoadItemsDataFromQuery()
 
 
 
-    std::string path = SharedGlobalDataObj->Global_LocalSettingsObj.gamepath + "\\steamapps\\workshop\\content\\1142710";
+    std::string path = SharedGlobalDataObj->Global_LocalSettingsObj.currentGame.gamePath.toStdString() + "\\steamapps\\workshop\\content\\1142710";
     for (int i = 0; i < SharedSteamToolsObj->VUi_ItemsId.size(); ++i)
         {
         std::string folder_path{path + "\\" + std::to_string(SharedSteamToolsObj->VUi_ItemsId[i])};

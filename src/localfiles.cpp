@@ -16,7 +16,7 @@ bool localFiles::findLocalFolder()
     char *pValue;
     size_t len;
     errno_t err = _dupenv_s(&pValue, &len, "APPDATA");
-    if (err) return -1;
+    if (err) return success;
     else
     {
         std::string path = std::string(pValue) + "\\CapybaraLaunchers";
@@ -81,12 +81,12 @@ void localFiles::saveLocalSettings()
         file << "\"state\" " << "1" << "\n";
         file << "\"steampath\" " << SharedGlobalDataObj->Global_LocalSettingsObj.steampath << "\n";
         file << "\"defaultGame\" " << SharedGlobalDataObj->Global_LocalSettingsObj.defaultGame << "\n";
-        file << "\"gamepath\" " << SharedGlobalDataObj->Global_LocalSettingsObj.gamepath << "\n";
-        file << "\"wh1Path\" " << SharedGlobalDataObj->Global_LocalSettingsObj.wh1Path <<  "\n";
-        file << "\"wh2Path\" " << SharedGlobalDataObj->Global_LocalSettingsObj.wh2Path << "\n";
-        file << "\"wh3KingPath\" " << SharedGlobalDataObj->Global_LocalSettingsObj.wh3KingPath << "\n";
-        file << "\"whTroyPath\" " << SharedGlobalDataObj->Global_LocalSettingsObj.whTroyPath << "\n";
-        file << "\"whRomeRemPath\" " << SharedGlobalDataObj->Global_LocalSettingsObj.whRomeRemPath << "\n";
+        file << "\"gamepath\" " << SharedGlobalDataObj->getGameById(1142710).gamePath.toStdString() << "\n";
+        file << "\"wh1Path\" " << SharedGlobalDataObj->getGameById(364360).gamePath.toStdString() <<  "\n";
+        file << "\"wh2Path\" " << SharedGlobalDataObj->getGameById(594570).gamePath.toStdString() << "\n";
+        file << "\"wh3KingPath\" " << SharedGlobalDataObj->getGameById(779340).gamePath.toStdString() << "\n";
+        file << "\"whTroyPath\" " << SharedGlobalDataObj->getGameById(1099410).gamePath.toStdString() << "\n";
+        file << "\"whRomeRemPath\" " << SharedGlobalDataObj->getGameById(995970).gamePath.toStdString() << "\n";
         file.close();
     }
 }
@@ -130,37 +130,37 @@ void localFiles::loadLocalSettings()
                 {
                     std::string show;
                     getline(file, show);
-                    saveTo(SharedGlobalDataObj->Global_LocalSettingsObj.gamepath, show);
+                    saveTo(SharedGlobalDataObj->getGameById(1142710).gamePath.toStdString(), show);
                 }
                 else if(text == "\"wh1Path\"")
                 {
                     std::string show;
                     getline(file, show);
-                    saveTo(SharedGlobalDataObj->Global_LocalSettingsObj.wh1Path, show);
+                    saveTo(SharedGlobalDataObj->getGameById(364360).gamePath.toStdString(), show);
                 }
                 else if(text == "\"wh2Path\"")
                 {
                     std::string show;
                     getline(file, show);
-                    saveTo(SharedGlobalDataObj->Global_LocalSettingsObj.wh2Path, show);
+                    saveTo(SharedGlobalDataObj->getGameById(594570).gamePath.toStdString(), show);
                 }
                 else if (text == "\"wh3KingPath\"")
                 {
                     std::string show;
                     getline(file, show);
-                    saveTo(SharedGlobalDataObj->Global_LocalSettingsObj.wh3KingPath, show);
+                    saveTo(SharedGlobalDataObj->getGameById(779340).gamePath.toStdString(), show);
                 }
                 else if(text == "\"whTroyPath\"")
                 {
                     std::string show;
                     getline(file, show);
-                    saveTo(SharedGlobalDataObj->Global_LocalSettingsObj.whTroyPath, show);
+                    saveTo(SharedGlobalDataObj->getGameById(1099410).gamePath.toStdString(), show);
                 }
                 else if(text == "\"whRomeRemPath\"")
                 {
                     std::string show;
                     getline(file, show);
-                    saveTo(SharedGlobalDataObj->Global_LocalSettingsObj.whRomeRemPath, show);
+                    saveTo(SharedGlobalDataObj->getGameById(885970).gamePath.toStdString(), show);
                 }
             }
         }
@@ -168,7 +168,7 @@ void localFiles::loadLocalSettings()
     }
 }
 
-bool localFiles::saveTo(std::string& target, std::string& value)
+bool localFiles::saveTo(std::string target, std::string& value)
 {
     if(value.length() > 2)
     {
