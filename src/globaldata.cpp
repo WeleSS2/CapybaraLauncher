@@ -35,10 +35,8 @@ GlobalModpacksData::GlobalModpacksData()
 
 sGamesData& GlobalDataData::getGameById(uint64_t id){
     for(auto& i : SharedGlobalDataObj->Global_LocalSettingsObj.installedGames){
-        qDebug() << " heh tt " << id;
         if(i.gameId == id)
         {
-            qDebug() << "hit";
             return i;
         }
     }

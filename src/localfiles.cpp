@@ -71,7 +71,7 @@ bool localFiles::findLocalDataTxt(std::string &path)
 
 void localFiles::saveLocalSettings()
 {
-    std::cout << "In 1" << std::endl;
+    // Add guard to check did vector size of games detected and loaded isnt 0!!!
     if(findLocalFolder())
     {
         std::string settingsPath = localWh3Path + "\\settings.txt";

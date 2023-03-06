@@ -1,6 +1,8 @@
 import QtQuick
 import QtQuick.Controls
 
+import cGameChangerListUrl
+
 Item {
     property var mainTextColor: Qt.rgba(1, 1, 1, 1)
     property int currentGameId: 1142710
@@ -41,6 +43,10 @@ Item {
     ComboBox {
         id: selectGame
         editable: false
+        model: GameChanger {
+            list: ObjcGameChangerList
+        }
+
 
         x: (Window.width /2) - 125
         y: 0

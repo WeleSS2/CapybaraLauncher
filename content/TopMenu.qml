@@ -150,6 +150,7 @@ Item {
             source: "images/patreon.png"
         }
     }
+
     function disableLeftRightBottom(){
         modListEnabled = false
         rightPanelEnabled = false

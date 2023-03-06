@@ -16,8 +16,9 @@
 inline int* modpacksAmount = nullptr;
 
 struct sGamesData {
-    QString pathName;
+    QString gameName;
     QString gamePath;
+    QString pathName;
     int gameId = 0;
 };
 

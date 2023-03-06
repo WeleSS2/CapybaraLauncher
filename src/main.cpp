@@ -82,7 +82,9 @@
 #include "cmodslistfilling.h"
 #include "modpackslist.h"
 #include "qtgeneralbackend.h"
+
 #include "qt/customModules/infobox.h"
+#include "qt/customModules/gamechanger.h"
 
 #include "utility/filesoperations.h"
 #include "utility/loggingsystem.h"
@@ -167,11 +169,15 @@ int main(int argc, char *argv[])
     QtGeneralBackend qtGeneralBackendObj;
     engine.rootContext()->setContextProperty("qtGeneralBackendObj", &qtGeneralBackendObj);
 
+
+
     qmlRegisterType<CModsListFile>("CModsList", 1, 0, "CModsListFile");
     qmlRegisterUncreatableType<cmodslistfilling>("CModsList", 1, 0, "Cmodslistfilling", QString("Sometthing"));
 
     cmodslistfilling Objcmodslistfilling;
     engine.rootContext()->setContextProperty("Objcmodslistfilling", &Objcmodslistfilling);
+
+//---------------------------------
 
     qmlRegisterType<ModpacksList>("ModPacksList", 1, 0, "ModpacksList");
     qmlRegisterUncreatableType<ModpacksContent>("ModPacksList", 1, 0, "ModpacksContent", QString("Sometthing"));
@@ -179,6 +185,15 @@ int main(int argc, char *argv[])
     ModpacksContent ObjModpacksContent;
     engine.rootContext()->setContextProperty("ObjModpacksContent", &ObjModpacksContent);
 
+//---------------------------------------
+
+    qmlRegisterType<GameChanger>("cGameChangerListUrl", 1, 0, "GameChanger");
+    qmlRegisterUncreatableType<cGameChangerList>("cGameChangerListUrl", 1, 0, "GameChangerList", QString("I dont have any reason"));
+
+    cGameChangerList objcGameChangerList;
+    engine.rootContext()->setContextProperty("ObjcGameChangerList", &objcGameChangerList);
+
+//---------------------------------------------
 
     InfoBox ObjInfoBox;
     engine.rootContext()->setContextProperty("ObjInfoBox", &ObjInfoBox);
