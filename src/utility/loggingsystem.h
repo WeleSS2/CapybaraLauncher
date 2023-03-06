@@ -12,6 +12,9 @@ public:
 
     // Save log in logs.txt
     static void saveLog(QString log);
+
+    // Clear logs on start of the app
+    static void clearLogs();
 };
 
 #endif // LOGGINGSYSTEM_H

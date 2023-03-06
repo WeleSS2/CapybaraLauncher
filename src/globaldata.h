@@ -8,9 +8,10 @@
 
 inline int* modpacksAmount = nullptr;
 
-struct gameData {
-    QString gamePatch;
-    int gameId;
+struct sGamesData {
+    QString pathName;
+    QString gamePath;
+    int gameId = 0;
 };
 
 struct LocalSettings {
@@ -18,9 +19,20 @@ struct LocalSettings {
     bool settingsLoaded = false;
     uint32_t modpacksAmount;
     std::string steampath;
-    std::string gamepath;
+    uint64_t defaultGame;
     std::string localPath;
-    QVector<gameData> installedGames;
+
+    // To replace later
+    std::string gamepath;
+    std::string wh2Path;
+    std::string wh1Path;
+    std::string wh3KingPath;
+    std::string whTroyPath;
+    std::string whRomeRemPath;
+    int numInstalledGames;
+
+    sGamesData currentGame;
+    QVector<sGamesData> installedGames;
     uint32_t modsAmount;
 };
 

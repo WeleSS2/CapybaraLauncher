@@ -38,11 +38,13 @@ bool findStringInFile(const QString& filePath, const QString searchString, const
 
 bool FilesOperations::saveSettings(){
     if(findLocalFolder() != ""){
-        QFile file(findLocalFolder() + "settings.js");
+        QFile file(findLocalFolder() + "\\settings.js");
         if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
             QTextStream out(&file);
             out << "var settings = {" << Qt::endl;
-            out << "  steamPatch: " << QString::fromStdString(SharedGlobalDataObj->Global_LocalSettingsObj.steampath) << "," << Qt::endl;
+            out << "  steamPath: R\""
+                << QString::fromStdString(SharedGlobalDataObj->Global_LocalSettingsObj.steampath)
+                << "\"," << Qt::endl;
             out << "};" << Qt::endl;
 
 
@@ -64,7 +66,7 @@ bool FilesOperations::saveSettings(){
 
 bool FilesOperations::loadSettings(){
     if(findLocalFolder() != ""){
-        QFile file(findLocalFolder() + "settings.js");
+        QFile file(findLocalFolder() + "\\settings.js");
         if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
             QTextStream in(&file);
             QString contents = in.readAll();
@@ -76,12 +78,13 @@ bool FilesOperations::loadSettings(){
 
             // Get values from the object
             if (result.isObject()) {
-                QJSValue steamPatchValue = result.property("steamPatch");
-                SharedGlobalDataObj->Global_LocalSettingsObj.steampath = steamPatchValue.toString().toStdString();
+                QJSValue steamPatchValue = result.property("steamPath");
+                //SharedGlobalDataObj->Global_LocalSettingsObj.steampath = steamPatchValue.toString().toStdString();
+                qDebug() << "STEAM PATCH:   " << steamPatchValue.toString() << result.toString();
             }
             else
             {
-                LoggingSystem::saveLog("filesoperations.cpp: loadSettings: Settings can't be load, readingValuesError");
+                LoggingSystem::saveLog("filesoperations.cpp: loadSettings: Settings can't be loaded, readingValuesError. Js error: " + result.toString());
                 return false;
             }
         }

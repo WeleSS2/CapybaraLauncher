@@ -75,7 +75,6 @@
 #include "import_qml_plugins.h"
 #include "steam_api.h"
 
-#include "github/githubupdater.h"
 #include "globaldata.h"
 #include "exit.h"
 #include "cmodslistfile.h"
@@ -83,7 +82,9 @@
 #include "modpackslist.h"
 #include "qtgeneralbackend.h"
 #include "qt/customModules/infobox.h"
+
 #include "utility/filesoperations.h"
+#include "utility/loggingsystem.h"
 
 #include "localfiles.h"
 
@@ -124,7 +125,19 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
     SharedGlobalDataObj->enginePtr = &engine;
 
-    QCoreApplication::setApplicationVersion("v0.0.4.1");
+    QCoreApplication::setApplicationVersion("v0.0.4.3");
+
+
+    // WORKSPACE
+    // settings are doubled due to work over transfer to .js
+
+    FilesOperations objFilesOperations;
+    objFilesOperations.loadSettings(); // Not working now
+    engine.rootContext()->setContextProperty("objFilesOperations", &objFilesOperations);
+
+    LoggingSystem::clearLogs();
+
+
 
 
     cexit exit_obj;
@@ -137,6 +150,10 @@ int main(int argc, char *argv[])
     {
         steam runSteam;
     }
+
+
+    // WORKSPACE
+
     QtGeneralBackend qtGeneralBackendObj;
     engine.rootContext()->setContextProperty("qtGeneralBackendObj", &qtGeneralBackendObj);
 

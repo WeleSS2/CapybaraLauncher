@@ -13,6 +13,7 @@ public:
     // Find option or anything in file, operation is a number to log if failed
     bool findStringInFile(const QString& filePath, const QString searchString, const QString operation);
 
+public slots:
     // Save all settings to .js
     bool saveSettings();
 

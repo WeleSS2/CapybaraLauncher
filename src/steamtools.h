@@ -41,6 +41,8 @@ public:
     void modCallback(SteamUGCQueryCompleted_t* result, bool fail);
     bool waitUntilCallNotFinished(SteamAPICall_t* call);
 
+
+
 protected:
 
 private:

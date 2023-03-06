@@ -116,6 +116,12 @@ bool WindowsFunctions::getSteamPathFromRegistry()
     }
     std::string text = "";
     std::string pathline = "";
+    std::string pathWh1 = "";
+    std::string pathWh2 = "";
+    std::string pathWh3 = "";
+    std::string path3King = "";
+    std::string pathTroy = "";
+    std::string pathRomeRem = "";
     std::fstream file;
     file.open(path);
 
@@ -126,13 +132,33 @@ bool WindowsFunctions::getSteamPathFromRegistry()
             if(text == "\"path\"")
             {
                 getline(file, pathline);
-            }
-            if(text == "\"1142710\"")
-            {
                 pathline.erase(0, 3);
                 pathline.erase(2, 1);
                 pathline.erase(pathline.size() - 1, 1);
-                break;
+            }
+            if(text == "\"1142710\"")
+            {
+                SharedGlobalDataObj->Global_LocalSettingsObj.installedGames.emplaceBack("gamepath", QString::fromStdString(pathline), 1142710);
+            }
+            else if(text == "\"364360\"")
+            {
+                SharedGlobalDataObj->Global_LocalSettingsObj.installedGames.emplaceBack("wh1Path", QString::fromStdString(pathline), 364360);
+            }
+            else if(text == "\"594570\"")
+            {
+                SharedGlobalDataObj->Global_LocalSettingsObj.installedGames.emplaceBack("wh2Path", QString::fromStdString(pathline), 594570);
+            }
+            else if(text == "\"779340\"")
+            {
+                SharedGlobalDataObj->Global_LocalSettingsObj.installedGames.emplaceBack("wh3KingPath", QString::fromStdString(pathline), 779340);
+            }
+            else if(text == "\"1099410\"")
+            {
+                SharedGlobalDataObj->Global_LocalSettingsObj.installedGames.emplaceBack("whTroyPath", QString::fromStdString(pathline), 1099410);
+            }
+            else if(text == "\"885970\"")
+            {
+                SharedGlobalDataObj->Global_LocalSettingsObj.installedGames.emplaceBack("whRomeRemPath", QString::fromStdString(pathline), 885970);
             }
         }
     }

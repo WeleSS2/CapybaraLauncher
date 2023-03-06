@@ -7,6 +7,8 @@
 
 // Depraceted due to using now .js files to save/load data
 
+// * Due to problems with .js on again... And primitively updated
+
 
 bool localFiles::findLocalFolder()
 {
@@ -78,7 +80,13 @@ void localFiles::saveLocalSettings()
 
         file << "\"state\" " << "1" << "\n";
         file << "\"steampath\" " << SharedGlobalDataObj->Global_LocalSettingsObj.steampath << "\n";
+        file << "\"defaultGame\" " << SharedGlobalDataObj->Global_LocalSettingsObj.defaultGame << "\n";
         file << "\"gamepath\" " << SharedGlobalDataObj->Global_LocalSettingsObj.gamepath << "\n";
+        file << "\"wh1Path\" " << SharedGlobalDataObj->Global_LocalSettingsObj.wh1Path <<  "\n";
+        file << "\"wh2Path\" " << SharedGlobalDataObj->Global_LocalSettingsObj.wh2Path << "\n";
+        file << "\"wh3KingPath\" " << SharedGlobalDataObj->Global_LocalSettingsObj.wh3KingPath << "\n";
+        file << "\"whTroyPath\" " << SharedGlobalDataObj->Global_LocalSettingsObj.whTroyPath << "\n";
+        file << "\"whRomeRemPath\" " << SharedGlobalDataObj->Global_LocalSettingsObj.whRomeRemPath << "\n";
         file.close();
     }
 }
@@ -112,18 +120,77 @@ void localFiles::loadLocalSettings()
                     show.erase(0, 1);
                     SharedGlobalDataObj->Global_LocalSettingsObj.steampath = show;
                 }
+                else if (text == "\"defaultGame\"")
+                {
+                    std::string show;
+                    getline(file, show);
+                    SharedGlobalDataObj->Global_LocalSettingsObj.defaultGame = std::stoi(show);
+                }
                 else if(text == "\"gamepath\"")
                 {
                     std::string show;
                     getline(file, show);
-                    show.erase(0, 1);
-                    SharedGlobalDataObj->Global_LocalSettingsObj.gamepath = show;
+                    saveTo(SharedGlobalDataObj->Global_LocalSettingsObj.gamepath, show);
+                }
+                else if(text == "\"wh1Path\"")
+                {
+                    std::string show;
+                    getline(file, show);
+                    saveTo(SharedGlobalDataObj->Global_LocalSettingsObj.wh1Path, show);
+                }
+                else if(text == "\"wh2Path\"")
+                {
+                    std::string show;
+                    getline(file, show);
+                    saveTo(SharedGlobalDataObj->Global_LocalSettingsObj.wh2Path, show);
+                }
+                else if (text == "\"wh3KingPath\"")
+                {
+                    std::string show;
+                    getline(file, show);
+                    saveTo(SharedGlobalDataObj->Global_LocalSettingsObj.wh3KingPath, show);
+                }
+                else if(text == "\"whTroyPath\"")
+                {
+                    std::string show;
+                    getline(file, show);
+                    saveTo(SharedGlobalDataObj->Global_LocalSettingsObj.whTroyPath, show);
+                }
+                else if(text == "\"whRomeRemPath\"")
+                {
+                    std::string show;
+                    getline(file, show);
+                    saveTo(SharedGlobalDataObj->Global_LocalSettingsObj.whRomeRemPath, show);
                 }
             }
         }
         file.close();
     }
 }
+
+bool localFiles::saveTo(std::string& target, std::string& value)
+{
+    if(value.length() > 2)
+    {
+        value.erase(0, 1);
+        target = value;
+        SharedGlobalDataObj->Global_LocalSettingsObj.numInstalledGames++;
+        return true;
+    }
+    else
+    {
+        target = "";
+        return false;
+    }
+}
+
+//bool localFiles::loadSetting(const std::fstream file, const std::string& target, std::string value)
+//{
+//    std::string valueLocal;
+//    getline(file, valueLocal);
+//    valueLocal.erase(0, 1);
+//
+//}
 
 void localFiles::loadLocalModlist()
 {
