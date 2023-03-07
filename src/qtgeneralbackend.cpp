@@ -116,8 +116,12 @@ void QtGeneralBackend::importPack(){
 }
 
 void QtGeneralBackend::removeModpack(QString name){
-        std::string path = SharedGlobalDataObj->Global_LocalSettingsObj.localPath +
-                "\\Modpacks\\" + name.toStdString() + ".txt";
+        std::string path = SharedGlobalDataObj->Global_LocalSettingsObj.localPath
+                + "\\Modpacks\\"
+                + std::to_string(SharedGlobalDataObj->Global_LocalSettingsObj.currentGame.gameId)
+                + "\\"
+                + name.toStdString()
+                + ".txt";
         if(std::filesystem::exists(path)){
             std::filesystem::remove(path);
         }
@@ -212,7 +216,9 @@ void QtGeneralBackend::removeMod(uint64_t id){
             + std::to_string(SharedGlobalDataObj->Global_LocalSettingsObj.currentGame.gameId)
             + "\\"
             + std::to_string(id);
-    std::filesystem::remove_all(path);
+    if(std::filesystem::exists(path)){
+        std::filesystem::remove_all(path);
+    }
     SteamAPI.unsubscribeMod(id);
 }
 

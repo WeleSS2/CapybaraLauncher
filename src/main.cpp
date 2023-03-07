@@ -45,7 +45,7 @@
  * Patch 0.0.5 Until 07.03
  * - Local mods support
  * - Add mods to steam support
- * - Multigame support Alpha
+ * - Multigame support Alpha +
  *
  * Patch 0.0.6 Until 12.03
  * - Web layer
@@ -102,7 +102,6 @@ public:
             CSteamTools steamOperations;
             SharedSteamToolsObj->LoadItemsToQuery();
             SharedSteamToolsObj->LoadItemsDataFromQuery();
-            std::cout << "SteamAPI Loaded" << std::endl;
         }
     };
 };
@@ -134,10 +133,14 @@ int main(int argc, char *argv[])
 
     // WORKSPACE
     // settings are doubled due to work over transfer to .js
+    // DO NOT WORK (can't be commented)
 
     FilesOperations objFilesOperations;
     objFilesOperations.loadSettings(); // Not working now
     engine.rootContext()->setContextProperty("objFilesOperations", &objFilesOperations);
+
+    // -DO NOT WORK
+
 
     LoggingSystem::clearLogs();
 

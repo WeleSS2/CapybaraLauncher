@@ -2,6 +2,7 @@
 #include "windowsfunctions.h"
 #include "globaldata.h"
 #include "localfiles.h"
+#include "utility/loggingsystem.h"
 
 #include <filesystem>
 
@@ -12,17 +13,27 @@ void CSteamTools::LoadItemsToQuery()
     //    WindowsFunctions winFun;
     //    winFun.getSteamPathFromRegistry();
     //}
-
-
-    SharedGlobalDataObj->Global_LocalSettingsObj.modsAmount = SteamUGC()->GetNumSubscribedItems();
-    for(int i = 0; i < SharedGlobalDataObj->Global_LocalSettingsObj.modsAmount; ++i)
+    if(Vs_ItemsData.size() > 0)
     {
-        pushVectors(i);
+        isAvailable.clear();
+        laucherItemId.clear();
+        localModName.clear();
+        VUi_ItemsId.clear();
+        Vs_ItemsData.clear();
     }
 
-    SteamUGC()->GetSubscribedItems(&VUi_ItemsId[0], SharedGlobalDataObj->Global_LocalSettingsObj.modsAmount);
+    SharedGlobalDataObj->Global_LocalSettingsObj.modsAmount = SteamUGC()->GetNumSubscribedItems();
 
-    qHandle = SteamUGC()->CreateQueryUGCDetailsRequest(&VUi_ItemsId[0], SharedGlobalDataObj->Global_LocalSettingsObj.modsAmount);
+    if(SharedGlobalDataObj->Global_LocalSettingsObj.modsAmount > 0){
+        for(int i = 0; i < SharedGlobalDataObj->Global_LocalSettingsObj.modsAmount; ++i)
+        {
+            pushVectors(i);
+        }
+        SteamUGC()->GetSubscribedItems(&VUi_ItemsId[0], SharedGlobalDataObj->Global_LocalSettingsObj.modsAmount);
+        qHandle = SteamUGC()->CreateQueryUGCDetailsRequest(&VUi_ItemsId[0], SharedGlobalDataObj->Global_LocalSettingsObj.modsAmount);
+    }
+    else
+        LoggingSystem::saveLog("steamtools.cpp: LoadItemToQuery: Subscribed items is 0");
 }
 
 void CSteamTools::pushVectors(int value){
@@ -46,7 +57,6 @@ void CSteamTools::LoadItemsDataFromQuery()
         finished = SteamUtils()->IsAPICallCompleted(hSteamApiCall, &finished);
     }
     SteamAPI_RunCallbacks();
-
 
 
 
@@ -78,7 +88,6 @@ void CSteamTools::LoadItemsDataFromQuery()
             SharedSteamToolsObj->localModName.emplaceBack("This mod is not available locally");
             }
         }
-
 
 
 

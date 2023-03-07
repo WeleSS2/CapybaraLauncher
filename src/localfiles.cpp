@@ -125,6 +125,7 @@ void localFiles::loadLocalSettings()
                     std::string show;
                     getline(file, show);
                     SharedGlobalDataObj->Global_LocalSettingsObj.defaultGame = std::stoi(show);
+                    SharedGlobalDataObj->Global_LocalSettingsObj.currentGame = SharedGlobalDataObj->getGameById(std::stoi(show));
                 }
                 else if(text == "\"gamepath\"")
                 {

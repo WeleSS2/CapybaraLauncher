@@ -47,11 +47,17 @@ Item {
             list: ObjcGameChangerList
         }
 
-        onActivated: setCurrentGame(currentIndex);
-
+        onActivated: {
+            setGame(currentIndex);
+        }
         x: (Window.width /2) - 125
         y: 0
         width: 250
         height: 30
+    }
+
+    function setGame(index){
+        selectGame.model.setCurrentGame(index);
+        modlist.refreshModlist();
     }
 }
