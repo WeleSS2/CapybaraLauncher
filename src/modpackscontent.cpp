@@ -10,7 +10,6 @@
 ModpacksContent::ModpacksContent(QObject *parent)
     : QObject{parent}
 {
-    modlistAmount();
 }
 
 QVector<ModpacksData> ModpacksContent::Vs_ModpacksData() const
@@ -161,7 +160,6 @@ void ModpacksContent::modlistAmount()
         {
             std::string name{i.path().filename().generic_string()};
             name.erase(name.size() - 4, 4);
-
 
             QVector<uint32_t> modsId;
             uint32_t text;

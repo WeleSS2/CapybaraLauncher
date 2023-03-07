@@ -147,11 +147,9 @@ void CModsListFile::setList(cmodslistfilling *list)
 
 void CModsListFile::refreshList()
 {    
-    qDebug() << "refresh1";
     QQuickItem* listView = mList->getListPointer();
     QModelIndex currentIndex = listView->property("currentIndex").value<QModelIndex>();
 
-    qDebug() << "refresh2";
     beginResetModel();
     for(auto& i: SharedGlobalDataObj->Global_ModsDataObj)
     {
@@ -160,8 +158,6 @@ void CModsListFile::refreshList()
         }
     }
     endResetModel();
-
     listView->setProperty("currentIndex", QVariant::fromValue(currentIndex));
     listView->setProperty("positionViewAtIndex", QVariant::fromValue(currentIndex.row()));
-    qDebug() << "refresh3";
 }

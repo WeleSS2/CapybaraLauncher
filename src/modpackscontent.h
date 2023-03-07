@@ -23,8 +23,6 @@ public:
 
     bool setItemAt(int index, const ModpacksData &item);
 
-    void modlistAmount();
-
     uint64_t getModpacksNumber(){return mModpacksData.size(); };
 
 signals:
@@ -42,7 +40,7 @@ public slots:
     void loadModlist(uint64_t index);
 
     Q_INVOKABLE QString getModlistName(uint64_t index);
-
+    void modlistAmount();
 private:
     QVector<ModpacksData> mModpacksData;
 };

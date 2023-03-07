@@ -58,6 +58,9 @@ Item {
 
     function setGame(index){
         selectGame.model.setCurrentGame(index);
+        Objcmodslistfilling.refreshModlistVector();
+        ObjModpacksContent.modlistAmount();
+        bottomgamemenu.refreshModpacksList();
         modlist.refreshModlist();
     }
 }

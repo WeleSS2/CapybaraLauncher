@@ -86,7 +86,7 @@ void localFiles::saveLocalSettings()
         file << "\"wh2Path\" " << SharedGlobalDataObj->getGameById(594570).gamePath.toStdString() << "\n";
         file << "\"wh3KingPath\" " << SharedGlobalDataObj->getGameById(779340).gamePath.toStdString() << "\n";
         file << "\"whTroyPath\" " << SharedGlobalDataObj->getGameById(1099410).gamePath.toStdString() << "\n";
-        file << "\"whRomeRemPath\" " << SharedGlobalDataObj->getGameById(995970).gamePath.toStdString() << "\n";
+        file << "\"whRomeRemPath\" " << SharedGlobalDataObj->getGameById(885970).gamePath.toStdString() << "\n";
         file.close();
     }
 }
@@ -104,6 +104,7 @@ void localFiles::loadLocalSettings()
         std::string text;
         std::fstream file;
         file.open(settingsPath);
+
 
         if(file.is_open())
         {
@@ -124,63 +125,66 @@ void localFiles::loadLocalSettings()
                 {
                     std::string show;
                     getline(file, show);
-                    SharedGlobalDataObj->Global_LocalSettingsObj.defaultGame = std::stoi(show);
-                    SharedGlobalDataObj->Global_LocalSettingsObj.currentGame = SharedGlobalDataObj->getGameById(std::stoi(show));
+                    if(show.length() > 4){
+                        SharedGlobalDataObj->Global_LocalSettingsObj.defaultGame = std::stoi(show);
+                        SharedGlobalDataObj->Global_LocalSettingsObj.currentGame = SharedGlobalDataObj->getGameById(std::stoi(show));
+                    }
                 }
                 else if(text == "\"gamepath\"")
                 {
                     std::string show;
                     getline(file, show);
-                    saveTo(SharedGlobalDataObj->getGameById(1142710).gamePath.toStdString(), show);
+                    saveTo(&SharedGlobalDataObj->getGameById(1142710).gamePath, show);
                 }
                 else if(text == "\"wh1Path\"")
                 {
                     std::string show;
                     getline(file, show);
-                    saveTo(SharedGlobalDataObj->getGameById(364360).gamePath.toStdString(), show);
+                    saveTo(&SharedGlobalDataObj->getGameById(364360).gamePath, show);
                 }
                 else if(text == "\"wh2Path\"")
                 {
                     std::string show;
                     getline(file, show);
-                    saveTo(SharedGlobalDataObj->getGameById(594570).gamePath.toStdString(), show);
+                    saveTo(&SharedGlobalDataObj->getGameById(594570).gamePath, show);
                 }
                 else if (text == "\"wh3KingPath\"")
                 {
                     std::string show;
                     getline(file, show);
-                    saveTo(SharedGlobalDataObj->getGameById(779340).gamePath.toStdString(), show);
+                    saveTo(&SharedGlobalDataObj->getGameById(779340).gamePath, show);
                 }
                 else if(text == "\"whTroyPath\"")
                 {
                     std::string show;
                     getline(file, show);
-                    saveTo(SharedGlobalDataObj->getGameById(1099410).gamePath.toStdString(), show);
+                    saveTo(&SharedGlobalDataObj->getGameById(1099410).gamePath, show);
                 }
                 else if(text == "\"whRomeRemPath\"")
                 {
                     std::string show;
                     getline(file, show);
-                    saveTo(SharedGlobalDataObj->getGameById(885970).gamePath.toStdString(), show);
+                    saveTo(&SharedGlobalDataObj->getGameById(885970).gamePath, show);
                 }
             }
         }
+
         file.close();
     }
 }
 
-bool localFiles::saveTo(std::string target, std::string& value)
+bool localFiles::saveTo(QString* target, std::string& value)
 {
     if(value.length() > 2)
     {
         value.erase(0, 1);
-        target = value;
+        *target = QString::fromStdString(value);
         SharedGlobalDataObj->Global_LocalSettingsObj.numInstalledGames++;
         return true;
     }
     else
     {
-        target = "";
+        *target = "";
         return false;
     }
 }

@@ -44,7 +44,7 @@
  *
  * Patch 0.0.5 Until 07.03
  * - Local mods support
- * - Add mods to steam support
+ * - Add mods to steam support - / Impossible to do as i think...
  * - Multigame support Alpha +
  *
  * Patch 0.0.6 Until 12.03
@@ -154,16 +154,17 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("localFilesObj", &localFilesObj);
 
 
-    // Temporary must be fired always
+    // Temporary must be fired always (And i think will stay like that permamently)
     WindowsFunctions winFun;
     winFun.getSteamPathFromRegistry();
 
-    // Temporary solution to set current game
-    SharedGlobalDataObj->Global_LocalSettingsObj.currentGame = SharedGlobalDataObj->getGameById(1142710);
 
     settingsLoading();
     {
-        steam runSteam;
+        if(SharedGlobalDataObj->Global_LocalSettingsObj.currentGame.gameId != 0)
+        {
+            steam runSteam;
+        }
     }
 
 

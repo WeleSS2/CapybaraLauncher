@@ -117,4 +117,7 @@ Item {
 
         modlist.refreshModlistTo0();
     }
+    function refreshModpacksList(){
+        selectModpack.model.refreshList();
+    }
 }

@@ -113,7 +113,7 @@ void GameChanger::setCurrentGame(uint64_t index){
     SharedGlobalDataObj->Global_LocalSettingsObj.currentGame = SharedGlobalDataObj->Global_LocalSettingsObj.installedGames[index];
     SharedGlobalDataObj->Global_LocalSettingsObj.modsAmount = 0;
     SharedGlobalDataObj->Global_ModsDataObj.clear();
-
+    qDebug() << QString::fromStdString(std::to_string(SharedGlobalDataObj->Global_LocalSettingsObj.currentGame.gameId));
     if(std::filesystem::exists("steam_appid.txt"))
     {
         std::filesystem::remove("steam_appid.txt");

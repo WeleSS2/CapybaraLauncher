@@ -166,7 +166,7 @@ bool WindowsFunctions::getSteamPathFromRegistry()
             }
             else if(text == "\"885970\"")
             {
-                SharedGlobalDataObj->getGameById(995070).gamePath = QString::fromStdString(pathline);
+                SharedGlobalDataObj->getGameById(885970).gamePath = QString::fromStdString(pathline);
             }
         }
     }

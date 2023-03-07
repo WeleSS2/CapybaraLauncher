@@ -63,29 +63,30 @@ void CSteamTools::LoadItemsDataFromQuery()
     std::string path = SharedGlobalDataObj->Global_LocalSettingsObj.currentGame.gamePath.toStdString()
             + "\\steamapps\\workshop\\content\\"
             + std::to_string(SharedGlobalDataObj->Global_LocalSettingsObj.currentGame.gameId);
+    qDebug() << QString::fromStdString(path);
     for (int i = 0; i < SharedSteamToolsObj->VUi_ItemsId.size(); ++i)
         {
-        std::string folder_path{path + "\\" + std::to_string(SharedSteamToolsObj->VUi_ItemsId[i])};
+            std::string folder_path{path + "\\" + std::to_string(SharedSteamToolsObj->VUi_ItemsId[i])};
 
-        if(std::filesystem::exists(folder_path)){
-            for (auto const& dir_entry : std::filesystem::directory_iterator{folder_path})
-            {
-                std::string temp{dir_entry.path().string()};
-                std::string s2 = temp.substr(temp.size() - 4, 4);
-                if (s2 == "pack")
+            if(std::filesystem::exists(folder_path)){
+                for (auto const& dir_entry : std::filesystem::directory_iterator{folder_path})
                 {
-                    SharedSteamToolsObj->isAvailable.emplaceBack(1);
-                    SharedGlobalDataObj->Global_ModsDataObj[i].color = {255, 255, 255};
-                    temp.erase(0, folder_path.size() + 1);
-                    SharedSteamToolsObj->localModName.emplaceBack(temp);
+                    std::string temp{dir_entry.path().string()};
+                    std::string s2 = temp.substr(temp.size() - 4, 4);
+                    if (s2 == "pack")
+                    {
+                        SharedSteamToolsObj->isAvailable.emplaceBack(1);
+                        SharedGlobalDataObj->Global_ModsDataObj[i].color = {255, 255, 255};
+                        temp.erase(0, folder_path.size() + 1);
+                        SharedSteamToolsObj->localModName.emplaceBack(temp);
+                    }
                 }
             }
-        }
-        else
-        {
-            SharedSteamToolsObj->isAvailable.emplaceBack(0);
-            SharedGlobalDataObj->Global_ModsDataObj[i].color = {255, 55, 55};
-            SharedSteamToolsObj->localModName.emplaceBack("This mod is not available locally");
+            else
+            {
+                SharedSteamToolsObj->isAvailable.emplaceBack(0);
+                SharedGlobalDataObj->Global_ModsDataObj[i].color = {255, 55, 55};
+                SharedSteamToolsObj->localModName.emplaceBack("This mod is not available locally");
             }
         }
 

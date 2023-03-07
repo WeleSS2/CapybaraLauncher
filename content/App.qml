@@ -78,7 +78,7 @@ Window {
 
     BottomGameMenu
     {
-
+        id: bottomgamemenu
     }
 
     TopMenu {
