@@ -25,6 +25,8 @@ public:
 
     void modlistAmount();
 
+    uint64_t getModpacksNumber(){return mModpacksData.size(); };
+
 signals:
     void preItemAppened();
     void postItemAppened();
@@ -38,11 +40,11 @@ public slots:
 
     void saveModlist(QString name);
     void loadModlist(uint64_t index);
+
     Q_INVOKABLE QString getModlistName(uint64_t index);
 
 private:
     QVector<ModpacksData> mModpacksData;
-    int modpacksAmountLocal = 0;
 };
 
 #endif // MODPACKSCONTENT_H

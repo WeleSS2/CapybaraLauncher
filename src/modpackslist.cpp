@@ -14,7 +14,7 @@ int ModpacksList::rowCount(const QModelIndex &parent) const
         return 0;
 
     // FIXME: Implement me!
-    return SharedGlobalDataObj->Global_LocalSettingsObj.modpacksAmount;
+    return mList->getModpacksNumber();
 }
 
 QVariant ModpacksList::data(const QModelIndex &index, int role) const

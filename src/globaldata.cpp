@@ -28,11 +28,6 @@ GlobalData::~GlobalData()
 
 }
 
-GlobalModpacksData::GlobalModpacksData()
-{
-
-}
-
 sGamesData& GlobalDataData::getGameById(uint64_t id){
     for(auto& i : SharedGlobalDataObj->Global_LocalSettingsObj.installedGames){
         if(i.gameId == id)

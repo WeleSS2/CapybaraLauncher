@@ -1,5 +1,7 @@
 #include "gamechanger.h"
-
+#include <filesystem>
+#include <fstream>
+#include "../../utility/loggingsystem.h"
 
 GameChanger::GameChanger(QObject* parent)
     : QAbstractListModel(parent)
@@ -101,6 +103,36 @@ void GameChanger::setList(cGameChangerList *list)
     endResetModel();
 }
 
+void GameChanger::setCurrentGame(uint64_t index){
+
+    // Set game and clear data form previous
+    SharedGlobalDataObj->Global_LocalSettingsObj.currentGame = SharedGlobalDataObj->Global_LocalSettingsObj.installedGames[index];
+    SharedGlobalDataObj->Global_LocalSettingsObj.modsAmount = 0;
+    SharedGlobalDataObj->Global_ModsDataObj.clear();
+
+    if(std::filesystem::exists("steam_appid.txt"))
+    {
+        std::filesystem::remove("steam_appid.txt");
+
+        std::fstream file;
+        file.open("steam_appid.txt", std::ios::in);
+        if(file.is_open())
+        {
+            file << std::to_string(SharedGlobalDataObj->Global_LocalSettingsObj.currentGame.gameId);
+        }
+        else
+        {
+            LoggingSystem::saveLog("gamechanger.cpp: setCurrentGame: Error while creating new steamapp.");
+        }
+    }
+    else
+    {
+        LoggingSystem::saveLog("gamechanger.cpp: setCurrentGame: Error while removing steamapp.");
+    }
+
+    // Load data for selected game
+
+}
 
 
 

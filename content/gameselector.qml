@@ -47,6 +47,7 @@ Item {
             list: ObjcGameChangerList
         }
 
+        onActivated: setCurrentGame(currentIndex);
 
         x: (Window.width /2) - 125
         y: 0

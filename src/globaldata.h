@@ -13,29 +13,12 @@
 // whTroyId 1099410
 // whRomeRemId 885970
 
-inline int* modpacksAmount = nullptr;
 
 struct sGamesData {
     QString gameName;
     QString gamePath;
     QString pathName;
     int gameId = 0;
-};
-
-struct LocalSettings {
-    LocalSettings(){};
-    bool settingsLoaded = false;
-    uint32_t modpacksAmount;
-    std::string steampath;
-    uint64_t defaultGame;
-    std::string localPath;
-
-    int numInstalledGames;
-
-    sGamesData currentGame;
-    QVector<sGamesData> installedGames;
-
-    uint32_t modsAmount;
 };
 
 struct ModsData {
@@ -50,10 +33,19 @@ struct ModsData {
     std::string steamPackname;
 };
 
-struct GlobalModpacksData {
-    GlobalModpacksData();
-    std::string modpackName;
-    std::vector<uint32_t> modsId;
+struct LocalSettings {
+    LocalSettings(){};
+    bool settingsLoaded = false;
+    std::string steampath;
+    uint64_t defaultGame;
+    std::string localPath;
+
+    int numInstalledGames;
+
+    sGamesData currentGame;
+    QVector<sGamesData> installedGames;
+
+    uint32_t modsAmount;
 };
 
 class GlobalDataData : public QSharedData
@@ -61,7 +53,6 @@ class GlobalDataData : public QSharedData
 public:
     LocalSettings Global_LocalSettingsObj;
     std::vector<ModsData> Global_ModsDataObj;
-    GlobalModpacksData Global_ModpackDataObj;
     QQmlApplicationEngine* enginePtr = nullptr;
 
 

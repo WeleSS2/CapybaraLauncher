@@ -46,7 +46,6 @@ bool ModpacksContent::appendItem(QString name)
     //}
     //item.modpackName = name;
     mModpacksData.append(item);
-    SharedGlobalDataObj->Global_LocalSettingsObj.modpacksAmount++;
 
     emit postItemAppened();
     return true;
@@ -68,8 +67,21 @@ void ModpacksContent::removeItem(qint32 index)
 void ModpacksContent::saveModlist(QString name)
 {
     std::string stringName = name.toStdString();
-    std::string path = SharedGlobalDataObj->Global_LocalSettingsObj.localPath + "\\Modpacks\\"
+    std::string modFolderPath = SharedGlobalDataObj->Global_LocalSettingsObj.localPath
+            + "\\Modpacks\\"
+            + std::to_string(SharedGlobalDataObj->Global_LocalSettingsObj.currentGame.gameId)
+            ;
+    std::string path = modFolderPath
+            + "\\"
             + name.toStdString() + ".txt";
+
+    // Check did folder exist
+    if(!std::filesystem::exists(modFolderPath))
+    {
+        std::filesystem::create_directory(modFolderPath);
+    }
+
+
     std::fstream file;
     QVector<uint32_t> localModsId;
 
@@ -94,7 +106,6 @@ void ModpacksContent::saveModlist(QString name)
     }
     file.close();
     if(!exist){
-        SharedGlobalDataObj->Global_LocalSettingsObj.modpacksAmount++;
         mModpacksData.append({name, localModsId});
     }
     else
@@ -135,30 +146,39 @@ QString ModpacksContent::getModlistName(uint64_t index){
 
 void ModpacksContent::modlistAmount()
 {
-    std::string path = SharedGlobalDataObj->Global_LocalSettingsObj.localPath + "\\Modpacks";
-    for(auto& i: std::filesystem::directory_iterator{path})
+    if(mModpacksData.size() > 0)
     {
-        std::string name{i.path().filename().generic_string()};
-        name.erase(name.size() - 4, 4);
+        mModpacksData.clear();
+    }
 
+    std::string path = SharedGlobalDataObj->Global_LocalSettingsObj.localPath
+            + "\\Modpacks\\"
+            + std::to_string(SharedGlobalDataObj->Global_LocalSettingsObj.currentGame.gameId)
+            ;
 
-        QVector<uint32_t> modsId;
-        uint32_t text;
-
-
-        std::fstream file;
-        file.open(path + "\\" + name + ".txt", std::ios::in);
-        while(file>>text)
+    if(std::filesystem::exists(path)){
+        for(auto& i: std::filesystem::directory_iterator{path})
         {
-            modsId.emplaceBack(text);
-        }
+            std::string name{i.path().filename().generic_string()};
+            name.erase(name.size() - 4, 4);
 
 
-        mModpacksData.append({
-                                 QString::fromUtf8(name),
-                                 modsId
-                             });
-        modpacksAmountLocal++;
-    };
-    SharedGlobalDataObj->Global_LocalSettingsObj.modpacksAmount = modpacksAmountLocal;
+            QVector<uint32_t> modsId;
+            uint32_t text;
+
+
+            std::fstream file;
+            file.open(path + "\\" + name + ".txt", std::ios::in);
+            while(file>>text)
+            {
+                modsId.emplaceBack(text);
+            }
+
+
+            mModpacksData.append({
+                                     QString::fromUtf8(name),
+                                     modsId
+                                 });
+        };
+    }
 }
