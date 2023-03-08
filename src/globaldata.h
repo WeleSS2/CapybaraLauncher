@@ -18,7 +18,7 @@
  * White {232, 232, 232, 255} - default
  * Light blue {0, 226, 217, 210} - highlighted
  * Red {255, 55, 55, 255} - mod not available
- * Yellow {255, 255, 0, 255} - Can be updated
+ * Yellow {225, 225, 0, 255} - Can be updated
  * Orange {255, 87, 51, 255} - Warn about not updated long time/Community feedback about errors
  * Light Purple {174, 135, 205, 255} - Local mod
  *

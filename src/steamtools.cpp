@@ -5,6 +5,8 @@
 #include "utility/loggingsystem.h"
 
 #include <filesystem>
+#include <QDateTime>
+#include <QFileInfo>
 
 void CSteamTools::LoadItemsToQuery()
 {
@@ -67,6 +69,7 @@ void CSteamTools::LoadItemsDataFromQuery()
         {
             std::string folder_path{path + "\\" + std::to_string(SharedSteamToolsObj->VUi_ItemsId[i])};
 
+            // Check did mod exist locally
             if(std::filesystem::exists(folder_path)){
                 for (auto const& dir_entry : std::filesystem::directory_iterator{folder_path})
                 {
@@ -78,6 +81,16 @@ void CSteamTools::LoadItemsDataFromQuery()
                         SharedGlobalDataObj->Global_ModsDataObj[i].color = {255, 255, 255};
                         temp.erase(0, folder_path.size() + 1);
                         SharedSteamToolsObj->localModName.emplaceBack(temp);
+                    }
+                }
+
+                // Check did mod can be updated
+                QFileInfo fileInfo(QString::fromStdString(folder_path));
+                if(fileInfo.exists()){
+                    QDateTime lastModified = fileInfo.lastModified();
+                    if(SharedSteamToolsObj->Vs_ItemsData[i].m_rtimeUpdated > lastModified.toMSecsSinceEpoch() / 1000)
+                    {
+                        SharedGlobalDataObj->Global_ModsDataObj[i].color = {225, 225, 0};
                     }
                 }
             }
@@ -93,7 +106,6 @@ void CSteamTools::LoadItemsDataFromQuery()
 
     for(int i = 0; i < SharedGlobalDataObj->Global_LocalSettingsObj.modsAmount; ++i)
     {
-        SharedGlobalDataObj->Global_ModsDataObj[i].laucherId = laucherItemId[i];
         SharedGlobalDataObj->Global_ModsDataObj[i].done = false;
         SharedGlobalDataObj->Global_ModsDataObj[i].steamModName = SharedSteamToolsObj->Vs_ItemsData[i].m_rgchTitle;
         SharedGlobalDataObj->Global_ModsDataObj[i].steamDataInSeconds = SharedSteamToolsObj->Vs_ItemsData[i].m_rtimeUpdated;

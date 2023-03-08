@@ -46,8 +46,9 @@
  *
  * ---------------------------- FINISHED 08.03.2023 12:55
  * - Last changelog for mod (hiperlink)
- * - Change mod color if not updated and add option to update mod
- * - Make copy of steam mod as local mod
+ * - Change mod color if not updated and add option to update mod +
+ * - Make copy of steam mod as local mod +
+ * - Option to remove local mods
  *
  * Patch 0.0.6 Until 12.03
  * - Web layer

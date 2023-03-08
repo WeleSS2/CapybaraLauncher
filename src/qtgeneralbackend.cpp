@@ -156,6 +156,16 @@ void QtGeneralBackend::updateLauncher(){
     obj.patchAndResetApp();
 }
 
+void QtGeneralBackend::updateMod(uint64_t id){
+    steamAPIAccess SteamAPI;
+    // Download the item
+    SteamAPICall_t hDownloadItemResult = SteamUGC()->DownloadItem(id, true);
+    SteamAPI_RunCallbacks();
+
+
+    SteamAPI.waitUntilCallNotFinished(&hDownloadItemResult);
+}
+
 void QtGeneralBackend::addMod(uint64_t id){
     Utility objUtility;
     objUtility.showSimpleInfoBox("Downloading mod with id: " + QString::fromStdString(std::to_string(id)));
@@ -166,11 +176,7 @@ void QtGeneralBackend::addMod(uint64_t id){
     SteamUGCDetails_t modDetails = SteamAPI.getModDetails(id);
 
     // Download the item
-    SteamAPICall_t hDownloadItemResult = SteamUGC()->DownloadItem(id, true);
-    SteamAPI_RunCallbacks();
-
-
-    SteamAPI.waitUntilCallNotFinished(&hDownloadItemResult);
+    updateMod(id);
 
     // Insert item into launcher
     SharedGlobalDataObj->Global_LocalSettingsObj.modsAmount++;

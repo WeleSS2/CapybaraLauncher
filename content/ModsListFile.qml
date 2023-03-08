@@ -8,6 +8,7 @@ Item {
     id: mainMouseArea
     anchors.fill: parent
     property bool globalActionMenuOpen: false
+    property bool updateAvailable: false
     property int baseW: 1200
     property int mousePositionX
     property int mousePositionY
@@ -185,6 +186,14 @@ Item {
                                currentName = model.name;
                                currentId = model.modgameid;
                                currentIndexPos = model.id;
+                               if (model.colorWarn.r === 0.8823529481887817 && model.colorWarn.g === 0.8823529481887817 && model.colorWarn.b === 0)
+                               {
+                                    updateAvailable = true;
+                               }
+                               else
+                               {
+                                   updateAvailable = false;
+                               }
                                actionMenu.visible = true;
                           }
                           else
@@ -197,6 +206,14 @@ Item {
                               currentName = model.name;
                               currentId = model.modgameid;
                               currentIndexPos = model.id;
+                              if (model.colorWarn.r === 0.8823529481887817 && model.colorWarn.g === 0.8823529481887817 && model.colorWarn.b === 0)
+                              {
+                                  updateAvailable = true;
+                              }
+                              else
+                              {
+                                  updateAvailable = false;
+                              }
                               actionMenu.visible = true;
                           }
                       }
@@ -497,9 +514,9 @@ Item {
     Rectangle {
         id: actionMenu
         x: mousePositionX - 25
-        y: ((mousePositionY - 40) < (mainScreen.height - 300)) ? mousePositionY - 40 : mousePositionY - 250
-        width: 175
-        height: 250
+        y: ((mousePositionY - 40) < (mainScreen.height - 400)) ? mousePositionY - 40 : mousePositionY - 350
+        width: 200
+        height: 350
         visible: false
         MouseArea {
             id: mouse2
@@ -512,8 +529,8 @@ Item {
                  position = mapToGlobal(mouseX, mouseY);
                  if(actionMenu.visible){
                     if(position.x !== 0){
-                        if(position.x > actionMenu.x + 175 || position.x < actionMenu.x + 25
-                           || position.y > actionMenu.y + 250 || position.y < actionMenu.y + 40)
+                        if(position.x > actionMenu.x + 200 || position.x < actionMenu.x + 25
+                           || position.y > actionMenu.y + 350 || position.y < actionMenu.y + 40)
                         {
                             actionMenu.visible = false;
                             globalActionMenuOpen = false;
@@ -594,9 +611,21 @@ Item {
         }
 
         Button {
+            visible: currentId !== "0" && updateAvailable
+            id: modsListFile_Button_UpdateMod
+            x: 10
+            y: (currentId !== "0" && updateAvailable) ? modsListFile_Button_Resubscribe.y + 30 : modsListFile_Button_Resubscribe.y
+            text: "Update mod"
+            onClicked: {
+                modsList.currentIndex = currentIndexPos;
+                qtGeneralBackendObj.updateMod(currentId);
+            }
+        }
+
+        Button {
             id: modsListFile_Button_OpenLocalFiles
             x: 10
-            y: modsListFile_Button_Resubscribe.y + 30
+            y: modsListFile_Button_UpdateMod.y + 30
             text: "Open Local Files"
             onClicked: {
                 modsList.currentIndex = currentIndexPos;
