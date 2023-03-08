@@ -63,7 +63,6 @@ void CSteamTools::LoadItemsDataFromQuery()
     std::string path = SharedGlobalDataObj->Global_LocalSettingsObj.currentGame.gamePath.toStdString()
             + "\\steamapps\\workshop\\content\\"
             + std::to_string(SharedGlobalDataObj->Global_LocalSettingsObj.currentGame.gameId);
-    qDebug() << QString::fromStdString(path);
     for (int i = 0; i < SharedSteamToolsObj->VUi_ItemsId.size(); ++i)
         {
             std::string folder_path{path + "\\" + std::to_string(SharedSteamToolsObj->VUi_ItemsId[i])};

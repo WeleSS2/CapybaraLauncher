@@ -5,6 +5,7 @@
 #include <QSharedDataPointer>
 #include <QQmlApplicationEngine>
 #include "QColor.h"
+#include "utility/loggingsystem.h"
 
 // wh1Id 364360
 // wh2Id 594570
@@ -12,6 +13,36 @@
 // wh4KingId 779340
 // whTroyId 1099410
 // whRomeRemId 885970
+
+/* Colors data:
+ * White {232, 232, 232, 255} - default
+ * Light blue {0, 226, 217, 210} - highlighted
+ * Red {255, 55, 55, 255} - mod not available
+ * Yellow {255, 255, 0, 255} - Can be updated
+ * Orange {255, 87, 51, 255} - Warn about not updated long time/Community feedback about errors
+ * Light Purple {174, 135, 205, 255} - Local mod
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ */
 
 
 struct sGamesData {
@@ -57,6 +88,8 @@ public:
 
 
     sGamesData& getGameById(uint64_t id);
+    ModsData& getModById(uint64_t id);
+    ModsData& getModBySteamId(uint64_t id);
 };
 inline auto SharedGlobalDataObj = std::make_shared<GlobalDataData>();
 

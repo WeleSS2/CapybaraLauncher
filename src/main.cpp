@@ -37,15 +37,17 @@
  * - Open mod locally +
  * -
  * ------------------------- FINISHED 03.03.2023 22:30
- * - If sorting enabled is on, enbalind another sorting will sort only enabled mods.
- * - Last changelog for mod (hiperlink)
- * - Divide Update Date to Latest version and Your version
  *
  *
  * Patch 0.0.5 Until 07.03
- * - Local mods support
+ * - Local mods support +
  * - Add mods to steam support - / Impossible to do as i think...
  * - Multigame support Alpha +
+ *
+ * ---------------------------- FINISHED 08.03.2023 12:55
+ * - Last changelog for mod (hiperlink)
+ * - Change mod color if not updated and add option to update mod
+ * - Make copy of steam mod as local mod
  *
  * Patch 0.0.6 Until 12.03
  * - Web layer
@@ -75,6 +77,7 @@
 #include "app_environment.h"
 #include "import_qml_plugins.h"
 #include "steam_api.h"
+#include "windowsfunctions.h"
 
 #include "globaldata.h"
 #include "exit.h"
@@ -90,7 +93,7 @@
 #include "utility/loggingsystem.h"
 
 #include "localfiles.h"
-#include "windowsfunctions.h"
+#include "localfiles/localmods.h"
 
 class steam
 {
@@ -128,7 +131,7 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
     SharedGlobalDataObj->enginePtr = &engine;
 
-    QCoreApplication::setApplicationVersion("v0.0.4.3");
+    QCoreApplication::setApplicationVersion("v0.0.5");
 
 
     // WORKSPACE
@@ -164,9 +167,21 @@ int main(int argc, char *argv[])
         if(SharedGlobalDataObj->Global_LocalSettingsObj.currentGame.gameId != 0)
         {
             steam runSteam;
+
+            LocalMods objLocalMods;
+            if(objLocalMods.gameFolderCheck())
+            {
+                if(!objLocalMods.loadLocalMods())
+                {
+                    LoggingSystem::saveLog("main.cpp: Failed to load local mods folder");
+                }
+            }
+            else
+            {
+                LoggingSystem::saveLog("main.cpp: Failed to open local mods folder");
+            }
         }
     }
-
 
     // WORKSPACE
 

@@ -36,3 +36,22 @@ sGamesData& GlobalDataData::getGameById(uint64_t id){
         }
     }
 }
+ModsData& GlobalDataData::getModById(uint64_t id){
+    for(auto& i : Global_ModsDataObj)
+    {
+        if(i.laucherId == id)
+        {
+            return i;
+        }
+    }
+}
+
+ModsData& GlobalDataData::getModBySteamId(uint64_t id){
+    for(auto& i : Global_ModsDataObj)
+    {
+        if(i.steamModGameId == id)
+        {
+            return i;
+        }
+    }
+}

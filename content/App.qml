@@ -40,8 +40,8 @@ Window {
     visible: true
     title: "TW Capybara Laucher"
 
-    property var mainTextColor: Qt.rgba(0.95, 0.95, 0.95, 1)
-    property var highlightTextColor:  Qt.rgba(0, 0.7, 0.95, 0.9)
+    property string mainTextColor: "#E8E8E8"
+    property string highlightTextColor:  "#D900D2E2"
     property bool modListEnabled: true
     property bool rightPanelEnabled: true
     property bool bottomGameMenuEnabled: true

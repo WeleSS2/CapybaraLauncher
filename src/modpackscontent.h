@@ -11,6 +11,7 @@ struct ModpacksData
 {
     QString modpackName;
     QVector<uint32_t> modsId;
+    QVector<QString> modFileName;
 };
 
 class ModpacksContent : public QObject

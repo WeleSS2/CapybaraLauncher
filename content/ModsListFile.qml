@@ -531,16 +531,20 @@ Item {
         }
 
         Button {
-            x: 15
-            y: 35
+            visible: currentId !== "0"
+            id: modsListFile_Button_OpenBrowser
+            x: 10
+            y: currentId !== "0" ? 35 : 0
             text: "Open in Browser"
             onClicked: {
                 Qt.openUrlExternally("https://steamcommunity.com/sharedfiles/filedetails/?id=" + currentId);
             }
         }
         Button {
-            x: 15
-            y: 65
+            visible: currentId !== "0"
+            id: modsListFile_Button_OpenSteam
+            x: 10
+            y: currentId !== "0" ? modsListFile_Button_OpenBrowser.y + 30 : 0
             text: "Open in Steam"
             onClicked: {
                 Qt.openUrlExternally("steam://openurl/https://steamcommunity.com/sharedfiles/filedetails/?id=" + currentId)
@@ -548,8 +552,10 @@ Item {
         }
 
         Button {
-            x: 15
-            y: 95
+            visible: currentId !== "0"
+            id: modsListFile_Button_CopyClipboard
+            x: 10
+            y: currentId !== "0" ? modsListFile_Button_OpenSteam.y + 30 : 0
             text: "Copy name to clipboard"
             onClicked: {
                 textEdit.text = currentName
@@ -559,8 +565,10 @@ Item {
         }
 
         Button {
-            x: 15
-            y: 125
+            visible: currentId !== "0"
+            id: modsListFile_Button_Unsubscribe
+            x: 10
+            y: currentId !== "0" ?  modsListFile_Button_CopyClipboard.y + 30 : 0
             text: "Unsubscribe"
             onClicked: {
                 modsList.currentIndex = currentIndexPos;
@@ -571,8 +579,10 @@ Item {
         }
 
         Button {
-            x: 15
-            y: 155
+            visible: currentId !== "0"
+            id: modsListFile_Button_Resubscribe
+            x: 10
+            y: currentId !== "0" ?  modsListFile_Button_Unsubscribe.y + 30 : 0
             text: "Resubsribe"
             onClicked: {
                 modsList.currentIndex = currentIndexPos;
@@ -584,15 +594,29 @@ Item {
         }
 
         Button {
-            x: 15
-            y: 185
+            id: modsListFile_Button_OpenLocalFiles
+            x: 10
+            y: modsListFile_Button_Resubscribe.y + 30
             text: "Open Local Files"
             onClicked: {
                 modsList.currentIndex = currentIndexPos;
-                qtGeneralBackendObj.openLocalFiles(currentId);
+                qtGeneralBackendObj.openLocalFiles(currentIndexPos);
             }
         }
 
+        Button {
+            visible: currentId !== "0"
+            id: modsListFile_Button_MakeLocalCopy
+            x: 10
+            y: currentId !== "0" ? modsListFile_Button_OpenLocalFiles.y + 30 : 0
+            text: "Make local copy"
+            onClicked: {
+                modsList.currentIndex = currentIndexPos;
+                qtGeneralBackendObj.makeLocalCopy(currentId);
+                Objcmodslistfilling.refreshModlistVector();
+                refreshModlist();
+            }
+        }
     }
     function refreshModlist() {
         modsList.model.refreshList();

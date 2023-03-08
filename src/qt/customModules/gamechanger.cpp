@@ -3,6 +3,7 @@
 #include <fstream>
 #include "../../utility/loggingsystem.h"
 #include "../../steamtools.h"
+#include "../../localfiles/localmods.h"
 
 GameChanger::GameChanger(QObject* parent)
     : QAbstractListModel(parent)
@@ -113,7 +114,6 @@ void GameChanger::setCurrentGame(uint64_t index){
     SharedGlobalDataObj->Global_LocalSettingsObj.currentGame = SharedGlobalDataObj->Global_LocalSettingsObj.installedGames[index];
     SharedGlobalDataObj->Global_LocalSettingsObj.modsAmount = 0;
     SharedGlobalDataObj->Global_ModsDataObj.clear();
-    qDebug() << QString::fromStdString(std::to_string(SharedGlobalDataObj->Global_LocalSettingsObj.currentGame.gameId));
     if(std::filesystem::exists("steam_appid.txt"))
     {
         std::filesystem::remove("steam_appid.txt");
@@ -143,6 +143,19 @@ void GameChanger::setCurrentGame(uint64_t index){
     else
     {
         LoggingSystem::saveLog("gamechanger.cpp: setCurrentGame: Error while loading a mods.");
+    }
+
+    LocalMods objLocalMods;
+    if(objLocalMods.gameFolderCheck())
+    {
+        if(!objLocalMods.loadLocalMods())
+        {
+            LoggingSystem::saveLog("main.cpp: Failed to load local mods folder");
+        }
+    }
+    else
+    {
+        LoggingSystem::saveLog("main.cpp: Failed to open local mods folder");
     }
 }
 

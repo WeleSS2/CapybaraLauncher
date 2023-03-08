@@ -30,7 +30,7 @@ Item {
             width: 125
             height: 30
             font.pixelSize: 18
-            text: qsTr("Save Pack")
+            text: qsTr("Save Modlist")
             onClicked: {
                if(Qt.LeftButton)
                    {
@@ -50,7 +50,7 @@ Item {
             width: 125
             height: 30
             font.pixelSize: 18
-            text: qsTr("Delete Pack")
+            text: qsTr("Delete Modlist")
             onClicked: {
                if(Qt.LeftButton)
                    {

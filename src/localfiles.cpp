@@ -1,5 +1,6 @@
 #include "localfiles.h"
 #include "globaldata.h"
+#include "localfiles/localmods.h"
 #include <fstream>
 #include <filesystem>
 #include <algorithm>
@@ -40,7 +41,6 @@ bool localFiles::findLocalFolder()
         }
         else
         {
-            std::cout << "Local settings directory not found" << std::endl;
             std::filesystem::create_directories(pathWh3);
             localWh3Path = pathWh3;
             SharedGlobalDataObj->Global_LocalSettingsObj.localPath = pathWh3;

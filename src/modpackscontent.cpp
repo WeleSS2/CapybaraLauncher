@@ -83,6 +83,7 @@ void ModpacksContent::saveModlist(QString name)
 
     std::fstream file;
     QVector<uint32_t> localModsId;
+    QVector<QString> modFileName;
 
     bool exist = false;
     if(std::filesystem::exists(path))
@@ -91,7 +92,6 @@ void ModpacksContent::saveModlist(QString name)
         std::filesystem::remove(path);
 
     }
-    qDebug() << name << QString::fromStdString(path);
 
     file.open(path, std::ios::out);
 
@@ -99,20 +99,32 @@ void ModpacksContent::saveModlist(QString name)
     {
         if(mListGlobalPtr->mItemsData[i].done)
         {
-            localModsId.emplaceBack(mListGlobalPtr->mItemsData[i].modgameid);
-            file << mListGlobalPtr->mItemsData[i].modgameid << std::endl;
+            if(mListGlobalPtr->mItemsData[i].modgameid != 0)
+            {
+                localModsId.emplaceBack(mListGlobalPtr->mItemsData[i].modgameid);
+                modFileName.emplaceBack("");
+                file << "S " << mListGlobalPtr->mItemsData[i].modgameid << std::endl;
+            }
+            else
+            {
+                localModsId.emplaceBack(0);
+                modFileName.emplaceBack(mListGlobalPtr->mItemsData[i].packname);
+                file << "L " << mListGlobalPtr->mItemsData[i].packname.toStdString() << std::endl;
+            }
         }
     }
     file.close();
     if(!exist){
-        mModpacksData.append({name, localModsId});
+        mModpacksData.append({name, localModsId, modFileName});
     }
     else
     {
         for(auto &i: mModpacksData){
             if(i.modpackName == name){
                 i.modsId.clear();
+                i.modFileName.clear();
                 i.modsId = localModsId;
+                i.modFileName = modFileName;
             }
         }
     }
@@ -120,20 +132,32 @@ void ModpacksContent::saveModlist(QString name)
 
 void ModpacksContent::loadModlist(uint64_t index)
 {
+    // Set all to false
     for(int k = 0; k < mListGlobalPtr->mItemsData.size(); ++k)
     {
         mListGlobalPtr->mItemsData[k].done = false;
         SharedGlobalDataObj->Global_ModsDataObj[k].done = false;
     }
 
+    // Check if imported if yes enable
     for(int j = 0; j < mModpacksData[index].modsId.size(); ++j)
     {
         for(int k = 0; k < mListGlobalPtr->mItemsData.size(); ++k)
         {
-            if(mModpacksData[index].modsId[j] == mListGlobalPtr->mItemsData[k].modgameid)
+            if(mModpacksData[index].modsId[j] != 0){
+                if(mModpacksData[index].modsId[j] == mListGlobalPtr->mItemsData[k].modgameid)
+                {
+                    mListGlobalPtr->mItemsData[k].done = true;
+                    SharedGlobalDataObj->Global_ModsDataObj[k].done = true;
+                }
+            }
+            else
             {
-                mListGlobalPtr->mItemsData[k].done = true;
-                SharedGlobalDataObj->Global_ModsDataObj[k].done = true;
+                if(mModpacksData[index].modFileName[j] == mListGlobalPtr->mItemsData[k].packname)
+                {
+                    mListGlobalPtr->mItemsData[k].done = true;
+                    SharedGlobalDataObj->Global_ModsDataObj[k].done = true;
+                }
             }
         }
     }
@@ -162,20 +186,34 @@ void ModpacksContent::modlistAmount()
             name.erase(name.size() - 4, 4);
 
             QVector<uint32_t> modsId;
-            uint32_t text;
+            QVector<QString> modFileName;
+            std::string text;
 
 
             std::fstream file;
             file.open(path + "\\" + name + ".txt", std::ios::in);
             while(file>>text)
             {
-                modsId.emplaceBack(text);
+                if(text == "S")
+                {
+                    uint64_t id;
+                    file>>id;
+                    modFileName.emplaceBack("");
+                    modsId.emplaceBack(id);
+                }
+                else if(text == "L")
+                {
+                    std::string fileName;
+                    file>>fileName;
+                    modFileName.emplaceBack(QString::fromStdString(fileName));
+                    modsId.emplaceBack(0);
+                }
             }
-
 
             mModpacksData.append({
                                      QString::fromUtf8(name),
-                                     modsId
+                                     modsId,
+                                     modFileName
                                  });
         };
     }
