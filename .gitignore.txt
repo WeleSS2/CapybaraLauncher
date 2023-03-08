@@ -35,4 +35,5 @@
 Custom 
 /vs
 /out
-src/private/
+src/private/serverconnection.cpp
+src/private/serverconnection.h

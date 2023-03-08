@@ -45,10 +45,11 @@
  * - Multigame support Alpha +
  *
  * ---------------------------- FINISHED 08.03.2023 12:55
- * - Last changelog for mod (hiperlink)
+ * - Last changelog for mod (hiperlink) - For what? Not needed
  * - Change mod color if not updated and add option to update mod +
  * - Make copy of steam mod as local mod +
  * - Option to remove local mods
+ * - Open mod with rpfm
  *
  * Patch 0.0.6 Until 12.03
  * - Web layer
@@ -66,7 +67,14 @@
  * - Neccesary add-ons and fixes
  * - Idk what exactly, to be added
  *
- * Open Alpha Relase
+ * Open Beta Relase
+ *
+ *
+ *
+ *
+ *
+ * Requests:
+ * By Ole (discord) - Hey, any plans for adding support for merging files with the mood launcher? I am close to finish the needed tools for audio modding, but it will quickly need some mod manager support to merge multiple audio mods.
  *
  */
 #include <QGuiApplication>
