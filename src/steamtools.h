@@ -4,6 +4,8 @@
 
 #include "iostream"
 #include "steam_api.h"
+#include "isteamclient.h"
+#include "steam_gameserver.h"
 #include "vector"
 #include "algorithm"
 
@@ -35,6 +37,9 @@ inline auto SharedSteamToolsObj = std::make_shared<CSteamTools>();
 
 class steamAPIAccess {
 public:
+    bool runGameSteamAPI();
+    bool closeGameSteamAPI();
+
     void subscribeMod(uint64_t id);
     void unsubscribeMod(uint64_t id);
     SteamUGCDetails_t getModDetails(uint64_t id);

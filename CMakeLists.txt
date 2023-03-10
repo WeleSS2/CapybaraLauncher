@@ -15,7 +15,10 @@ set(RC_FILE ${CMAKE_CURRENT_SOURCE_DIR}/content/resources/capybaraIcon.rc)
 file(GLOB_RECURSE CPPEXECFILES "src/*.cpp")
 
 qt_add_executable(WH3_Mod_MenagerApp ${CPPEXECFILES}
-                                     ${RC_FILE})
+    ${RC_FILE})
+
+file(GLOB_RECURSE GAMECONFILES "gameconnector/*.cpp")
+qt_add_executable(GameConnector ${GAMECONFILES})
 
 qt_add_resources(WH3_Mod_MenagerApp "configuration"
     PREFIX "/"
@@ -25,12 +28,16 @@ qt_add_resources(WH3_Mod_MenagerApp "configuration"
 
 find_package(STEAMAPI REQUIRED PATHS ${PROJECT_SOURCE_DIR}/external/STEAM_API)
 target_include_directories(WH3_Mod_MenagerApp PRIVATE "${STEAMAPI_INCLUDE_DIRS}")
-
+target_include_directories(GameConnector PRIVATE "${STEAMAPI_INCLUDE_DIRS}")
 target_link_libraries(WH3_Mod_MenagerApp PRIVATE
     Qt${QT_VERSION_MAJOR}::Core
     Qt${QT_VERSION_MAJOR}::Gui
     Qt${QT_VERSION_MAJOR}::Quick
     Qt${QT_VERSION_MAJOR}::Qml
+    ${STEAMAPI_LIBRARIES}
+)
+
+target_link_libraries(GameConnector PRIVATE
     ${STEAMAPI_LIBRARIES}
 )
 

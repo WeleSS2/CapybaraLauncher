@@ -50,6 +50,7 @@
  * - Make copy of steam mod as local mod +
  * - Option to remove local mods
  * - Open mod with rpfm
+ * - Make new local mod
  *
  * Patch 0.0.6 Until 12.03
  * - Web layer
@@ -172,6 +173,7 @@ int main(int argc, char *argv[])
 
 
     settingsLoading();
+    //SharedGlobalDataObj->Global_LocalSettingsObj.currentGame = SharedGlobalDataObj->Global_LocalSettingsObj.installedGames[0];
     {
         if(SharedGlobalDataObj->Global_LocalSettingsObj.currentGame.gameId != 0)
         {

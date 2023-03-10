@@ -4,7 +4,7 @@ Item {
     id: right_panel
     enabled : rightPanelEnabled
     ListView {
-        id: gameNews
+        id: developerCANews
         x: 1075
         y: 100
         width: Window.width - 1080
@@ -61,7 +61,7 @@ Item {
         }
     }
     ListView {
-        id: laucherNews
+        id: communityNews
         x: 1075
         y: 460
         width: Window.width - 1080

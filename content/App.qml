@@ -98,6 +98,7 @@ Window {
         console.log("Closing")
         localFilesObj.saveLocalSettings()
         objFilesOperations.saveSettings()
+        qtGeneralBackendObj.closeSteamAPIIfOn()
     }
 }
 

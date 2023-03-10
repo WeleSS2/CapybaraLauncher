@@ -318,3 +318,8 @@ void QtGeneralBackend::makeLocalCopy(uint64_t id)
         LoggingSystem::saveLog("qtgeneralbackend.cpp: makeLocalCopy: Failed to copy mod from steam folder");
     }
 }
+
+void QtGeneralBackend::closeSteamAPIIfOn(){
+    steamAPIAccess obj;
+    obj.closeGameSteamAPI();
+}

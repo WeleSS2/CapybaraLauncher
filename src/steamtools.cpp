@@ -7,6 +7,7 @@
 #include <filesystem>
 #include <QDateTime>
 #include <QFileInfo>
+#include <QProcess>
 
 void CSteamTools::LoadItemsToQuery()
 {
@@ -22,6 +23,11 @@ void CSteamTools::LoadItemsToQuery()
         localModName.clear();
         VUi_ItemsId.clear();
         Vs_ItemsData.clear();
+        SharedSteamToolsObj->isAvailable.clear();
+        SharedSteamToolsObj->laucherItemId.clear();
+        SharedSteamToolsObj->localModName.clear();
+        SharedSteamToolsObj->VUi_ItemsId.clear();
+        SharedSteamToolsObj->Vs_ItemsData.clear();
     }
 
     SharedGlobalDataObj->Global_LocalSettingsObj.modsAmount = SteamUGC()->GetNumSubscribedItems();
@@ -129,6 +135,34 @@ void CSteamTools::ItemsCallback(SteamUGCQueryCompleted_t * result, bool fail)
     }
 
     SteamUGC()->ReleaseQueryUGCRequest(qHandle);
+}
+
+// Run GameConnector with current steam_appid.txt
+bool steamAPIAccess::runGameSteamAPI(){
+    std::string run = "start \"\" \"GameConnector.exe\"";
+    int result = system(run.c_str());
+    if(result)
+    {
+        return true;
+    }
+    else
+        return false;
+}
+
+// Check did any GameConnector with is running, if yes kill it.
+bool steamAPIAccess::closeGameSteamAPI(){
+    QProcess process;
+    process.start("tasklist", QStringList() << "/FI" << "IMAGENAME eq GameConnector.exe");
+    process.waitForFinished();
+    QString output = process.readAllStandardOutput();
+    if(output.contains("GameConnector.exe")){
+        QProcess::execute("taskkill", QStringList() << "/F" << "/IM" << "GameConnector.exe");
+        return true;
+    }
+    else
+        return true;
+
+    LoggingSystem::saveLog("steamtools.cpp: closeGameSteamAPI: Closing GameConnector when closing a Capybara Launcher failed!");
 }
 
 

@@ -106,23 +106,34 @@ void GameChanger::setList(cGameChangerList *list)
 }
 
 void GameChanger::setCurrentGame(uint64_t index){
-
-    SteamAPI_Shutdown();
+    if(SharedGlobalDataObj->Global_LocalSettingsObj.currentGame.gameId != 0)
+    {
+        SteamAPI_Shutdown();
+        SteamAPI_ReleaseCurrentThreadMemory();
+        HSteamPipe steamPipe = SteamAPI_GetHSteamPipe();
+        ISteamClient* steamClient = SteamClient();
+        if (steamClient != nullptr)
+        {
+            steamClient->BReleaseSteamPipe(steamPipe);
+        }
+    }
 
 
     // Set game and clear data form previous
     SharedGlobalDataObj->Global_LocalSettingsObj.currentGame = SharedGlobalDataObj->Global_LocalSettingsObj.installedGames[index];
     SharedGlobalDataObj->Global_LocalSettingsObj.modsAmount = 0;
     SharedGlobalDataObj->Global_ModsDataObj.clear();
+
     if(std::filesystem::exists("steam_appid.txt"))
     {
-        std::filesystem::remove("steam_appid.txt");
+        //std::filesystem::remove("steam_appid.txt");
 
         std::fstream file;
         file.open("steam_appid.txt", std::ios::out);
         if(file.is_open())
         {
             file << std::to_string(SharedGlobalDataObj->Global_LocalSettingsObj.currentGame.gameId);
+            //file << "281990";
         }
         else
         {
@@ -133,6 +144,18 @@ void GameChanger::setCurrentGame(uint64_t index){
     {
         LoggingSystem::saveLog("gamechanger.cpp: setCurrentGame: Error while removing steamapp.");
     }
+
+    // Guard did file is saved already
+    if(!std::filesystem::exists("steam_appid.txt"))
+    {
+        bool status = false;
+        while(!status)
+        {
+            status = std::filesystem::exists("steam_appid.txt");
+
+        }
+    }
+
     // Load data for selected game
     if(SteamAPI_Init())
     {
@@ -140,6 +163,11 @@ void GameChanger::setCurrentGame(uint64_t index){
         SharedSteamToolsObj->LoadItemsToQuery();
         SharedSteamToolsObj->LoadItemsDataFromQuery();
     }
+    //steamAPIAccess objSteam;
+    //if(objSteam.runGameSteamAPI())
+    //{
+    //    qDebug() << "Steam is on";
+    //}
     else
     {
         LoggingSystem::saveLog("gamechanger.cpp: setCurrentGame: Error while loading a mods.");
