@@ -1,6 +1,7 @@
 #include "gamechanger.h"
 #include <filesystem>
 #include <fstream>
+#include <Windows.h>
 #include "../../utility/loggingsystem.h"
 #include "../../steamtools.h"
 #include "../../localfiles/localmods.h"
@@ -163,11 +164,19 @@ void GameChanger::setCurrentGame(uint64_t index){
         SharedSteamToolsObj->LoadItemsToQuery();
         SharedSteamToolsObj->LoadItemsDataFromQuery();
     }
-    //steamAPIAccess objSteam;
-    //if(objSteam.runGameSteamAPI())
-    //{
-    //    qDebug() << "Steam is on";
-    //}
+    steamAPIAccess objSteam;
+    if(objSteam.runGameSteamAPI())
+    {
+        // Read data from the shared memory
+        QString data;
+        if (!objSteam.readDataFromSharedMemory(data)) {
+            int limit = 0;
+            while(!objSteam.readDataFromSharedMemory(data) && limit < 10){
+                limit++;
+                Sleep(500);
+            }
+        }
+    }
     else
     {
         LoggingSystem::saveLog("gamechanger.cpp: setCurrentGame: Error while loading a mods.");

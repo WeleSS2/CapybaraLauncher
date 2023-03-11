@@ -84,6 +84,7 @@
 #include <QQmlContext>
 #include <QQmlProperty>
 
+
 #include "app_environment.h"
 #include "import_qml_plugins.h"
 #include "steam_api.h"
@@ -174,25 +175,26 @@ int main(int argc, char *argv[])
 
     settingsLoading();
     //SharedGlobalDataObj->Global_LocalSettingsObj.currentGame = SharedGlobalDataObj->Global_LocalSettingsObj.installedGames[0];
-    {
-        if(SharedGlobalDataObj->Global_LocalSettingsObj.currentGame.gameId != 0)
-        {
-            steam runSteam;
+    //{
+    //    if(SharedGlobalDataObj->Global_LocalSettingsObj.currentGame.gameId != 0)
+    //    {
+    //        steam runSteam;
 
-            LocalMods objLocalMods;
-            if(objLocalMods.gameFolderCheck())
-            {
-                if(!objLocalMods.loadLocalMods())
-                {
-                    LoggingSystem::saveLog("main.cpp: Failed to load local mods folder");
-                }
-            }
-            else
-            {
-                LoggingSystem::saveLog("main.cpp: Failed to open local mods folder");
-            }
-        }
-    }
+    //        LocalMods objLocalMods;
+    //        if(objLocalMods.gameFolderCheck())
+    //        {
+    //            if(!objLocalMods.loadLocalMods())
+    //            {
+    //                LoggingSystem::saveLog("main.cpp: Failed to load local mods folder");
+    //            }
+    //        }
+    //        else
+    //        {
+    //            LoggingSystem::saveLog("main.cpp: Failed to open local mods folder");
+    //        }
+    //    }
+    //}
+
 
     // WORKSPACE
 

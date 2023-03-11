@@ -8,6 +8,11 @@
 #include <QDateTime>
 #include <QFileInfo>
 #include <QProcess>
+#include <QtCore/QCoreApplication>
+#include <QtCore/QSharedMemory>
+#include <QtCore/QBuffer>
+#include <QtCore/QDataStream>
+#include <QDebug>
 
 void CSteamTools::LoadItemsToQuery()
 {
@@ -139,6 +144,11 @@ void CSteamTools::ItemsCallback(SteamUGCQueryCompleted_t * result, bool fail)
 
 // Run GameConnector with current steam_appid.txt
 bool steamAPIAccess::runGameSteamAPI(){
+    //QProcess process;
+    //process.start("GameConnector.exe");
+    //process.waitForFinished();
+    //return true;
+
     std::string run = "start \"\" \"GameConnector.exe\"";
     int result = system(run.c_str());
     if(result)
@@ -146,7 +156,24 @@ bool steamAPIAccess::runGameSteamAPI(){
         return true;
     }
     else
-        return false;
+    {
+        int limit = 0;
+        QProcess process;
+        process.start("tasklist", QStringList() << "/FI" << "IMAGENAME eq GameConnector.exe");
+        process.waitForFinished();
+        QString output = process.readAllStandardOutput();
+        while(limit < 200)
+        {
+            if(output.contains("GameConnector.exe"))
+            {
+                qDebug() << "GameChanger is on";
+                return true;
+            }
+            limit++;
+            Sleep(10);
+        }
+    }
+    return false;
 }
 
 // Check did any GameConnector with is running, if yes kill it.
@@ -164,6 +191,37 @@ bool steamAPIAccess::closeGameSteamAPI(){
 
     LoggingSystem::saveLog("steamtools.cpp: closeGameSteamAPI: Closing GameConnector when closing a Capybara Launcher failed!");
 }
+
+bool steamAPIAccess::readDataFromSharedMemory(QString& data)
+{
+    // Attach to the shared memory object
+    QSharedMemory sharedMemory("MySharedMemory");
+    if (!sharedMemory.attach()) {
+        qDebug() << "Failed to attach to shared memory:" << sharedMemory.errorString();
+        qDebug() << sharedMemory.attach();
+        return false;
+    }
+
+    // Read the data from the shared memory
+    QByteArray buffer;
+    buffer.resize(sharedMemory.size());
+    sharedMemory.lock();
+    const char *from = (const char*)sharedMemory.constData();
+    char *to = buffer.data();
+    memcpy(to, from, qMin(sharedMemory.size(), buffer.size()));
+    sharedMemory.unlock();
+
+    QDataStream stream(buffer);
+    stream >> data;
+
+    qDebug() << "Received data:" << data;
+
+    // Detach from the shared memory object
+    sharedMemory.detach();
+
+    return true;
+}
+
 
 
 void steamAPIAccess::subscribeMod(uint64_t id){

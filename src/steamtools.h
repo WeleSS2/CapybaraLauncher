@@ -39,6 +39,7 @@ class steamAPIAccess {
 public:
     bool runGameSteamAPI();
     bool closeGameSteamAPI();
+    bool readDataFromSharedMemory(QString& data);
 
     void subscribeMod(uint64_t id);
     void unsubscribeMod(uint64_t id);
