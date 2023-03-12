@@ -8,10 +8,6 @@
 #include <QDateTime>
 #include <QFileInfo>
 #include <QProcess>
-#include <QtCore/QCoreApplication>
-#include <QtCore/QSharedMemory>
-#include <QtCore/QBuffer>
-#include <QtCore/QDataStream>
 #include <QDebug>
 
 void CSteamTools::LoadItemsToQuery()
@@ -143,7 +139,7 @@ void CSteamTools::ItemsCallback(SteamUGCQueryCompleted_t * result, bool fail)
 }
 
 // Run GameConnector with current steam_appid.txt
-bool steamAPIAccess::runGameSteamAPI(){
+bool SteamAPIAccess::runGameSteamAPI(){
     //QProcess process;
     //process.start("GameConnector.exe");
     //process.waitForFinished();
@@ -177,7 +173,7 @@ bool steamAPIAccess::runGameSteamAPI(){
 }
 
 // Check did any GameConnector with is running, if yes kill it.
-bool steamAPIAccess::closeGameSteamAPI(){
+bool SteamAPIAccess::closeGameSteamAPI(){
     QProcess process;
     process.start("tasklist", QStringList() << "/FI" << "IMAGENAME eq GameConnector.exe");
     process.waitForFinished();
@@ -192,39 +188,50 @@ bool steamAPIAccess::closeGameSteamAPI(){
     LoggingSystem::saveLog("steamtools.cpp: closeGameSteamAPI: Closing GameConnector when closing a Capybara Launcher failed!");
 }
 
-bool steamAPIAccess::readDataFromSharedMemory(QString& data)
-{
-    // Attach to the shared memory object
-    QSharedMemory sharedMemory("MySharedMemory");
-    if (!sharedMemory.attach()) {
-        qDebug() << "Failed to attach to shared memory:" << sharedMemory.errorString();
-        qDebug() << sharedMemory.attach();
-        return false;
+bool SteamAPIAccess::setWorkToDo(){
+    QByteArray buffer;
+    QDataStream stream(&buffer, QIODevice::WriteOnly);
+
+    stream << false;
+
+    if(!actionStatus.attach()){
+        actionStatus.create(buffer.size());
     }
 
-    // Read the data from the shared memory
-    QByteArray buffer;
-    buffer.resize(sharedMemory.size());
-    sharedMemory.lock();
-    const char *from = (const char*)sharedMemory.constData();
-    char *to = buffer.data();
-    memcpy(to, from, qMin(sharedMemory.size(), buffer.size()));
-    sharedMemory.unlock();
-
-    QDataStream stream(buffer);
-    stream >> data;
-
-    qDebug() << "Received data:" << data;
-
-    // Detach from the shared memory object
-    sharedMemory.detach();
-
+    actionStatus.lock();
+    char *to = (char*)actionStatus.data();
+    const char *from = buffer.constData();
+    memcpy(to, from, qMin(actionStatus.size(), buffer.size()));
+    actionStatus.unlock();
     return true;
 }
 
+bool SteamAPIAccess::synchronizeWithGameConnector(){
+    Sleep(100);
+    if(!actionStatus.attach()){
+        return false;
+    }
 
+    QByteArray buffer;
+    buffer.resize(actionStatus.size());
+    actionStatus.lock();
+    const char *from = (const char*)actionStatus.constData();
+    char *to = buffer.data();
+    memcpy(to, from, qMin(actionStatus.size(), buffer.size()));
+    actionStatus.unlock();
 
-void steamAPIAccess::subscribeMod(uint64_t id){
+    bool status;
+    QDataStream stream(buffer);
+    stream >> status;
+
+    if(!status)
+        return false;
+
+    actionStatus.detach();
+    return true;
+}
+
+void SteamAPIAccess::subscribeMod(uint64_t id){
     SteamAPICall_t hAPICall;
     bool bItemSubscribed = SteamUGC()->SubscribeItem(id);
     if (bItemSubscribed)
@@ -243,7 +250,7 @@ void steamAPIAccess::subscribeMod(uint64_t id){
     }
 }
 
-void steamAPIAccess::unsubscribeMod(uint64_t id){
+void SteamAPIAccess::unsubscribeMod(uint64_t id){
     SteamAPICall_t hApiCall;
     bool bItemUnSubscribed = SteamUGC()->UnsubscribeItem(id);
     if (bItemUnSubscribed)
@@ -262,14 +269,14 @@ void steamAPIAccess::unsubscribeMod(uint64_t id){
     }
 }
 
-SteamUGCDetails_t steamAPIAccess::getModDetails(uint64_t id){
+SteamUGCDetails_t SteamAPIAccess::getModDetails(uint64_t id){
     SteamUGCDetails_t data;
     UGCQueryHandle_t qHandle;
     qHandle = SteamUGC()->CreateQueryUGCDetailsRequest(&id, 1);
 
     SteamAPICall_t hSteamApiCall = SteamUGC()->SendQueryUGCRequest(qHandle);
-    CCallResult<steamAPIAccess, SteamUGCQueryCompleted_t> sContentCall;
-    sContentCall.Set(hSteamApiCall, this, &steamAPIAccess::modCallback);
+    CCallResult<SteamAPIAccess, SteamUGCQueryCompleted_t> sContentCall;
+    sContentCall.Set(hSteamApiCall, this, &SteamAPIAccess::modCallback);
 
     SteamAPI_RunCallbacks();
     waitUntilCallNotFinished(&hSteamApiCall);
@@ -281,13 +288,13 @@ SteamUGCDetails_t steamAPIAccess::getModDetails(uint64_t id){
     return data;
 }
 
-void steamAPIAccess::modCallback(SteamUGCQueryCompleted_t* result, bool fail)
+void SteamAPIAccess::modCallback(SteamUGCQueryCompleted_t* result, bool fail)
 {
     if(fail)
         std::cout << "Failed steam UGC query for mod";
 }
 
-bool steamAPIAccess::waitUntilCallNotFinished(SteamAPICall_t *call)
+bool SteamAPIAccess::waitUntilCallNotFinished(SteamAPICall_t *call)
 {
     // Wait until the download is completed
     bool callCompleted = false;

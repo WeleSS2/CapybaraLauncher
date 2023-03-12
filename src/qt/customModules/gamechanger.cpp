@@ -164,14 +164,18 @@ void GameChanger::setCurrentGame(uint64_t index){
         SharedSteamToolsObj->LoadItemsToQuery();
         SharedSteamToolsObj->LoadItemsDataFromQuery();
     }
-    steamAPIAccess objSteam;
+
+
+    // IN work
+    SteamAPIAccess objSteam;
+    objSteam.closeGameSteamAPI();
     if(objSteam.runGameSteamAPI())
     {
         // Read data from the shared memory
         QString data;
-        if (!objSteam.readDataFromSharedMemory(data)) {
+        if (!objSteam.readDataFromSharedMemory<QString>(data)) {
             int limit = 0;
-            while(!objSteam.readDataFromSharedMemory(data) && limit < 10){
+            while(!objSteam.readDataFromSharedMemory<QString>(data) && limit < 10){
                 limit++;
                 Sleep(500);
             }
@@ -182,6 +186,8 @@ void GameChanger::setCurrentGame(uint64_t index){
         LoggingSystem::saveLog("gamechanger.cpp: setCurrentGame: Error while loading a mods.");
     }
 
+
+    // Local mods segment
     LocalMods objLocalMods;
     if(objLocalMods.gameFolderCheck())
     {

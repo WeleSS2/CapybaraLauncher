@@ -117,7 +117,7 @@ void QtGeneralBackend::importPack(){
           }
       }
       // Check did all of the mods are downloaded and available if not download them
-      steamAPIAccess SteamAPI;
+      SteamAPIAccess SteamAPI;
       for(int i = 0; i < mods.size() ; ++i){
           if(!mods[i].second)
           {
@@ -160,7 +160,7 @@ void QtGeneralBackend::updateMod(uint64_t id){
     Utility objUtility;
     objUtility.showSimpleInfoBox("Downloading mod with id: " + QString::fromStdString(std::to_string(id)));
 
-    steamAPIAccess SteamAPI;
+    SteamAPIAccess SteamAPI;
     SteamUGCDetails_t modDetails = SteamAPI.getModDetails(id);
 
     // Download the item
@@ -175,7 +175,7 @@ void QtGeneralBackend::addMod(uint64_t id){
     Utility objUtility;
     objUtility.showSimpleInfoBox("Downloading mod with id: " + QString::fromStdString(std::to_string(id)));
 
-    steamAPIAccess SteamAPI;
+    SteamAPIAccess SteamAPI;
     SteamAPI.subscribeMod(id);
 
     SteamUGCDetails_t modDetails = SteamAPI.getModDetails(id);
@@ -234,7 +234,7 @@ void QtGeneralBackend::addMod(uint64_t id){
 }
 
 void QtGeneralBackend::removeMod(uint64_t id){
-    steamAPIAccess SteamAPI;
+    SteamAPIAccess SteamAPI;
     for(int i = 0; i < SharedGlobalDataObj->Global_ModsDataObj.size(); ++i){
         if(SharedGlobalDataObj->Global_ModsDataObj[i].steamModGameId == id)
         {
@@ -320,6 +320,6 @@ void QtGeneralBackend::makeLocalCopy(uint64_t id)
 }
 
 void QtGeneralBackend::closeSteamAPIIfOn(){
-    steamAPIAccess obj;
+    SteamAPIAccess obj;
     obj.closeGameSteamAPI();
 }
