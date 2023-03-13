@@ -9,6 +9,7 @@
 #include <QFileInfo>
 #include <QProcess>
 #include <QDebug>
+#include <QRemoteObjectHost>
 
 void CSteamTools::LoadItemsToQuery()
 {
@@ -138,6 +139,14 @@ void CSteamTools::ItemsCallback(SteamUGCQueryCompleted_t * result, bool fail)
     SteamUGC()->ReleaseQueryUGCRequest(qHandle);
 }
 
+SteamAPIAccess::SteamAPIAccess(QObject* parent)
+    :QObject(parent)
+{
+    //QRemoteObjectHost* node = new QRemoteObjectHost(this);
+
+}
+
+
 // Run GameConnector with current steam_appid.txt
 bool SteamAPIAccess::runGameSteamAPI(){
     //QProcess process;
@@ -186,49 +195,6 @@ bool SteamAPIAccess::closeGameSteamAPI(){
         return true;
 
     LoggingSystem::saveLog("steamtools.cpp: closeGameSteamAPI: Closing GameConnector when closing a Capybara Launcher failed!");
-}
-
-bool SteamAPIAccess::setWorkToDo(){
-    QByteArray buffer;
-    QDataStream stream(&buffer, QIODevice::WriteOnly);
-
-    stream << false;
-
-    if(!actionStatus.attach()){
-        actionStatus.create(buffer.size());
-    }
-
-    actionStatus.lock();
-    char *to = (char*)actionStatus.data();
-    const char *from = buffer.constData();
-    memcpy(to, from, qMin(actionStatus.size(), buffer.size()));
-    actionStatus.unlock();
-    return true;
-}
-
-bool SteamAPIAccess::synchronizeWithGameConnector(){
-    Sleep(100);
-    if(!actionStatus.attach()){
-        return false;
-    }
-
-    QByteArray buffer;
-    buffer.resize(actionStatus.size());
-    actionStatus.lock();
-    const char *from = (const char*)actionStatus.constData();
-    char *to = buffer.data();
-    memcpy(to, from, qMin(actionStatus.size(), buffer.size()));
-    actionStatus.unlock();
-
-    bool status;
-    QDataStream stream(buffer);
-    stream >> status;
-
-    if(!status)
-        return false;
-
-    actionStatus.detach();
-    return true;
 }
 
 void SteamAPIAccess::subscribeMod(uint64_t id){

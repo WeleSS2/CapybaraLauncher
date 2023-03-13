@@ -1,71 +1,41 @@
-/* Shortly speaking, this code is a link between game session and main application
- *
- */
-
 #pragma once
+
 #include <QObject>
 #include <QVariant>
 #include <QtCore/QSharedMemory>
 #include <QtCore/QBuffer>
-#include <QtRemoteObjects/QRemoteObjectHost>
 
-#include <Windows.h>
-
-#include "steam_api.h"
-
-class SteamAPIAccessInterface : public QObject
+class GameConnectorSharedMemory : public QObject
 {
     Q_OBJECT
 public:
-    virtual const SteamAPICall_t getSteamAPICall() = 0;
-    virtual void loadModsFromSteam() = 0;
-    virtual void subscribeMod() = 0;
-    //virtual void unsubscribeMod() = 0;
-    virtual void getModDetails() = 0;
-};
+    explicit GameConnectorSharedMemory(QObject *parent = nullptr);
 
-class SteamAPIAccess : public QObject, public SteamAPIAccessInterface
-{
-    Q_OBJECT
-public:
-    explicit SteamAPIAccess(QObject* parent = nullptr);
-
-    const SteamAPICall_t getSteamAPICall() override;
-    void loadModsFromSteam() override;
-    void subscribeMod() override;
-    void getModDetails() override;
-
-public slots:
-    void unsubscribeMod(uint64_t id);
-
-signals:
-    void unsubscribeModSignal();
-
-private:
-    // Working with shared memory
     template<class T>
     void setDataToSharedMemory(T& data);
 
     template<class T>
     bool readDataFromSharedMemory(T& data);
 
-    bool setActionStatus(bool status);
+    bool setWorkToDo();
 
+    bool synchronizeWithGameConnector();
 
-    // SteamAPI
-    void modCallback(SteamUGCQueryCompleted_t* result, bool fail);
-    bool waitUntilCallNotFInished(SteamAPICall_t* call);
+signals:
 
-
-//Fields
+private:
+    //Status of action did GameConnector did hes job
     QSharedMemory actionStatus{"ActionStatus"};
+
+    //Memory to share data between apps
     QSharedMemory gameConnector{"GameConnector"};
-    SteamAPICall_t hSteamAPiCall;
+
 };
+
 
 // Read data from gameConnector
 template<class T>
-bool SteamAPIAccess::readDataFromSharedMemory(T& data)
+bool GameConnectorSharedMemory::readDataFromSharedMemory(T& data)
 {
     // Attach to the shared memory object
     if (!gameConnector.attach()) {
@@ -94,7 +64,7 @@ bool SteamAPIAccess::readDataFromSharedMemory(T& data)
 
 // Set data to gameConnector
 template<class T>
-void SteamAPIAccess::setDataToSharedMemory(T& data){
+void GameConnectorSharedMemory::setDataToSharedMemory(T& data){
     QByteArray buffer;
     QDataStream stream(&buffer, QIODevice::WriteOnly);
 
@@ -119,3 +89,5 @@ void SteamAPIAccess::setDataToSharedMemory(T& data){
 
     gameConnector.detach();
 }
+
+

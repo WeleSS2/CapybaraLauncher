@@ -5,6 +5,10 @@
 #include <QtCore/QDataStream>
 #include <QtCore/QCoreApplication>
 #include <QtCore/QBuffer>
+#include <QRemoteObjectHost>
+
+
+#include "../gameconnector/gameconnectorservice.h"
 
 #include "iostream"
 #include "steam_api.h"
@@ -39,7 +43,7 @@ public slots:
     void ItemsCallback(SteamUGCQueryCompleted_t * result, bool fail);
 };
 inline auto SharedSteamToolsObj = std::make_shared<CSteamTools>();
-
+/* To move/remove idk yet
 class SteamAPIAccessInterface : public QObject
 {
     Q_OBJECT
@@ -50,27 +54,17 @@ public:
     virtual void unsubscribeMod() = 0;
     virtual void getModDetails() = 0;
 };
-
+*/
 
 class SteamAPIAccess : public QObject//, public SteamAPIAccessInterface
 {
     Q_OBJECT
 public:
+    explicit SteamAPIAccess(QObject* parent = nullptr);
     bool runGameSteamAPI();
     bool closeGameSteamAPI();
 
-    template<class T>
-    void setDataToSharedMemory(T& data);
 
-    template<class T>
-    bool readDataFromSharedMemory(T& data);
-
-    bool setWorkToDo();
-
-    bool synchronizeWithGameConnector();
-
-
-    // Need to be reworked
     void subscribeMod(uint64_t id);
     void unsubscribeMod(uint64_t id);
     SteamUGCDetails_t getModDetails(uint64_t id);
@@ -78,64 +72,6 @@ public:
     bool waitUntilCallNotFinished(SteamAPICall_t* call);
 
 private:
-    QSharedMemory actionStatus{"ActionStatus"};
-    QSharedMemory gameConnector{"GameConnector"};
+
     SteamAPICall_t hSteamAPiCall;
 };
-
-// Read data from gameConnector
-template<class T>
-bool SteamAPIAccess::readDataFromSharedMemory(T& data)
-{
-    // Attach to the shared memory object
-    if (!gameConnector.attach()) {
-        qDebug() << "Failed to attach to shared memory:" << gameConnector.errorString();
-        qDebug() << gameConnector.attach();
-        return false;
-    }
-
-    // Read the data from the shared memory
-    QByteArray buffer;
-    buffer.resize(gameConnector.size());
-    gameConnector.lock();
-    const char *from = (const char*)gameConnector.constData();
-    char *to = buffer.data();
-    memcpy(to, from, qMin(gameConnector.size(), buffer.size()));
-    gameConnector.unlock();
-
-    QDataStream stream(buffer);
-    stream >> data;
-
-    // Detach from the shared memory object
-    gameConnector.detach();
-
-    return true;
-}
-
-// Set data to gameConnector
-template<class T>
-void SteamAPIAccess::setDataToSharedMemory(T& data){
-    QByteArray buffer;
-    QDataStream stream(&buffer, QIODevice::WriteOnly);
-
-    stream << data;
-
-    if(gameConnector.attach())
-    {
-        if(buffer.size() != gameConnector.size())
-        {
-            gameConnector.detach();
-            gameConnector.create(buffer.size());
-        }
-    }
-    else
-        gameConnector.create(buffer.size());
-
-    gameConnector.lock();
-    char *to = (char*)gameConnector.data();
-    const char *from = buffer.constData();
-    memcpy(to, from, qMin(gameConnector.size(), buffer.size()));
-    gameConnector.unlock();
-}
-
-

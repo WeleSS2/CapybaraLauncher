@@ -7,7 +7,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(QML_IMPORT_TRACE = 1)
-find_package(Qt6 COMPONENTS Gui Qml Quick)
+find_package(Qt6 REQUIRED COMPONENTS Gui Qml Quick RemoteObjects)
 set(ICON_FILE ${CMAKE_CURRENT_SOURCE_DIR}/content/resources/capybaraIcon.ico)
 set(RC_FILE ${CMAKE_CURRENT_SOURCE_DIR}/content/resources/capybaraIcon.rc)
 
@@ -34,6 +34,7 @@ target_link_libraries(WH3_Mod_MenagerApp PRIVATE
     Qt${QT_VERSION_MAJOR}::Gui
     Qt${QT_VERSION_MAJOR}::Quick
     Qt${QT_VERSION_MAJOR}::Qml
+    Qt${QT_VERSION_MAJOR}::RemoteObjects
     ${STEAMAPI_LIBRARIES}
 )
 

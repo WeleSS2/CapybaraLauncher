@@ -5,6 +5,7 @@
 #include "../../utility/loggingsystem.h"
 #include "../../steamtools.h"
 #include "../../localfiles/localmods.h"
+#include "../../steamapi/gameconnectorsharedmemory.h"
 
 GameChanger::GameChanger(QObject* parent)
     : QAbstractListModel(parent)
@@ -173,9 +174,10 @@ void GameChanger::setCurrentGame(uint64_t index){
     {
         // Read data from the shared memory
         QString data;
-        if (!objSteam.readDataFromSharedMemory<QString>(data)) {
+        GameConnectorSharedMemory memAccess;
+        if (!memAccess.readDataFromSharedMemory<QString>(data)) {
             int limit = 0;
-            while(!objSteam.readDataFromSharedMemory<QString>(data) && limit < 10){
+            while(!memAccess.readDataFromSharedMemory<QString>(data) && limit < 10){
                 limit++;
                 Sleep(500);
             }
