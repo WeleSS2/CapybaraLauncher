@@ -16,6 +16,7 @@
 //#include "qt/customModules/infobox.h"
 #include "utility/utility.h"
 #include "localfiles/localmods.h"
+#include "utility/loggingsystem.h"
 
 QtGeneralBackend::QtGeneralBackend(QObject *parent)
     : QObject{parent}
@@ -157,23 +158,16 @@ void QtGeneralBackend::updateLauncher(){
 void QtGeneralBackend::updateMod(uint64_t id){
 //    Utility objUtility;
 //    objUtility.showSimpleInfoBox("Downloading mod with id: " + QString::fromStdString(std::to_string(id)));
-//
-//    SteamAPIAccess SteamAPI;
-//    SteamUGCDetails_t modDetails = SteamAPI.getModDetails(id);
-//
-//    // Download the item
-//    SteamAPICall_t hDownloadItemResult = SteamUGC()->DownloadItem(id, true);
-//    SteamAPI_RunCallbacks();
-//
-//
-//    SteamAPI.waitUntilCallNotFinished(&hDownloadItemResult);
+
+    SteamApiAccess steamApi;
+    steamApi.updateMod(id);
 }
 
 void QtGeneralBackend::addMod(uint64_t id){
 //    Utility objUtility;
 //    objUtility.showSimpleInfoBox("Downloading mod with id: " + QString::fromStdString(std::to_string(id)));
 //
-//    SteamAPIAccess SteamAPI;
+//    SteamApiAccess SteamAPI;
 //    SteamAPI.subscribeMod(id);
 //
 //    SteamUGCDetails_t modDetails = SteamAPI.getModDetails(id);
@@ -232,89 +226,87 @@ void QtGeneralBackend::addMod(uint64_t id){
 }
 
 void QtGeneralBackend::removeMod(uint64_t id){
-//    SteamAPIAccess SteamAPI;
-//    for(int i = 0; i < SharedGlobalDataObj->Global_ModsDataObj.size(); ++i){
-//        if(SharedGlobalDataObj->Global_ModsDataObj[i].steamModGameId == id)
-//        {
-//            SharedGlobalDataObj->Global_ModsDataObj.erase(SharedGlobalDataObj->Global_ModsDataObj.begin() + i);
-//        }
-//    }
-//    SharedGlobalDataObj->Global_LocalSettingsObj.modsAmount--;
-//    std::string path = SharedGlobalDataObj->Global_LocalSettingsObj.currentGame.gamePath.toStdString()
-//            + "\\steamapps\\workshop\\content\\"
-//            + std::to_string(SharedGlobalDataObj->Global_LocalSettingsObj.currentGame.gameId)
-//            + "\\"
-//            + std::to_string(id);
-//    if(std::filesystem::exists(path)){
-//        std::filesystem::remove_all(path);
-//    }
-//    SteamAPI.unsubscribeMod(id);
+    for(int i = 0; i < GlobalDataObj->ModsDataObj.size(); ++i){
+        if(GlobalDataObj->ModsDataObj[i].steamModGameId == id)
+        {
+            GlobalDataObj->ModsDataObj.erase(GlobalDataObj->ModsDataObj.begin() + i);
+        }
+    }
+    GlobalDataObj->LocalSettingsObj.modsAmount--;
+
+    SteamApiAccess steamApi;
+
+    if(steamApi.unsubscribeMod(id)){
+        std::string path = GlobalDataObj->LocalSettingsObj.currentGame.gamePath.toStdString()
+                + "\\steamapps\\workshop\\content\\"
+                + std::to_string(GlobalDataObj->LocalSettingsObj.currentGame.gameId)
+                + "\\"
+                + std::to_string(id);
+        if(std::filesystem::exists(path)){
+            std::filesystem::remove_all(path);
+        }
+    }
 }
 
 void QtGeneralBackend::openLocalFiles(uint64_t id){
-//    ModsData tempAcc = SharedGlobalDataObj->getModById(id);
-//    if(tempAcc.steamModGameId != 0){
-//        std::string path = SharedGlobalDataObj->Global_LocalSettingsObj.currentGame.gamePath.toStdString()
-//                + "\\steamapps\\workshop\\content\\"
-//                + std::to_string(SharedGlobalDataObj->Global_LocalSettingsObj.currentGame.gameId)
-//                + "\\"
-//                + std::to_string(tempAcc.steamModGameId);
-//        if(std::filesystem::exists(path)){
-//            QUrl folderUrl = QUrl::fromLocalFile(QString::fromStdString(path));
-//            QDesktopServices::openUrl(folderUrl);
-//        }
-//    }
-//    else
-//    {
-//        std::string path = SharedGlobalDataObj->Global_LocalSettingsObj.localPath
-//                + "\\LocalMods"
-//                + "\\"
-//                + std::to_string(SharedGlobalDataObj->Global_LocalSettingsObj.currentGame.gameId);
-//        if(std::filesystem::exists(path)){
-//            QUrl folderUrl = QUrl::fromLocalFile(QString::fromStdString(path));
-//            QDesktopServices::openUrl(folderUrl);
-//        }
-//    }
+    if(GlobalDataObj->getModById(id)->steamModGameId != 0){
+        std::string path = GlobalDataObj->LocalSettingsObj.currentGame.gamePath.toStdString()
+                + "\\steamapps\\workshop\\content\\"
+                + std::to_string(GlobalDataObj->LocalSettingsObj.currentGame.gameId)
+                + "\\"
+                + std::to_string(GlobalDataObj->getModById(id)->steamModGameId);
+        if(std::filesystem::exists(path)){
+            QUrl folderUrl = QUrl::fromLocalFile(QString::fromStdString(path));
+            QDesktopServices::openUrl(folderUrl);
+        }
+    }
+    else
+    {
+        std::string path = GlobalDataObj->LocalSettingsObj.localPath.toStdString()
+                + "\\LocalMods"
+                + "\\"
+                + std::to_string(GlobalDataObj->LocalSettingsObj.currentGame.gameId);
+        if(std::filesystem::exists(path)){
+            QUrl folderUrl = QUrl::fromLocalFile(QString::fromStdString(path));
+            QDesktopServices::openUrl(folderUrl);
+        }
+    }
 }
 
 void QtGeneralBackend::makeLocalCopy(uint64_t id)
 {
-//    qDebug() << QString::fromStdString(std::to_string(id)) << QString::fromStdString(SharedGlobalDataObj->getModBySteamId(id).steamPackname);
-//    std::string pathFrom = SharedGlobalDataObj->Global_LocalSettingsObj.currentGame.gamePath.toStdString()
-//            + "\\steamapps\\workshop\\content\\"
-//            + std::to_string(SharedGlobalDataObj->Global_LocalSettingsObj.currentGame.gameId)
-//            + "\\"
-//            + std::to_string(id)
-//            + "\\"
-//            + SharedGlobalDataObj->getModBySteamId(id).steamPackname;
-//    qDebug() << QString::fromStdString(std::to_string(id));
-//    std::string pathTo = SharedGlobalDataObj->Global_LocalSettingsObj.localPath
-//            + "\\LocalMods\\"
-//            + std::to_string(SharedGlobalDataObj->Global_LocalSettingsObj.currentGame.gameId)
-//            + "\\"
-//            + SharedGlobalDataObj->getModBySteamId(id).steamPackname;
-//    qDebug() << QString::fromStdString(pathFrom) <<
-//                QString::fromStdString(pathTo);
-//    if(std::filesystem::exists(pathFrom))
-//    {
-//        if(!std::filesystem::exists(pathTo))
-//        {
-//            QFile::copy(QString::fromStdString(pathFrom),
-//                        QString::fromStdString(pathTo));
-//
-//
-//            LocalMods objLocalMods;
-//            objLocalMods.loadSingleMod(std::filesystem::directory_entry(pathTo), pathTo);
-//        }
-//        else
-//        {
-//            LoggingSystem::saveLog("qtgeneralbackend.cpp: makeLocalCopy: Failed to copy mod to a local version");
-//        }
-//    }
-//    else
-//    {
-//        LoggingSystem::saveLog("qtgeneralbackend.cpp: makeLocalCopy: Failed to copy mod from steam folder");
-//    }
+    std::string pathFrom = GlobalDataObj->LocalSettingsObj.currentGame.gamePath.toStdString()
+            + "\\steamapps\\workshop\\content\\"
+            + std::to_string(GlobalDataObj->LocalSettingsObj.currentGame.gameId)
+            + "\\"
+            + std::to_string(id)
+            + "\\"
+            + GlobalDataObj->getModBySteamId(id)->steamPackname.toStdString();
+    std::string pathTo = GlobalDataObj->LocalSettingsObj.localPath.toStdString()
+            + "\\LocalMods\\"
+            + std::to_string(GlobalDataObj->LocalSettingsObj.currentGame.gameId)
+            + "\\"
+            + GlobalDataObj->getModBySteamId(id)->steamPackname.toStdString();
+    if(std::filesystem::exists(pathFrom))
+    {
+        if(!std::filesystem::exists(pathTo))
+        {
+            QFile::copy(QString::fromStdString(pathFrom),
+                        QString::fromStdString(pathTo));
+
+
+            LocalMods objLocalMods;
+            objLocalMods.loadSingleMod(std::filesystem::directory_entry(pathTo), pathTo);
+        }
+        else
+        {
+            LoggingSystem::saveLog("qtgeneralbackend.cpp: makeLocalCopy: Failed to copy mod to a local version");
+        }
+    }
+    else
+    {
+        LoggingSystem::saveLog("qtgeneralbackend.cpp: makeLocalCopy: Failed to copy mod from steam folder");
+    }
 }
 
 void QtGeneralBackend::closeSteamAPIIfOn(){

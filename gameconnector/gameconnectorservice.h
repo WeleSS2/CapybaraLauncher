@@ -39,9 +39,9 @@ public:
     explicit GameConnectorService(QObject *parent = nullptr);
 
     // From QtGeneralBackend
-    void updateMod(uint64_t id);
-    SteamUGCDetails_t addMod(uint64_t id);
-    void removeMod(uint64_t id);
+    bool updateMod(uint64_t id);
+    bool subscribeMod(uint64_t id);
+    bool unsubscribeMod(uint64_t id);
 
 
     // SteamTools.cpp ported here. READY
@@ -53,6 +53,7 @@ public:
     void loadItemsDataFromQuery();
     void saveToModsData();
     void itemsCallback(SteamUGCQueryCompleted_t* result, bool fail);
+    bool waitUntilCallNotFinished(SteamAPICall_t *call);
 
     // Return copy of items, i'm not sure on which thread server is running so it's save.
     // ACCESS

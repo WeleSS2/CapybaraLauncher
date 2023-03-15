@@ -5,7 +5,7 @@ GameConnectorService::GameConnectorService(QObject *parent)
 {
 
 }
-
+//---------------  Modslist e.t.c---------------
 void GameConnectorService::loadModsFromSteam(){
     loadItemsToQuery();
     loadItemsDataFromQuery();
@@ -75,4 +75,78 @@ void GameConnectorService::itemsCallback(SteamUGCQueryCompleted_t* result, bool 
     }
 
     SteamUGC()->ReleaseQueryUGCRequest(qHandle);
+}
+//---------------- Single mods and others
+
+bool GameConnectorService::updateMod(uint64_t id){
+    SteamAPICall_t hDownloadItemResult = SteamUGC()->DownloadItem(id, true);
+    SteamAPI_RunCallbacks();
+
+    waitUntilCallNotFinished(&hDownloadItemResult);
+    return true;
+}
+
+bool GameConnectorService::subscribeMod(uint64_t id){
+    SteamAPICall_t hDownloadItemResult;
+    bool bItemSubscribed = SteamUGC()->SubscribeItem(id);
+    if (bItemSubscribed)
+    {
+        uint64_t downloadBytes, totalBytes;
+        while (true)
+        {
+            SteamUGC()->GetItemDownloadInfo(id, &downloadBytes, &totalBytes);
+            if (downloadBytes == totalBytes)
+            {
+                return true;
+            }
+            QThread::sleep(50);
+        }
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool GameConnectorService::unsubscribeMod(uint64_t id){
+    if(id == 0)
+    {
+        return false;
+    }
+    SteamAPICall_t hDownloadItemResult;
+    bool bItemUnsubscribed = SteamUGC()->UnsubscribeItem(id);
+    if (bItemUnsubscribed)
+    {
+        uint64_t downloadBytes, totalBytes;
+        while (true)
+        {
+            SteamUGC()->GetItemDownloadInfo(id, &downloadBytes, &totalBytes);
+            qDebug() << id << downloadBytes << totalBytes;
+
+            if (downloadBytes == 0 && totalBytes == 0)
+            {
+                return true;
+            }
+
+            QThread::sleep(50);
+        }
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool GameConnectorService::waitUntilCallNotFinished(SteamAPICall_t *call)
+{
+    // Wait until the download is completed
+    bool callCompleted = false;
+    bool finished = SteamUtils()->IsAPICallCompleted(*call, &callCompleted);
+
+    while (!callCompleted) {
+        SteamAPI_RunCallbacks();
+        finished = SteamUtils()->IsAPICallCompleted(*call, &callCompleted);
+        std::this_thread::sleep_for(std::chrono::milliseconds(10)); // Add a small delay to reduce CPU usage
+    }
+    return callCompleted;
 }

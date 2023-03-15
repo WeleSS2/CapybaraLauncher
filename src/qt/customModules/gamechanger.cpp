@@ -159,30 +159,6 @@ void GameChanger::setCurrentGame(uint64_t index){
         objSteamApiAccess.setModsPackname();
     }
 
-    // IN work
-    //SteamAPIAccess objSteam;
-    //objSteam.closeGameSteamAPI();
-    //if(objSteam.runGameSteamAPI())
-    //{
-    //    SteamApiAccess objTest;
-    //    qDebug() << objTest.callTestFunction();
-    //    // Read data from the shared memory
-    //    //QString data;
-    //    //GameConnectorSharedMemory memAccess;
-    //    //if (!memAccess.readDataFromSharedMemory<QString>(data)) {
-    //    //    int limit = 0;
-    //    //    while(!memAccess.readDataFromSharedMemory<QString>(data) && limit < 10){
-    //    //        limit++;
-    //    //        Sleep(500);
-    //    //    }
-    //    //}
-    //}
-    //else
-    //{
-    //    LoggingSystem::saveLog("gamechanger.cpp: setCurrentGame: Error while loading a mods.");
-    //}
-
-
     // Local mods segment
     LocalMods objLocalMods;
     if(objLocalMods.gameFolderCheck())

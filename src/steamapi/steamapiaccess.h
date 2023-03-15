@@ -25,13 +25,18 @@ public:
     // Set local path for every mod
     void setModsPackname();
 
+
+    // Update mod from steam
+    bool updateMod(uint64_t id);
+    // Subscribe mod on steam
+    bool subscribeMod(uint64_t id);
+    // Unsubscribe mod from steam
+    bool unsubscribeMod(uint64_t id);
+
     // Connect to the server
     void linkToServer(QLocalSocket* socket, int maxAttempts);
 
 
-
-    void subscribeMod(uint64_t id);
-    void unsubscribeMod(uint64_t id);
     SteamUGCDetails_t getModDetails(uint64_t id);
     void modCallback(SteamUGCQueryCompleted_t* result, bool fail);
     bool waitUntilCallNotFinished(SteamAPICall_t* call);

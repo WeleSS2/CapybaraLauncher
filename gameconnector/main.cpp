@@ -59,7 +59,6 @@ int main(int argc, char *argv[]){
     QCoreApplication a(argc, argv);
 
     //Instances for server
-    SteamAPIAccess *ptrSteamAPIAccess = new SteamAPIAccess;
     GameConnectorService *ptrGameConnector = new GameConnectorService;
 
     if(SteamAPI_Init())
@@ -93,14 +92,11 @@ int main(int argc, char *argv[]){
                     ptrGameConnector->loadModsFromSteam();
                 }
                 else if(functionName == "getModsData"){
-                    qDebug() << "Server: sended steam Mods Data";
                     while(!ptrGameConnector->getStatus())
                     {
                         qDebug() << ptrGameConnector->getStatus();
                         QThread::sleep(250);
                     }
-                    qDebug() << ptrGameConnector->getModsData().size()
-                             << ptrGameConnector->getItemsId().size();
                     socket->write(toByteArray<QVector<sModsData>>(ptrGameConnector->getModsData()));
 
                 }
@@ -110,8 +106,17 @@ int main(int argc, char *argv[]){
                 else if(functionName == "getItemsId"){
                     socket->write(toByteArray<QVector<uint64_t>>(ptrGameConnector->getItemsId()));
                 }
-                else if(functionName == ""){
-
+                else if(functionName == "updateMod"){
+                    uint64_t modId = message.section(",", 1, 1).toULongLong();
+                    socket->write(toByteArray<bool>(ptrGameConnector->updateMod(modId)));
+                }
+                else if(functionName == "subscribeMod"){
+                    uint64_t modId = message.section(",", 1, 1).toULongLong();
+                    socket->write(toByteArray<bool>(ptrGameConnector->subscribeMod(modId)));
+                }
+                else if(functionName == "unsubscribeMod"){
+                    uint64_t modId = message.section(",", 1, 1).toULongLong();
+                    socket->write(toByteArray<bool>(ptrGameConnector->unsubscribeMod(modId)));
                 }
                 else {
                     socket->write("Error: Unknown function name");

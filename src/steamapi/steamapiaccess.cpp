@@ -150,6 +150,99 @@ void SteamApiAccess::setModsPackname(){
     }
 }
 
+bool SteamApiAccess::updateMod(uint64_t id){
+    QLocalSocket socket;
+    linkToServer(&socket, 20);
+    if(!socket.waitForConnected(2000))
+    {
+        LoggingSystem::saveLog("SteamApiAccess: loadModsDataSteam: Failed to load steam data");
+        return false;
+    }
+    else
+    {
+        QString message = "updateMod," + QString::fromStdString(std::to_string(id));
+        socket.write(message.toUtf8());
+        socket.flush();
+        if(socket.waitForReadyRead(3600000)){
+            bool check;
+            QByteArray data = socket.readAll();
+            QDataStream in(data);
+            in >> check;
+            if(check)
+                return true;
+            else
+                return false;
+        }
+        else
+        {
+            LoggingSystem::saveLog("SteamApiAccess: getSaveModsData: Failed to load data from server");
+            return false;
+        }
+    }
+}
+
+bool SteamApiAccess::subscribeMod(uint64_t id){
+    QLocalSocket socket;
+    linkToServer(&socket, 20);
+    if(!socket.waitForConnected(2000))
+    {
+        LoggingSystem::saveLog("SteamApiAccess: loadModsDataSteam: Failed to load steam data");
+        return false;
+    }
+    else
+    {
+        QString message = "subscribeMod," + QString::fromStdString(std::to_string(id));
+        socket.write(message.toUtf8());
+        socket.flush();
+        if(socket.waitForReadyRead(3600000)){
+            bool check;
+            QByteArray data = socket.readAll();
+            QDataStream in(data);
+            in >> check;
+            if(check)
+                return true;
+            else
+                return false;
+        }
+        else
+        {
+            LoggingSystem::saveLog("SteamApiAccess: getSaveModsData: Failed to load data from server");
+            return false;
+        }
+    }
+}
+
+bool SteamApiAccess::unsubscribeMod(uint64_t id){
+    QLocalSocket socket;
+    linkToServer(&socket, 20);
+    if(!socket.waitForConnected(2000))
+    {
+        LoggingSystem::saveLog("SteamApiAccess: loadModsDataSteam: Failed to load steam data");
+        return false;
+    }
+    else
+    {
+        QString message = "unsubscribeMod," + QString::fromStdString(std::to_string(id));
+        socket.write(message.toUtf8());
+        socket.flush();
+        if(socket.waitForReadyRead(3600000)){
+            bool check;
+            QByteArray data = socket.readAll();
+            QDataStream in(data);
+            in >> check;
+            if(check)
+                return true;
+            else
+                return false;
+        }
+        else
+        {
+            LoggingSystem::saveLog("SteamApiAccess: getSaveModsData: Failed to load data from server");
+            return false;
+        }
+    }
+}
+
 // socket to connect and maxAttemps to connect, delay between attemps is 250ms
 void SteamApiAccess::linkToServer(QLocalSocket* socket, int maxAttemps){
     for(int i = 0; i < maxAttemps; ++i){
@@ -163,14 +256,6 @@ void SteamApiAccess::linkToServer(QLocalSocket* socket, int maxAttemps){
         }
     }
 }
-
-
-
-
-
-
-
-
 
 
 QString SteamApiAccess::callTestFunction(){
