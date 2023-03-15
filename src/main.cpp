@@ -77,48 +77,60 @@
  * Requests:
  * By Ole (discord) - Hey, any plans for adding support for merging files with the mood launcher? I am close to finish the needed tools for audio modding, but it will quickly need some mod manager support to merge multiple audio mods.
  *
+ *
+ *
+ * TODO:
+ * LOG01 - IMPLEMENTATION FOR LOGS, find later and fill
  */
+
+// Qt neccesary
 #include <QGuiApplication>
+#include <QQmlApplicationEngine>
 
 #include <QObject>
 #include <QQmlContext>
 #include <QQmlProperty>
 
-
 #include "app_environment.h"
-#include "import_qml_plugins.h"
-#include "steam_api.h"
-#include "windowsfunctions.h"
 
-#include "globaldata.h"
-#include "exit.h"
-#include "cmodslistfile.h"
-#include "cmodslistfilling.h"
-#include "modpackslist.h"
+// Other files
+
+
+
+// Other custom files
 #include "qtgeneralbackend.h"
-
-#include "qt/customModules/infobox.h"
-#include "qt/customModules/gamechanger.h"
-
-#include "utility/filesoperations.h"
 #include "utility/loggingsystem.h"
+#include "localfiles/localfiles.h"
+#include "system/windowsfunctions.h"
+#include "qt/customModules/gamechanger.h"
+#include "qt/customModules/modslistfile.h"
+#include "qt/customModules/modpackslist.h"
+//#include "qt/customModules/infobox.h"
 
-#include "localfiles.h"
-#include "localfiles/localmods.h"
-
-class steam
-{
-public:
-    steam()
-    {
-        if(SteamAPI_Init())
-        {
-            CSteamTools steamOperations;
-            SharedSteamToolsObj->LoadItemsToQuery();
-            SharedSteamToolsObj->LoadItemsDataFromQuery();
-        }
-    };
-};
+//#include "import_qml_plugins.h"
+//#include "steam_api.h"
+//
+//#include "globaldata.h"
+//#include "exit.h"
+//#include "modpackslist.h"
+//
+//
+//#include "utility/filesoperations.h"
+//#include "localfiles/localmods.h"
+//
+//class steam
+//{
+//public:
+//    steam()
+//    {
+//        if(SteamAPI_Init())
+//        {
+//            CSteamTools steamOperations;
+//            SharedSteamToolsObj->LoadItemsToQuery();
+//            SharedSteamToolsObj->LoadItemsDataFromQuery();
+//        }
+//    };
+//};
 
 void settingsLoading()
 {
@@ -140,43 +152,35 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
-    SharedGlobalDataObj->enginePtr = &engine;
+    GlobalDataObj->enginePtr = &engine;
 
     QCoreApplication::setApplicationVersion("v0.0.5");
-
-
-    // WORKSPACE
-    // settings are doubled due to work over transfer to .js
-    // DO NOT WORK (can't be commented)
-
-    FilesOperations objFilesOperations;
-    objFilesOperations.loadSettings(); // Not working now
-    engine.rootContext()->setContextProperty("objFilesOperations", &objFilesOperations);
-
-    // -DO NOT WORK
-
 
     LoggingSystem::clearLogs();
 
 
+    // WORKSPACE
+    // settings are doubled due to work over transfer to .js
+    // DO NOT WORK
+    //
+    //FilesOperations objFilesOperations;
+    //objFilesOperations.loadSettings(); // Not working now
+    //engine.rootContext()->setContextProperty("objFilesOperations", &objFilesOperations);
+    //
+    // -DO NOT WORK
 
-
-    cexit exit_obj;
-    engine.rootContext()->setContextProperty("exit_obj", &exit_obj);
 
     localFiles localFilesObj;
     engine.rootContext()->setContextProperty("localFilesObj", &localFilesObj);
-
 
     // Temporary must be fired always (And i think will stay like that permamently)
     WindowsFunctions winFun;
     winFun.getSteamPathFromRegistry();
 
-
     settingsLoading();
-    //SharedGlobalDataObj->Global_LocalSettingsObj.currentGame = SharedGlobalDataObj->Global_LocalSettingsObj.installedGames[0];
+    //GlobalDataObj->LocalSettingsObj.currentGame = GlobalDataObj->LocalSettingsObj.installedGames[0];
     //{
-    //    if(SharedGlobalDataObj->Global_LocalSettingsObj.currentGame.gameId != 0)
+    //    if(GlobalDataObj->LocalSettingsObj.currentGame.gameId != 0)
     //    {
     //        steam runSteam;
 
@@ -195,29 +199,9 @@ int main(int argc, char *argv[])
     //    }
     //}
 
-
-    // WORKSPACE
-
-    QtGeneralBackend qtGeneralBackendObj;
-    engine.rootContext()->setContextProperty("qtGeneralBackendObj", &qtGeneralBackendObj);
-
-
-
-    qmlRegisterType<CModsListFile>("CModsList", 1, 0, "CModsListFile");
-    qmlRegisterUncreatableType<cmodslistfilling>("CModsList", 1, 0, "Cmodslistfilling", QString("Sometthing"));
-
-    cmodslistfilling Objcmodslistfilling;
-    engine.rootContext()->setContextProperty("Objcmodslistfilling", &Objcmodslistfilling);
-
-//---------------------------------
-
-    qmlRegisterType<ModpacksList>("ModPacksList", 1, 0, "ModpacksList");
-    qmlRegisterUncreatableType<ModpacksContent>("ModPacksList", 1, 0, "ModpacksContent", QString("Sometthing"));
-
-    ModpacksContent ObjModpacksContent;
-    engine.rootContext()->setContextProperty("ObjModpacksContent", &ObjModpacksContent);
-
-//---------------------------------------
+    //---------------------------------------------
+    //                 GameChanger
+    //---------------------------------------------
 
     qmlRegisterType<GameChanger>("cGameChangerListUrl", 1, 0, "GameChanger");
     qmlRegisterUncreatableType<cGameChangerList>("cGameChangerListUrl", 1, 0, "GameChangerList", QString("I dont have any reason"));
@@ -225,10 +209,41 @@ int main(int argc, char *argv[])
     cGameChangerList objcGameChangerList;
     engine.rootContext()->setContextProperty("ObjcGameChangerList", &objcGameChangerList);
 
-//---------------------------------------------
+    //---------------------------------------------
+    //                  ModsList
+    //---------------------------------------------
 
-    InfoBox ObjInfoBox;
-    engine.rootContext()->setContextProperty("ObjInfoBox", &ObjInfoBox);
+    qmlRegisterType<Mods>("cMods", 1, 0, "Mods");
+    qmlRegisterUncreatableType<ModsList>("cMods", 1, 0, "ModsList", QString("Sometthing"));
+
+    ModsList objModsList;
+    engine.rootContext()->setContextProperty("objModsList", &objModsList);
+
+    //--------------------------------------------
+    //               Local Modpacks
+    //--------------------------------------------
+
+    qmlRegisterType<ModpacksList>("ModPacksList", 1, 0, "ModpacksList");
+    qmlRegisterUncreatableType<ModpacksContent>("ModPacksList", 1, 0, "ModpacksContent", QString("Sometthing"));
+
+    ModpacksContent ObjModpacksContent;
+    engine.rootContext()->setContextProperty("ObjModpacksContent", &ObjModpacksContent);
+
+    //--------------------------------------------
+    //                QtGeneralBackend
+    //--------------------------------------------
+
+    QtGeneralBackend qtGeneralBackendObj;
+    engine.rootContext()->setContextProperty("qtGeneralBackendObj", &qtGeneralBackendObj);
+
+    //--------------------------------------------
+    //                  InfoBox
+    //--------------------------------------------
+
+    //InfoBox ObjInfoBox;
+    //engine.rootContext()->setContextProperty("ObjInfoBox", &ObjInfoBox);
+
+    //--------------------------------------------
 
 
     const QUrl url(u"qrc:Main/main.qml"_qs);

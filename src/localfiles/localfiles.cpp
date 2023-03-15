@@ -1,9 +1,11 @@
 #include "localfiles.h"
-#include "globaldata.h"
-#include "localfiles/localmods.h"
 #include <fstream>
 #include <filesystem>
 #include <algorithm>
+
+#include "../globaldata.h"
+#include "../utility/loggingsystem.h"
+//#include "localfiles/localmods.h"
 
 
 // Depraceted due to using now .js files to save/load data
@@ -17,7 +19,11 @@ bool localFiles::findLocalFolder()
     char *pValue;
     size_t len;
     errno_t err = _dupenv_s(&pValue, &len, "APPDATA");
-    if (err) return success;
+    if (err)
+    {
+        LoggingSystem::saveLog("localfiles: findLocalFolder: Error can't get APPDATA");
+        return success;
+    }
     else
     {
         std::string path = std::string(pValue) + "\\CapybaraLaunchers";
@@ -28,14 +34,14 @@ bool localFiles::findLocalFolder()
             if(std::filesystem::is_directory(pathWh3))
             {
                 localWh3Path = pathWh3;
-                SharedGlobalDataObj->Global_LocalSettingsObj.localPath = pathWh3;
+                GlobalDataObj->LocalSettingsObj.localPath = QString::fromStdString(pathWh3);
                 success = true;
             }
             else
             {
                 std::filesystem::create_directory(pathWh3);
                 localWh3Path = pathWh3;
-                SharedGlobalDataObj->Global_LocalSettingsObj.localPath = pathWh3;
+                GlobalDataObj->LocalSettingsObj.localPath = QString::fromStdString(pathWh3);
                 success = true;
             }
         }
@@ -43,7 +49,7 @@ bool localFiles::findLocalFolder()
         {
             std::filesystem::create_directories(pathWh3);
             localWh3Path = pathWh3;
-            SharedGlobalDataObj->Global_LocalSettingsObj.localPath = pathWh3;
+            GlobalDataObj->LocalSettingsObj.localPath = QString::fromStdString(pathWh3);
             success = true;
         }
         if(std::filesystem::is_directory(modpacksPath))
@@ -79,14 +85,26 @@ void localFiles::saveLocalSettings()
         file.open(settingsPath, std::ios::out);
 
         file << "\"state\" " << "1" << "\n";
-        file << "\"steampath\" " << SharedGlobalDataObj->Global_LocalSettingsObj.steampath << "\n";
-        file << "\"defaultGame\" " << SharedGlobalDataObj->Global_LocalSettingsObj.defaultGame << "\n";
-        file << "\"gamepath\" " << SharedGlobalDataObj->getGameById(1142710).gamePath.toStdString() << "\n";
-        file << "\"wh1Path\" " << SharedGlobalDataObj->getGameById(364360).gamePath.toStdString() <<  "\n";
-        file << "\"wh2Path\" " << SharedGlobalDataObj->getGameById(594570).gamePath.toStdString() << "\n";
-        file << "\"wh3KingPath\" " << SharedGlobalDataObj->getGameById(779340).gamePath.toStdString() << "\n";
-        file << "\"whTroyPath\" " << SharedGlobalDataObj->getGameById(1099410).gamePath.toStdString() << "\n";
-        file << "\"whRomeRemPath\" " << SharedGlobalDataObj->getGameById(885970).gamePath.toStdString() << "\n";
+        file << "\"steampath\" " << GlobalDataObj->LocalSettingsObj.steampath.toStdString() << "\n";
+        file << "\"defaultGame\" " << GlobalDataObj->LocalSettingsObj.defaultGame << "\n";
+        if(GlobalDataObj->getGameById(1142710) != nullptr){
+            file << "\"gamepath\" " << GlobalDataObj->getGameById(1142710)->gamePath.toStdString() << "\n";
+        }
+        if(GlobalDataObj->getGameById(364360) != nullptr){
+            file << "\"wh1Path\" " << GlobalDataObj->getGameById(364360)->gamePath.toStdString() <<  "\n";
+        }
+        if(GlobalDataObj->getGameById(594570) != nullptr){
+            file << "\"wh2Path\" " << GlobalDataObj->getGameById(594570)->gamePath.toStdString() << "\n";
+        }
+        if(GlobalDataObj->getGameById(779340) != nullptr){
+            file << "\"wh3KingPath\" " << GlobalDataObj->getGameById(779340)->gamePath.toStdString() << "\n";
+        }
+        if(GlobalDataObj->getGameById(1099410) != nullptr){
+            file << "\"whTroyPath\" " << GlobalDataObj->getGameById(1099410)->gamePath.toStdString() << "\n";
+        }
+        if(GlobalDataObj->getGameById(885970) != nullptr){
+            file << "\"whRomeRemPath\" " << GlobalDataObj->getGameById(885970)->gamePath.toStdString() << "\n";
+        }
         file.close();
     }
 }
@@ -112,59 +130,59 @@ void localFiles::loadLocalSettings()
             {
                 if(text == "\"state\"")
                 {
-                    file >> SharedGlobalDataObj->Global_LocalSettingsObj.settingsLoaded;
+                    file >> GlobalDataObj->LocalSettingsObj.settingsLoaded;
                 }
                 else if(text == "\"steampath\"")
                 {
                     std::string show;
                     getline(file, show);
                     show.erase(0, 1);
-                    SharedGlobalDataObj->Global_LocalSettingsObj.steampath = show;
+                    GlobalDataObj->LocalSettingsObj.steampath = QString::fromStdString(show);
                 }
                 else if (text == "\"defaultGame\"")
                 {
                     std::string show;
                     getline(file, show);
                     if(show.length() > 4){
-                        SharedGlobalDataObj->Global_LocalSettingsObj.defaultGame = std::stoi(show);
-                        SharedGlobalDataObj->Global_LocalSettingsObj.currentGame = SharedGlobalDataObj->getGameById(std::stoi(show));
+                        GlobalDataObj->LocalSettingsObj.defaultGame = std::stoi(show);
+                        GlobalDataObj->LocalSettingsObj.currentGame = *GlobalDataObj->getGameById(std::stoi(show));
                     }
                 }
                 else if(text == "\"gamepath\"")
                 {
                     std::string show;
                     getline(file, show);
-                    saveTo(&SharedGlobalDataObj->getGameById(1142710).gamePath, show);
+                    saveTo(&GlobalDataObj->getGameById(1142710)->gamePath, show);
                 }
                 else if(text == "\"wh1Path\"")
                 {
                     std::string show;
                     getline(file, show);
-                    saveTo(&SharedGlobalDataObj->getGameById(364360).gamePath, show);
+                    saveTo(&GlobalDataObj->getGameById(364360)->gamePath, show);
                 }
                 else if(text == "\"wh2Path\"")
                 {
                     std::string show;
                     getline(file, show);
-                    saveTo(&SharedGlobalDataObj->getGameById(594570).gamePath, show);
+                    saveTo(&GlobalDataObj->getGameById(594570)->gamePath, show);
                 }
                 else if (text == "\"wh3KingPath\"")
                 {
                     std::string show;
                     getline(file, show);
-                    saveTo(&SharedGlobalDataObj->getGameById(779340).gamePath, show);
+                    saveTo(&GlobalDataObj->getGameById(779340)->gamePath, show);
                 }
                 else if(text == "\"whTroyPath\"")
                 {
                     std::string show;
                     getline(file, show);
-                    saveTo(&SharedGlobalDataObj->getGameById(1099410).gamePath, show);
+                    saveTo(&GlobalDataObj->getGameById(1099410)->gamePath, show);
                 }
                 else if(text == "\"whRomeRemPath\"")
                 {
                     std::string show;
                     getline(file, show);
-                    saveTo(&SharedGlobalDataObj->getGameById(885970).gamePath, show);
+                    saveTo(&GlobalDataObj->getGameById(885970)->gamePath, show);
                 }
             }
         }
@@ -179,12 +197,11 @@ bool localFiles::saveTo(QString* target, std::string& value)
     {
         value.erase(0, 1);
         *target = QString::fromStdString(value);
-        SharedGlobalDataObj->Global_LocalSettingsObj.numInstalledGames++;
+        GlobalDataObj->LocalSettingsObj.numInstalledGames++;
         return true;
     }
     else
     {
-        *target = "";
         return false;
     }
 }

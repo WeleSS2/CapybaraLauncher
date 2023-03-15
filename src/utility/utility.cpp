@@ -5,7 +5,7 @@
 #include <QEventLoop>
 
 #include "../globaldata.h"
-#include "../qt/customModules/infobox.h"
+//#include "../qt/customModules/infobox.h"
 
 Utility::Utility()
 {
@@ -26,11 +26,11 @@ void Utility::qtWait(uint64_t _time){
 }
 
 void Utility::showSimpleInfoBox(QString _text){
-    auto ObjInfoBox = std::make_shared<InfoBox>();
-    ObjInfoBox->setBoxText(_text);
+    //auto ObjInfoBox = std::make_shared<InfoBox>();
+    //ObjInfoBox->setBoxText(_text);
 
-    ObjInfoBox->setBoxStatus(1);
-    SharedGlobalDataObj->enginePtr->rootContext()->setContextProperty("ObjInfoBox", ObjInfoBox.get());
+    //ObjInfoBox->setBoxStatus(1);
+    //GlobalDataObj->enginePtr->rootContext()->setContextProperty("ObjInfoBox", ObjInfoBox.get());
 
-    qtWait(1000);
+    //qtWait(1000);
 }

@@ -1,8 +1,7 @@
 import QtQuick
 import QtQuick.Controls 2.5
-import WH3_Mod_Menager
 
-import CModsList
+import cMods
 
 Item {
     id: mainMouseArea
@@ -27,10 +26,10 @@ Item {
         clip: true
         Component.onCompleted: {
                 // Set the pointer to the ListView instance
-                Objcmodslistfilling.setListViewPointer(modsList);
+                objModsList.setListViewPointer(modsList);
         }
-        model: CModsListFile {
-            list: Objcmodslistfilling
+        model: Mods {
+            list: objModsList
         }
 
 
@@ -284,11 +283,12 @@ Item {
                     x: -10
                     y: -10
                     onClicked: (mouse)=>{
-                                   Objcmodslistfilling.sortByActive();
+                                   objModsList.sortByActive();
                                    refreshModlistTo0();
-
-
                                    onEnable();
+                                   clearCanvases();
+                                   parent.clicked = true;
+                                   parent.requestPaint();
                                }
                 }
             }
@@ -332,18 +332,11 @@ Item {
                     x: -10
                     y: -10
                     onClicked: (mouse)=>{
-                                   Objcmodslistfilling.sortByName();
+                                   objModsList.sortByName();
                                    refreshModlistTo0();
+                                   clearCanvases();
                                    parent.clicked = true;
                                    parent.requestPaint();
-                                   enableCanvas.clicked = false;
-                                   enableCanvas.requestPaint();
-                                   //nameCanvas.clicked = false;
-                                   //nameCanvas.requestPaint();
-                                   dateCanvas.clicked = false;
-                                   dateCanvas.requestPaint();
-                                   packnameCanvas.clicked = false;
-                                   packnameCanvas.requestPaint();
                                }
                 }
             }
@@ -387,18 +380,11 @@ Item {
                     x: -10
                     y: -10
                     onClicked: (mouse)=>{
-                                   Objcmodslistfilling.sortByDate();
+                                   objModsList.sortByDate();
                                    refreshModlistTo0();
+                                   clearCanvases();
                                    parent.clicked = true;
                                    parent.requestPaint();
-                                   enableCanvas.clicked = false;
-                                   enableCanvas.requestPaint();
-                                   nameCanvas.clicked = false;
-                                   nameCanvas.requestPaint();
-                                   //dateCanvas.clicked = false;
-                                   //dateCanvas.requestPaint();
-                                   packnameCanvas.clicked = false;
-                                   packnameCanvas.requestPaint();
                                }
                 }
             }
@@ -442,18 +428,11 @@ Item {
                     x: -10
                     y: -10
                     onClicked: (mouse)=>{
-                                   Objcmodslistfilling.sortByPackname();
+                                   objModsList.sortByPackname();
                                    refreshModlistTo0();
+                                   clearCanvases();
                                    parent.clicked = true;
                                    parent.requestPaint();
-                                   enableCanvas.clicked = false;
-                                   enableCanvas.requestPaint();
-                                   nameCanvas.clicked = false;
-                                   nameCanvas.requestPaint();
-                                   dateCanvas.clicked = false;
-                                   dateCanvas.requestPaint();
-                                   //packnameCanvas.clicked = false;
-                                   //packnameCanvas.requestPaint();
                                }
                 }
             }
@@ -480,7 +459,7 @@ Item {
                 hoverEnabled: true
                 onClicked: {
                     if(Qt.LeftButton){
-                        Objcmodslistfilling.refreshModlistVector();
+                        objModsList.refreshModlistVector();
                         refreshModlistTo0();
                     }
                 }
@@ -590,7 +569,7 @@ Item {
             onClicked: {
                 modsList.currentIndex = currentIndexPos;
                 qtGeneralBackendObj.removeMod(currentId);
-                Objcmodslistfilling.refreshModlistVector();
+                objModsList.refreshModlistVector();
                 refreshModlist();
             }
         }
@@ -605,7 +584,7 @@ Item {
                 modsList.currentIndex = currentIndexPos;
                 qtGeneralBackendObj.removeMod(currentId);
                 qtGeneralBackendObj.addMod(currentId);
-                Objcmodslistfilling.refreshModlistVector();
+                objModsList.refreshModlistVector();
                 refreshModlist();
             }
         }
@@ -642,7 +621,7 @@ Item {
             onClicked: {
                 modsList.currentIndex = currentIndexPos;
                 qtGeneralBackendObj.makeLocalCopy(currentId);
-                Objcmodslistfilling.refreshModlistVector();
+                objModsList.refreshModlistVector();
                 refreshModlist();
             }
         }
@@ -656,9 +635,12 @@ Item {
     }
 
     function onEnable(){
-        Objcmodslistfilling.sortByActive();
-        modlist.refreshModlist();
-        enableCanvas.clicked = true;
+        objModsList.sortByActive();
+        qmlModsList.refreshModlist();
+    }
+
+    function clearCanvases(){
+        enableCanvas.clicked = false;
         enableCanvas.requestPaint();
         nameCanvas.clicked = false;
         nameCanvas.requestPaint();

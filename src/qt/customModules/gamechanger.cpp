@@ -2,10 +2,12 @@
 #include <filesystem>
 #include <fstream>
 #include <Windows.h>
+
 #include "../../utility/loggingsystem.h"
-#include "../../steamtools.h"
 #include "../../localfiles/localmods.h"
-#include "../../steamapi/gameconnectorsharedmemory.h"
+#include "modslistfile.h"
+
+//#include "../../steamtools.h"
 
 GameChanger::GameChanger(QObject* parent)
     : QAbstractListModel(parent)
@@ -18,7 +20,7 @@ int GameChanger::rowCount(const QModelIndex &parent) const
     if(parent.isValid() || !mList)
         return 0;
 
-    return SharedGlobalDataObj->Global_LocalSettingsObj.installedGames.size();
+    return GlobalDataObj->LocalSettingsObj.installedGames.size();
 }
 
 QVariant GameChanger::data(const QModelIndex &index, int role) const
@@ -108,23 +110,10 @@ void GameChanger::setList(cGameChangerList *list)
 }
 
 void GameChanger::setCurrentGame(uint64_t index){
-    if(SharedGlobalDataObj->Global_LocalSettingsObj.currentGame.gameId != 0)
-    {
-        SteamAPI_Shutdown();
-        SteamAPI_ReleaseCurrentThreadMemory();
-        HSteamPipe steamPipe = SteamAPI_GetHSteamPipe();
-        ISteamClient* steamClient = SteamClient();
-        if (steamClient != nullptr)
-        {
-            steamClient->BReleaseSteamPipe(steamPipe);
-        }
-    }
-
-
     // Set game and clear data form previous
-    SharedGlobalDataObj->Global_LocalSettingsObj.currentGame = SharedGlobalDataObj->Global_LocalSettingsObj.installedGames[index];
-    SharedGlobalDataObj->Global_LocalSettingsObj.modsAmount = 0;
-    SharedGlobalDataObj->Global_ModsDataObj.clear();
+    GlobalDataObj->LocalSettingsObj.currentGame = GlobalDataObj->LocalSettingsObj.installedGames[index];
+    GlobalDataObj->LocalSettingsObj.modsAmount = 0;
+    GlobalDataObj->ModsDataObj.clear();
 
     if(std::filesystem::exists("steam_appid.txt"))
     {
@@ -134,7 +123,7 @@ void GameChanger::setCurrentGame(uint64_t index){
         file.open("steam_appid.txt", std::ios::out);
         if(file.is_open())
         {
-            file << std::to_string(SharedGlobalDataObj->Global_LocalSettingsObj.currentGame.gameId);
+            file << std::to_string(GlobalDataObj->LocalSettingsObj.currentGame.gameId);
             //file << "281990";
         }
         else
@@ -158,35 +147,40 @@ void GameChanger::setCurrentGame(uint64_t index){
         }
     }
 
-    // Load data for selected game
-    if(SteamAPI_Init())
-    {
-        CSteamTools steamOperations;
-        SharedSteamToolsObj->LoadItemsToQuery();
-        SharedSteamToolsObj->LoadItemsDataFromQuery();
-    }
 
+    // SteamAPI Initialization
+    SteamApiAccess objSteamApiAccess;
+    objSteamApiAccess.closeGameSteamAPI();
+
+    if(objSteamApiAccess.runGameSteamAPI())
+    {
+        objSteamApiAccess.loadModsDataSteam();
+        objSteamApiAccess.getModsData();
+        objSteamApiAccess.setModsPackname();
+    }
 
     // IN work
-    SteamAPIAccess objSteam;
-    objSteam.closeGameSteamAPI();
-    if(objSteam.runGameSteamAPI())
-    {
-        // Read data from the shared memory
-        QString data;
-        GameConnectorSharedMemory memAccess;
-        if (!memAccess.readDataFromSharedMemory<QString>(data)) {
-            int limit = 0;
-            while(!memAccess.readDataFromSharedMemory<QString>(data) && limit < 10){
-                limit++;
-                Sleep(500);
-            }
-        }
-    }
-    else
-    {
-        LoggingSystem::saveLog("gamechanger.cpp: setCurrentGame: Error while loading a mods.");
-    }
+    //SteamAPIAccess objSteam;
+    //objSteam.closeGameSteamAPI();
+    //if(objSteam.runGameSteamAPI())
+    //{
+    //    SteamApiAccess objTest;
+    //    qDebug() << objTest.callTestFunction();
+    //    // Read data from the shared memory
+    //    //QString data;
+    //    //GameConnectorSharedMemory memAccess;
+    //    //if (!memAccess.readDataFromSharedMemory<QString>(data)) {
+    //    //    int limit = 0;
+    //    //    while(!memAccess.readDataFromSharedMemory<QString>(data) && limit < 10){
+    //    //        limit++;
+    //    //        Sleep(500);
+    //    //    }
+    //    //}
+    //}
+    //else
+    //{
+    //    LoggingSystem::saveLog("gamechanger.cpp: setCurrentGame: Error while loading a mods.");
+    //}
 
 
     // Local mods segment
@@ -217,19 +211,19 @@ cGameChangerList::cGameChangerList(QObject *parent)
 
 QVector<sGamesData> cGameChangerList::vsGamesData() const
 {
-    return SharedGlobalDataObj->Global_LocalSettingsObj.installedGames;
+    return GlobalDataObj->LocalSettingsObj.installedGames;
 }
 
 bool cGameChangerList::setItemAt(int index, const sGamesData &item)
 {
-    if(index < 0 || index >= SharedGlobalDataObj->Global_LocalSettingsObj.installedGames.size())
+    if(index < 0 || index >= GlobalDataObj->LocalSettingsObj.installedGames.size())
         return false;
 
-    const sGamesData &oldItemData = SharedGlobalDataObj->Global_LocalSettingsObj.installedGames.at(index);
+    const sGamesData &oldItemData = GlobalDataObj->LocalSettingsObj.installedGames.at(index);
     if(item.gameId == oldItemData.gameId)
         return false;
 
-    SharedGlobalDataObj->Global_LocalSettingsObj.installedGames[index] = item;
+    GlobalDataObj->LocalSettingsObj.installedGames[index] = item;
     return true;
 }
 
@@ -239,17 +233,17 @@ bool cGameChangerList::appendItem(QString name)
 
     sGamesData item;
 
-    SharedGlobalDataObj->Global_LocalSettingsObj.installedGames.append(item);
+    GlobalDataObj->LocalSettingsObj.installedGames.append(item);
     emit postItemAppened();
     return true;
 }
 
 void cGameChangerList::removeItem(qint32 index)
 {
-    for(auto& i: SharedGlobalDataObj->Global_LocalSettingsObj.installedGames){
+    for(auto& i: GlobalDataObj->LocalSettingsObj.installedGames){
         emit preItemRemoved(index);
 
-        SharedGlobalDataObj->Global_LocalSettingsObj.installedGames.removeAt(index);
+        GlobalDataObj->LocalSettingsObj.installedGames.removeAt(index);
 
         emit postItemRemoved();
         break;
@@ -258,5 +252,5 @@ void cGameChangerList::removeItem(qint32 index)
 
 uint64_t cGameChangerList::getGameId(uint64_t index)
 {
-    return SharedGlobalDataObj->Global_LocalSettingsObj.installedGames[index].gameId;
+    return GlobalDataObj->LocalSettingsObj.installedGames[index].gameId;
 }

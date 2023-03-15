@@ -2,7 +2,6 @@
 #define QTGENERALBACKEND_H
 
 #include <QObject>
-#include "steam_api.h"
 
 class QtGeneralBackend : public QObject
 {
@@ -24,6 +23,8 @@ public:
     Q_INVOKABLE void openLocalFiles(uint64_t id);
     Q_INVOKABLE void makeLocalCopy(uint64_t id);
     Q_INVOKABLE void closeSteamAPIIfOn();
+
+    Q_INVOKABLE void closeApp();
 
 signals:
 

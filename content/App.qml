@@ -30,7 +30,7 @@
 import QtQuick
 import QtQuick.Window
 import QtQuick.Controls
-import WH3_Mod_Menager
+
 
 Window {
     id: mainwindow
@@ -38,6 +38,8 @@ Window {
     height: mainScreen.height
 
     visible: true
+    visibility: Window.Maximized
+
     title: "TW Capybara Laucher"
 
     property string mainTextColor: "#E8E8E8"
@@ -46,15 +48,15 @@ Window {
     property bool rightPanelEnabled: true
     property bool bottomGameMenuEnabled: true
 
-    Connections {
-        target: localFilesObj
-        function saveLocalSettings(){}
-    }
+   Connections {
+       target: localFilesObj
+       function saveLocalSettings(){}
+   }
 
-    Connections {
-        target: objFilesOperations
-        function saveSettings(){}
-    }
+    //Connections {
+    //    target: objFilesOperations
+    //    function saveSettings(){}
+    //}
 
     Screen01 {
         id: mainScreen
@@ -65,39 +67,39 @@ Window {
     }
 
     GameSelector {
-
-    }
-
-    ModsListFile {
-        id: modlist
-    }
-
-    RightPanel {
-
-    }
-
-    BottomGameMenu
-    {
-        id: bottomgamemenu
+        id: qmlGameSelector
     }
 
     TopMenu {
-        id: topMenu
+        id: qmlTopMenu
     }
 
     SettingsModule
     {
-        id: settingsModule
+        id: qmlSettingsModule
     }
 
-    InfoBox {
-        id: infoBoxQML
+    ModsListFile {
+        id: qmlModsList
     }
+
+    //RightPanel {
+
+    //}
+
+    BottomGameMenu
+    {
+        id: qmlBottomGameMenu
+    }
+
+    //InfoBox {
+    //    id: infoBoxQML
+    //}
 
     onClosing: {
         console.log("Closing")
         localFilesObj.saveLocalSettings()
-        objFilesOperations.saveSettings()
+        //objFilesOperations.saveSettings()
         qtGeneralBackendObj.closeSteamAPIIfOn()
     }
 }

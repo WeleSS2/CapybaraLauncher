@@ -7,18 +7,36 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(QML_IMPORT_TRACE = 1)
-find_package(Qt6 REQUIRED COMPONENTS Gui Qml Quick RemoteObjects)
+find_package(Qt6 REQUIRED COMPONENTS Gui Qml Quick Network)
 set(ICON_FILE ${CMAKE_CURRENT_SOURCE_DIR}/content/resources/capybaraIcon.ico)
 set(RC_FILE ${CMAKE_CURRENT_SOURCE_DIR}/content/resources/capybaraIcon.rc)
 
+#file(GLOB_RECURSE CPPEXECFILES "src/*.cpp")
 
-file(GLOB_RECURSE CPPEXECFILES "src/*.cpp")
+#qt_add_executable(WH3_Mod_MenagerApp ${CPPEXECFILES}
+#    ${RC_FILE})
 
-qt_add_executable(WH3_Mod_MenagerApp ${CPPEXECFILES}
+
+# Temporary manually while rework not ended
+qt_add_executable(WH3_Mod_MenagerApp
+    src/main.cpp
+    src/localfiles/localfiles.cpp
+    src/utility/loggingsystem.cpp
+    src/globaldata.cpp
+    src/system/windowsfunctions.cpp
+    src/qt/customModules/gamechanger.cpp
+    src/qt/settingsmodule.cpp
+    src/qt/customModules/modslistfile.cpp
+    src/steamapi/steamapiaccess.cpp
+src/qt/customModules/modpackslist.cpp
+src/github/githubupdater.cpp
+src/qtgeneralbackend.cpp
+src/utility/utility.cpp
+src/localfiles/localmods.cpp
+#src/qt/customModules/infobox.cpp
     ${RC_FILE})
 
-file(GLOB_RECURSE GAMECONFILES "gameconnector/*.cpp")
-qt_add_executable(GameConnector ${GAMECONFILES})
+
 
 qt_add_resources(WH3_Mod_MenagerApp "configuration"
     PREFIX "/"
@@ -28,20 +46,29 @@ qt_add_resources(WH3_Mod_MenagerApp "configuration"
 
 find_package(STEAMAPI REQUIRED PATHS ${PROJECT_SOURCE_DIR}/external/STEAM_API)
 target_include_directories(WH3_Mod_MenagerApp PRIVATE "${STEAMAPI_INCLUDE_DIRS}")
-target_include_directories(GameConnector PRIVATE "${STEAMAPI_INCLUDE_DIRS}")
 target_link_libraries(WH3_Mod_MenagerApp PRIVATE
     Qt${QT_VERSION_MAJOR}::Core
     Qt${QT_VERSION_MAJOR}::Gui
     Qt${QT_VERSION_MAJOR}::Quick
     Qt${QT_VERSION_MAJOR}::Qml
-    Qt${QT_VERSION_MAJOR}::RemoteObjects
+    Qt${QT_VERSION_MAJOR}::Network
     ${STEAMAPI_LIBRARIES}
 )
+#-- GameConnector config part
+file(GLOB_RECURSE GAMECONFILES "gameconnector/*.cpp")
+qt_add_executable(GameConnector ${GAMECONFILES})
+target_include_directories(GameConnector PRIVATE
+    src/utility/loggingsystem.cpp
+    "${STEAMAPI_INCLUDE_DIRS}"
+)
+
 
 target_link_libraries(GameConnector PRIVATE
+    Qt${QT_VERSION_MAJOR}::Core
+    Qt${QT_VERSION_MAJOR}::Gui
+    Qt${QT_VERSION_MAJOR}::Network
     ${STEAMAPI_LIBRARIES}
 )
-
 #target_link_options(${PROJECT_NAME} PRIVATE "/SUBSYSTEM:WINDOWS" "/ENTRY:mainCRTStartup")
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/qmlmodules)

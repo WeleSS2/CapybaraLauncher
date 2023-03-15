@@ -43,7 +43,7 @@ Item {
         onClicked: {
             if(Qt.LeftButton){
                 disableLeftRightBottom();
-                settingsModule.showSettings();
+                qmlSettingsModule.showSettings();
             }
         }
     }

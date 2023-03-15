@@ -1,6 +1,6 @@
 #include "windowsfunctions.h"
-#include "globaldata.h"
-#include "utility/loggingsystem.h"
+#include "../globaldata.h"
+#include "../utility/loggingsystem.h"
 
 std::wstring string_to_wide_string(const std::string& string)
 {
@@ -128,12 +128,12 @@ bool WindowsFunctions::getSteamPathFromRegistry()
 
     if(file.is_open())
     {
-        SharedGlobalDataObj->Global_LocalSettingsObj.installedGames.emplaceBack("Warhammer I", "", "wh1Path", 364360);
-        SharedGlobalDataObj->Global_LocalSettingsObj.installedGames.emplaceBack("Warhammer II", "", "wh2Path", 594570);
-        SharedGlobalDataObj->Global_LocalSettingsObj.installedGames.emplaceBack("Warhammer III", "", "gamepath", 1142710);
-        SharedGlobalDataObj->Global_LocalSettingsObj.installedGames.emplaceBack("Three Kingdoms", "", "wh3KingPath", 779340);
-        SharedGlobalDataObj->Global_LocalSettingsObj.installedGames.emplaceBack("Troy", "", "whTroyPath", 1099410);
-        SharedGlobalDataObj->Global_LocalSettingsObj.installedGames.emplaceBack("Rome Remastered", "", "whRomeRemPath", 885970);
+        GlobalDataObj->LocalSettingsObj.installedGames.emplaceBack("Warhammer I", "", "wh1Path", 364360);
+        GlobalDataObj->LocalSettingsObj.installedGames.emplaceBack("Warhammer II", "", "wh2Path", 594570);
+        GlobalDataObj->LocalSettingsObj.installedGames.emplaceBack("Warhammer III", "", "gamepath", 1142710);
+        GlobalDataObj->LocalSettingsObj.installedGames.emplaceBack("Three Kingdoms", "", "wh3KingPath", 779340);
+        GlobalDataObj->LocalSettingsObj.installedGames.emplaceBack("Troy", "", "whTroyPath", 1099410);
+        GlobalDataObj->LocalSettingsObj.installedGames.emplaceBack("Rome Remastered", "", "whRomeRemPath", 885970);
 
         while(file >> text)
         {
@@ -146,27 +146,27 @@ bool WindowsFunctions::getSteamPathFromRegistry()
             }
             if(text == "\"1142710\"")
             {
-                SharedGlobalDataObj->getGameById(1142710).gamePath = QString::fromStdString(pathline);
+                GlobalDataObj->getGameById(1142710)->gamePath = QString::fromStdString(pathline);
             }
             else if(text == "\"364360\"")
             {
-                SharedGlobalDataObj->getGameById(364360).gamePath = QString::fromStdString(pathline);
+                GlobalDataObj->getGameById(364360)->gamePath = QString::fromStdString(pathline);
             }
             else if(text == "\"594570\"")
             {
-                SharedGlobalDataObj->getGameById(594570).gamePath = QString::fromStdString(pathline);
+                GlobalDataObj->getGameById(594570)->gamePath = QString::fromStdString(pathline);
             }
             else if(text == "\"779340\"")
             {
-                SharedGlobalDataObj->getGameById(779340).gamePath = QString::fromStdString(pathline);
+                GlobalDataObj->getGameById(779340)->gamePath = QString::fromStdString(pathline);
             }
             else if(text == "\"1099410\"")
             {
-                SharedGlobalDataObj->getGameById(1099410).gamePath = QString::fromStdString(pathline);
+                GlobalDataObj->getGameById(1099410)->gamePath = QString::fromStdString(pathline);
             }
             else if(text == "\"885970\"")
             {
-                SharedGlobalDataObj->getGameById(885970).gamePath = QString::fromStdString(pathline);
+                GlobalDataObj->getGameById(885970)->gamePath = QString::fromStdString(pathline);
             }
         }
     }
@@ -177,21 +177,21 @@ bool WindowsFunctions::getSteamPathFromRegistry()
     }
 
     // Remove if game not found
-    for(int i = 0; i < SharedGlobalDataObj->Global_LocalSettingsObj.installedGames.size(); ++i){
-        if(SharedGlobalDataObj->Global_LocalSettingsObj.installedGames[i].gamePath == "")
+    for(int i = 0; i < GlobalDataObj->LocalSettingsObj.installedGames.size(); ++i){
+        if(GlobalDataObj->LocalSettingsObj.installedGames[i].gamePath == "")
         {
-            SharedGlobalDataObj->Global_LocalSettingsObj.installedGames.erase(SharedGlobalDataObj->Global_LocalSettingsObj.installedGames.begin() + i);
+            GlobalDataObj->LocalSettingsObj.installedGames.erase(GlobalDataObj->LocalSettingsObj.installedGames.begin() + i);
             i--;
         }
     }
 
-    if(SharedGlobalDataObj->Global_LocalSettingsObj.installedGames.size() < 1)
+    if(GlobalDataObj->LocalSettingsObj.installedGames.size() < 1)
     {
         LoggingSystem::saveLog("windowsfunctions.cpp: getSteamPathFromRegistry: Failed to load games / Do not find any games installed");
         return false;
     }
 
-    SharedGlobalDataObj->Global_LocalSettingsObj.steampath = steampath;
+    GlobalDataObj->LocalSettingsObj.steampath = QString::fromStdString(steampath);
 
     return true;
 }

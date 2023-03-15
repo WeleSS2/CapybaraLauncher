@@ -1,11 +1,10 @@
-#ifndef GLOBALDATA_H
-#define GLOBALDATA_H
+#pragma once
 
 #include <QObject>
+#include <QDataStream>
 #include <QSharedDataPointer>
 #include <QQmlApplicationEngine>
-#include "QColor.h"
-#include "utility/loggingsystem.h"
+#include <QColor>
 
 // wh1Id 364360
 // wh2Id 594570
@@ -49,61 +48,97 @@ struct sGamesData {
     QString gameName;
     QString gamePath;
     QString pathName;
-    int gameId = 0;
+
+    uint64_t gameId = 0;
 };
 
-struct ModsData {
-    ModsData();
+struct byteInterfaceModsData{
     bool done;
     QColor color;
-    int laucherId;
+
+    uint64_t laucherId;
     uint64_t steamModGameId;
-    int steamDataInSeconds;
-    int steamAuthor;
-    std::string steamModName;
-    std::string steamPackname;
+    uint64_t steamDataInSeconds;
+    uint64_t steamAuthor;
+
+    QString steamModName;
+    QString steamPackname;
+
+    byteInterfaceModsData& operator=(QDataStream& in)
+    {
+        in >> done
+           >> color
+           >> laucherId
+           >> steamModGameId
+           >> steamDataInSeconds
+           >> steamAuthor
+           >> steamModName
+           >> steamPackname;
+        return *this;
+    };
 };
 
-struct LocalSettings {
-    LocalSettings(){};
-    bool settingsLoaded = false;
-    std::string steampath;
-    uint64_t defaultGame;
-    std::string localPath;
+struct sModsData {
+    bool done;
+    QColor color;
 
-    int numInstalledGames;
+    uint64_t laucherId;
+    uint64_t steamModGameId;
+    uint64_t steamDataInSeconds;
+    uint64_t steamAuthor;
+
+    QString steamModName;
+    QString steamPackname;
+
+    friend QDataStream& operator<<(QDataStream& out, sModsData& data){
+        out << data.done
+            << data.color
+            << data.laucherId
+            << data.steamModGameId
+            << data.steamDataInSeconds
+            << data.steamAuthor
+            << data.steamModName
+            << data.steamPackname;
+        return out;
+    }
+    friend QDataStream& operator>>(QDataStream& in, sModsData& data) {
+        in >> data.done
+           >> data.color
+           >> data.laucherId
+           >> data.steamModGameId
+           >> data.steamDataInSeconds
+           >> data.steamAuthor
+           >> data.steamModName
+           >> data.steamPackname;
+        return in;
+    }
+};
+
+struct sLocalSettings {
+    sLocalSettings(){};
+    bool settingsLoaded = false;
+
+    QString steampath;
+    QString localPath;
+
+    uint64_t defaultGame;
+    uint64_t numInstalledGames;
+    uint32_t modsAmount;
 
     sGamesData currentGame;
     QVector<sGamesData> installedGames;
-
-    uint32_t modsAmount;
 };
 
-class GlobalDataData : public QSharedData
+class GlobalData : public QSharedData
 {
 public:
-    LocalSettings Global_LocalSettingsObj;
-    std::vector<ModsData> Global_ModsDataObj;
+    sLocalSettings LocalSettingsObj;
+    QVector<sModsData> ModsDataObj;
+
     QQmlApplicationEngine* enginePtr = nullptr;
 
-
-    sGamesData& getGameById(uint64_t id);
-    ModsData& getModById(uint64_t id);
-    ModsData& getModBySteamId(uint64_t id);
+    sGamesData* getGameById(uint64_t id);
+    sModsData* getModById(uint64_t id);
+    sModsData* getModBySteamId(uint64_t id);
 };
-inline auto SharedGlobalDataObj = std::make_shared<GlobalDataData>();
-
-class GlobalData
-{
-public:
-    GlobalData();
-    GlobalData(const GlobalData &);
-    GlobalData &operator=(const GlobalData &);
-    ~GlobalData();
-    void simpleFunction();
-
-private:
-    QSharedDataPointer<GlobalDataData> data;
-};
-
-#endif // GLOBALDATA_H
+inline auto GlobalDataObj = std::make_shared<GlobalData>();

@@ -11,24 +11,24 @@ LocalMods::LocalMods(QObject* parent)
 }
 
 bool LocalMods::gameFolderCheck(){
-    std::string path = SharedGlobalDataObj->Global_LocalSettingsObj.localPath
+    std::string path = GlobalDataObj->LocalSettingsObj.localPath.toStdString()
             + "\\LocalMods";
     if(std::filesystem::is_directory(path))
     {
-        if(std::filesystem::is_directory(path + "\\" + std::to_string(SharedGlobalDataObj->Global_LocalSettingsObj.currentGame.gameId)))
+        if(std::filesystem::is_directory(path + "\\" + std::to_string(GlobalDataObj->LocalSettingsObj.currentGame.gameId)))
         {
             return true;
         }
         else
         {
-            std::filesystem::create_directory(path + "\\" + std::to_string(SharedGlobalDataObj->Global_LocalSettingsObj.currentGame.gameId));
+            std::filesystem::create_directory(path + "\\" + std::to_string(GlobalDataObj->LocalSettingsObj.currentGame.gameId));
             return true;
         }
     }
     else
     {
         std::filesystem::create_directory(path);
-        std::filesystem::create_directory(path + "\\" + std::to_string(SharedGlobalDataObj->Global_LocalSettingsObj.currentGame.gameId));
+        std::filesystem::create_directory(path + "\\" + std::to_string(GlobalDataObj->LocalSettingsObj.currentGame.gameId));
         return true;
     }
 
@@ -37,10 +37,10 @@ bool LocalMods::gameFolderCheck(){
 }
 
 bool LocalMods::loadLocalMods(){
-    std::string path = SharedGlobalDataObj->Global_LocalSettingsObj.localPath
+    std::string path = GlobalDataObj->LocalSettingsObj.localPath.toStdString()
             + "\\LocalMods"
             + "\\"
-            + std::to_string(SharedGlobalDataObj->Global_LocalSettingsObj.currentGame.gameId);
+            + std::to_string(GlobalDataObj->LocalSettingsObj.currentGame.gameId);
 
     if(std::filesystem::exists(path))
     {
@@ -65,17 +65,17 @@ bool LocalMods::loadSingleMod(const std::filesystem::directory_entry& mod, const
     std::time_t time = std::chrono::system_clock::to_time_t(systemTime);
     std::string timeStr = std::ctime(&time);
 
-    SharedGlobalDataObj->Global_LocalSettingsObj.modsAmount++;
-    int lastPos = SharedGlobalDataObj->Global_ModsDataObj.size();
-    SharedGlobalDataObj->Global_ModsDataObj.emplace_back();
+    GlobalDataObj->LocalSettingsObj.modsAmount++;
+    int lastPos = GlobalDataObj->ModsDataObj.size();
+    GlobalDataObj->ModsDataObj.emplace_back();
 
-    SharedGlobalDataObj->Global_ModsDataObj[lastPos].laucherId = lastPos;
-    SharedGlobalDataObj->Global_ModsDataObj[lastPos].done = false;
-    SharedGlobalDataObj->Global_ModsDataObj[lastPos].steamModName = "Local mod";
-    SharedGlobalDataObj->Global_ModsDataObj[lastPos].steamDataInSeconds = 0;
-    SharedGlobalDataObj->Global_ModsDataObj[lastPos].steamPackname = name;
-    SharedGlobalDataObj->Global_ModsDataObj[lastPos].steamModGameId = 0;
-    SharedGlobalDataObj->Global_ModsDataObj[lastPos].steamAuthor = 0;
-    SharedGlobalDataObj->Global_ModsDataObj[lastPos].color = {174, 135, 205, 255};
+    GlobalDataObj->ModsDataObj[lastPos].laucherId = lastPos;
+    GlobalDataObj->ModsDataObj[lastPos].done = false;
+    GlobalDataObj->ModsDataObj[lastPos].steamModName = "Local mod";
+    GlobalDataObj->ModsDataObj[lastPos].steamDataInSeconds = 0;
+    GlobalDataObj->ModsDataObj[lastPos].steamPackname = QString::fromStdString(name);
+    GlobalDataObj->ModsDataObj[lastPos].steamModGameId = 0;
+    GlobalDataObj->ModsDataObj[lastPos].steamAuthor = 0;
+    GlobalDataObj->ModsDataObj[lastPos].color = {174, 135, 205, 255};
     return true;
 }

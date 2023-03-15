@@ -86,8 +86,8 @@ Item {
                 if(Qt.LeftButton)
                 {
                     qtGeneralBackendObj.importPack();
-                    Objcmodslistfilling.refreshModlistVector();
-                    modlist.refreshModlistTo0();
+                    objModsList.refreshModlistVector();
+                    qmlModsList.refreshModlistTo0();
                 }
             }
         }
@@ -113,9 +113,9 @@ Item {
         var modlistName = ObjModpacksContent.getModlistName(index);
         selectModpack.editText = modlistName;
 
-        modlist.onEnable();
+        qmlModsList.onEnable();
 
-        modlist.refreshModlistTo0();
+        qmlModsList.refreshModlistTo0();
     }
     function refreshModpacksList(){
         selectModpack.model.refreshList();

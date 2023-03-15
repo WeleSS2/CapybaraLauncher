@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QAbstractListModel>
-
+#include "../../steamapi/steamapiaccess.h"
 #include "../../globaldata.h"
 
 class cGameChangerList;
