@@ -51,6 +51,7 @@
  * - Option to remove local mods +
  * - Open mod with rpfm +
  * - Make new local mod +
+ * - Fix start for every game
  *
  * Patch 0.0.6 Until 12.03
  * - Web layer

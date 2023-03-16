@@ -3,6 +3,7 @@
 #include <Windows.h>
 #include <cstdlib>
 #include <filesystem>
+#include <fstream>
 
 #include <QClipboard>
 #include <QDesktopServices>
@@ -30,7 +31,38 @@ void QtGeneralBackend::startGame()
     std::string run = "";
 
     run += "start \"\" \"" + GlobalDataObj->LocalSettingsObj.currentGame.gamePath.toStdString()
-            + "\\steamapps\\common\\Total War WARHAMMER III\\Warhammer3.exe\"";
+            + "\\steamapps\\common\\"
+            + [&](){
+        std::string gamePath;
+        std::string path = GlobalDataObj->LocalSettingsObj.currentGame.gamePath.toStdString() + "\\steamapps\\appmanifest_" + std::to_string(GlobalDataObj->LocalSettingsObj.currentGame.gameId) + ".acf";
+        if(std::filesystem::exists(path))
+        {
+            std::fstream file(path);
+            std::string line;
+            while(file>>line){
+                if(line == "\"installdir\""){
+                    std::getline(file, gamePath);
+                    gamePath.erase(0, 3);
+                    gamePath.erase(gamePath.size() - 1, 1);
+                }
+            }
+        }
+        std::string tempP = GlobalDataObj->LocalSettingsObj.currentGame.gamePath.toStdString()
+                + "\\steamapps\\common\\" + gamePath;
+        if(std::filesystem::exists(tempP))
+        {
+            for(auto const& entry: std::filesystem::directory_iterator(tempP)){
+                std::string exePath{entry.path().string()};
+                if(exePath.substr(exePath.size() - 3, 3) == "exe"){
+                    exePath.erase(0, tempP.size() + 1);
+                    gamePath += "\\" + exePath;
+                }
+            }
+        }
+        qDebug() << QString::fromStdString(gamePath);
+        return gamePath;
+    }()
+    + "\"";
 
     QVector<sModsData> localModsList = GlobalDataObj->ModsDataObj;
 
@@ -285,7 +317,7 @@ void QtGeneralBackend::removeLocalCopy(uint64_t id){
 
 void QtGeneralBackend::openInRPFM(uint64_t id){
     std::string path = "";
-    if(GlobalDataObj->getModById(id)->laucherId == 0){
+    if(GlobalDataObj->getModById(id)->steamModGameId == 0){
         path = GlobalDataObj->LocalSettingsObj.localPath.toStdString()
                 + "\\LocalMods\\"
                 + std::to_string(GlobalDataObj->LocalSettingsObj.currentGame.gameId)

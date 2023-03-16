@@ -9,7 +9,7 @@
 // wh1Id 364360
 // wh2Id 594570
 // wh3Id 1132710
-// wh4KingId 779340
+// wh3KingId 779340
 // whTroyId 1099410
 // whRomeRemId 885970
 
