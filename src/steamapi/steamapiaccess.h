@@ -4,6 +4,8 @@
 #include <QVector>
 #include <QLocalSocket>
 #include "steam_api.h"
+#include "src/globaldata.h"
+
 
 class SteamApiAccess : public QObject
 {
@@ -24,6 +26,7 @@ public:
     void getModsData();
     // Set local path for every mod
     void setModsPackname();
+    void setModPackname(sModsData& mod);
 
 
     // Update mod from steam
@@ -32,6 +35,8 @@ public:
     bool subscribeMod(uint64_t id);
     // Unsubscribe mod from steam
     bool unsubscribeMod(uint64_t id);
+    // Get mod data
+    sModsData getModData(uint64_t id);
 
     // Connect to the server
     void linkToServer(QLocalSocket* socket, int maxAttempts);

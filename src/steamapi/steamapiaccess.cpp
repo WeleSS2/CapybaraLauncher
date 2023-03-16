@@ -10,7 +10,6 @@
 #include <filesystem>
 
 #include "src/utility/loggingsystem.h"
-#include "src/globaldata.h"
 
 SteamApiAccess::SteamApiAccess(QObject *parent)
     : QObject{parent}
@@ -112,41 +111,45 @@ void SteamApiAccess::getModsData(){
     }
 }
 
-void SteamApiAccess::setModsPackname(){
-    for(auto& i : GlobalDataObj->ModsDataObj)
-    {
-        std::string path = GlobalDataObj->LocalSettingsObj.currentGame.gamePath.toStdString()
-                + "\\steamapps\\workshop\\content"
-                + "\\"
-                + std::to_string(GlobalDataObj->LocalSettingsObj.currentGame.gameId)
-                + "\\"
-                + std::to_string(i.steamModGameId);
-        if(std::filesystem::exists(path)){
-            for(auto const& dir_entry : std::filesystem::directory_iterator{path}){
-                std::string temp{dir_entry.path().string()};
-                std::string s2 = temp.substr(temp.size() - 4, 4);
-                if(s2 == "pack")
-                {
-                    temp.erase(0, path.size() + 1);
-                    i.steamPackname = QString::fromStdString(temp);
-                }
-            }
-
-            // Check for update
-            QFileInfo fileInfo(QString::fromStdString(path));
-            if(fileInfo.exists()){
-                QDateTime lastModified = fileInfo.lastModified();
-                if(i.steamDataInSeconds > lastModified.toMSecsSinceEpoch() / 1000)
-                {
-                    i.color = {225, 225, 0};
-                }
-            }
-        }
-        else
+    void SteamApiAccess::setModsPackname(){
+        for(auto& i : GlobalDataObj->ModsDataObj)
         {
-            i.color = {255, 55, 55};
-            i.steamModName = "Mod not available on steam";
+            setModPackname(i);
         }
+    }
+
+void SteamApiAccess::setModPackname(sModsData& mod){
+    std::string path = GlobalDataObj->LocalSettingsObj.currentGame.gamePath.toStdString()
+            + "\\steamapps\\workshop\\content"
+            + "\\"
+            + std::to_string(GlobalDataObj->LocalSettingsObj.currentGame.gameId)
+            + "\\"
+            + std::to_string(mod.steamModGameId);
+    if(std::filesystem::exists(path)){
+        for(auto const& dir_entry : std::filesystem::directory_iterator{path}){
+            std::string temp{dir_entry.path().string()};
+            std::string s2 = temp.substr(temp.size() - 4, 4);
+            if(s2 == "pack")
+            {
+                temp.erase(0, path.size() + 1);
+                mod.steamPackname = QString::fromStdString(temp);
+            }
+        }
+
+        // Check for update
+        QFileInfo fileInfo(QString::fromStdString(path));
+        if(fileInfo.exists()){
+            QDateTime lastModified = fileInfo.lastModified();
+            if(mod.steamDataInSeconds > lastModified.toMSecsSinceEpoch() / 1000)
+            {
+                mod.color = {225, 225, 0};
+            }
+        }
+    }
+    else
+    {
+        mod.color = {255, 55, 55};
+        mod.steamModName = "Mod not available locally";
     }
 }
 
@@ -231,7 +234,9 @@ bool SteamApiAccess::unsubscribeMod(uint64_t id){
             QDataStream in(data);
             in >> check;
             if(check)
+            {
                 return true;
+            }
             else
                 return false;
         }
@@ -239,6 +244,33 @@ bool SteamApiAccess::unsubscribeMod(uint64_t id){
         {
             LoggingSystem::saveLog("SteamApiAccess: getSaveModsData: Failed to load data from server");
             return false;
+        }
+    }
+}
+
+sModsData SteamApiAccess::getModData(uint64_t id){
+    QLocalSocket socket;
+    linkToServer(&socket, 20);
+    if(!socket.waitForConnected(2000))
+    {
+        LoggingSystem::saveLog("SteamApiAccess: loadModsDataSteam: Failed to load steam data");
+    }
+    else
+    {
+        QString message = "getModData," + QString::fromStdString(std::to_string(id));
+        socket.write(message.toUtf8());
+        socket.flush();
+        if(socket.waitForReadyRead(3600000)){
+            sModsData retObj;
+            QByteArray data = socket.readAll();
+            QDataStream in(data);
+            in >> retObj;
+            qDebug() << retObj.steamModName;
+            return retObj;
+        }
+        else
+        {
+            LoggingSystem::saveLog("SteamApiAccess: getSaveModsData: Failed to load data from server");
         }
     }
 }

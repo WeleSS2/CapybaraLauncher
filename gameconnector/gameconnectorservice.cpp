@@ -82,8 +82,18 @@ bool GameConnectorService::updateMod(uint64_t id){
     SteamAPICall_t hDownloadItemResult = SteamUGC()->DownloadItem(id, true);
     SteamAPI_RunCallbacks();
 
-    waitUntilCallNotFinished(&hDownloadItemResult);
-    return true;
+    if (waitUntilCallNotFinished(&hDownloadItemResult)) {
+            uint64_t itemState = SteamUGC()->GetItemState(id);
+            while (true)
+            {
+                itemState = SteamUGC()->GetItemState(id);
+                // Check did item is subscribed (1) + installed (4)
+                if (itemState == 5) {
+                    return true;
+                }
+            }
+        }
+        return false;
 }
 
 bool GameConnectorService::subscribeMod(uint64_t id){
@@ -109,6 +119,7 @@ bool GameConnectorService::subscribeMod(uint64_t id){
 }
 
 bool GameConnectorService::unsubscribeMod(uint64_t id){
+    qDebug() << "Unsub in " << id;
     if(id == 0)
     {
         return false;
@@ -117,14 +128,14 @@ bool GameConnectorService::unsubscribeMod(uint64_t id){
     bool bItemUnsubscribed = SteamUGC()->UnsubscribeItem(id);
     if (bItemUnsubscribed)
     {
-        uint64_t downloadBytes, totalBytes;
+        uint64_t itemState;
         while (true)
         {
-            SteamUGC()->GetItemDownloadInfo(id, &downloadBytes, &totalBytes);
-            qDebug() << id << downloadBytes << totalBytes;
+            itemState = SteamUGC()->GetItemState(id);
 
-            if (downloadBytes == 0 && totalBytes == 0)
+            if (itemState != k_EItemStateSubscribed)
             {
+                qDebug() << "Unsub return";
                 return true;
             }
 
@@ -137,16 +148,48 @@ bool GameConnectorService::unsubscribeMod(uint64_t id){
     }
 }
 
+sModsData GameConnectorService::getModData(uint64_t id){
+    SteamUGCDetails_t data;
+    UGCQueryHandle_t qHandle;
+    qHandle = SteamUGC()->CreateQueryUGCDetailsRequest(&id, 1);
+
+    SteamAPICall_t hSteamApiCall = SteamUGC()->SendQueryUGCRequest(qHandle);
+    CCallResult<GameConnectorService, SteamUGCQueryCompleted_t> sContentCall;
+    sContentCall.Set(hSteamApiCall, this, &GameConnectorService::modCallback);
+
+    SteamAPI_RunCallbacks();
+    waitUntilCallNotFinished(&hSteamApiCall);
+
+    SteamUGC()->GetQueryUGCResult(qHandle, 0, &data);
+    SteamUGC()->ReleaseQueryUGCRequest(qHandle);
+
+    sModsData retData;
+    retData.done = false;
+    retData.color = {225, 225, 225};
+    retData.steamModName = data.m_rgchTitle;
+    retData.steamDataInSeconds = data.m_rtimeUpdated;
+    retData.steamModGameId = id;
+    retData.steamAuthor = data.m_ulSteamIDOwner;
+
+    return retData;
+}
+
 bool GameConnectorService::waitUntilCallNotFinished(SteamAPICall_t *call)
 {
-    // Wait until the download is completed
+    // Wait until the call is completed
     bool callCompleted = false;
     bool finished = SteamUtils()->IsAPICallCompleted(*call, &callCompleted);
 
     while (!callCompleted) {
         SteamAPI_RunCallbacks();
         finished = SteamUtils()->IsAPICallCompleted(*call, &callCompleted);
-        std::this_thread::sleep_for(std::chrono::milliseconds(10)); // Add a small delay to reduce CPU usage
+        std::this_thread::sleep_for(std::chrono::milliseconds(100)); // Add a small delay to reduce CPU usage
     }
     return callCompleted;
+}
+
+void GameConnectorService::modCallback(SteamUGCQueryCompleted_t* result, bool fail)
+{
+    if(fail)
+        qDebug() << "Failed steam UGC query for mod";
 }

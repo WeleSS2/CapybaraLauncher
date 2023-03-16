@@ -74,10 +74,6 @@
  *
  *
  *
- * Requests:
- * By Ole (discord) - Hey, any plans for adding support for merging files with the mood launcher? I am close to finish the needed tools for audio modding, but it will quickly need some mod manager support to merge multiple audio mods.
- *
- *
  *
  * TODO:
  * LOG01 - IMPLEMENTATION FOR LOGS, find later and fill
@@ -154,7 +150,7 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
     GlobalDataObj->enginePtr = &engine;
 
-    QCoreApplication::setApplicationVersion("v0.0.5");
+    QCoreApplication::setApplicationVersion("v0.0.5.5");
 
     LoggingSystem::clearLogs();
 

@@ -65,7 +65,6 @@ bool LocalMods::loadSingleMod(const std::filesystem::directory_entry& mod, const
     std::time_t time = std::chrono::system_clock::to_time_t(systemTime);
     std::string timeStr = std::ctime(&time);
 
-    GlobalDataObj->LocalSettingsObj.modsAmount++;
     int lastPos = GlobalDataObj->ModsDataObj.size();
     GlobalDataObj->ModsDataObj.emplace_back();
 

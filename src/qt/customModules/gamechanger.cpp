@@ -112,7 +112,6 @@ void GameChanger::setList(cGameChangerList *list)
 void GameChanger::setCurrentGame(uint64_t index){
     // Set game and clear data form previous
     GlobalDataObj->LocalSettingsObj.currentGame = GlobalDataObj->LocalSettingsObj.installedGames[index];
-    GlobalDataObj->LocalSettingsObj.modsAmount = 0;
     GlobalDataObj->ModsDataObj.clear();
 
     if(std::filesystem::exists("steam_appid.txt"))

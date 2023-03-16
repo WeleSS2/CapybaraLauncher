@@ -118,6 +118,11 @@ int main(int argc, char *argv[]){
                     uint64_t modId = message.section(",", 1, 1).toULongLong();
                     socket->write(toByteArray<bool>(ptrGameConnector->unsubscribeMod(modId)));
                 }
+                else if(functionName == "getModData"){
+                    uint64_t modId = message.section(",", 1, 1).toULongLong();
+                    qDebug() << ptrGameConnector->getModData(modId).steamModName;
+                    socket->write(toByteArray<sModsData>(ptrGameConnector->getModData(modId)));
+                }
                 else {
                     socket->write("Error: Unknown function name");
                 }

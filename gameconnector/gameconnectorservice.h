@@ -54,13 +54,14 @@ public:
     void saveToModsData();
     void itemsCallback(SteamUGCQueryCompleted_t* result, bool fail);
     bool waitUntilCallNotFinished(SteamAPICall_t *call);
-
+    void modCallback(SteamUGCQueryCompleted_t* result, bool fail);
     // Return copy of items, i'm not sure on which thread server is running so it's save.
     // ACCESS
     QVector<SteamUGCDetails_t> getItemsDetails(){return vItemsData; };
     uint64_t getItemsAmount(){return modsAmount; };
     QVector<uint64_t> getItemsId(){return vItemsId; };
     QVector<sModsData> getModsData(){return vModsData; };
+    sModsData getModData(uint64_t id);
     bool getStatus(){return loaded; };
 
 private:

@@ -7,6 +7,7 @@
 #include <QClipboard>
 #include <QDesktopServices>
 #include <QFile>
+#include <QThread>
 
 #include "qqmlcontext.h"
 #include "qtgeneralbackend.h"
@@ -166,63 +167,22 @@ void QtGeneralBackend::updateMod(uint64_t id){
 void QtGeneralBackend::addMod(uint64_t id){
 //    Utility objUtility;
 //    objUtility.showSimpleInfoBox("Downloading mod with id: " + QString::fromStdString(std::to_string(id)));
-//
-//    SteamApiAccess SteamAPI;
-//    SteamAPI.subscribeMod(id);
-//
-//    SteamUGCDetails_t modDetails = SteamAPI.getModDetails(id);
-//
-//    // Download the item
-//    SteamAPICall_t hDownloadItemResult = SteamUGC()->DownloadItem(id, true);
-//    SteamAPI_RunCallbacks();
-//
-//
-//    SteamAPI.waitUntilCallNotFinished(&hDownloadItemResult);
-//
-//    // Insert item into launcher
-//    SharedGlobalDataObj->Global_LocalSettingsObj.modsAmount++;
-//
-//
-//    SharedGlobalDataObj->Global_ModsDataObj.emplace_back();
-//    int modPosition = SharedGlobalDataObj->Global_ModsDataObj.size() - 1;
-//
-//    SharedGlobalDataObj->Global_ModsDataObj[modPosition].laucherId = modPosition;
-//    SharedGlobalDataObj->Global_ModsDataObj[modPosition].done = false;
-//    SharedGlobalDataObj->Global_ModsDataObj[modPosition].color = {255, 255, 255};
-//    SharedGlobalDataObj->Global_ModsDataObj[modPosition].steamModName = modDetails.m_rgchTitle;
-//    SharedGlobalDataObj->Global_ModsDataObj[modPosition].steamDataInSeconds = modDetails.m_rtimeUpdated;
-//    std::string path = SharedGlobalDataObj->Global_LocalSettingsObj.currentGame.gamePath.toStdString()
-//            + "\\steamapps\\workshop\\content\\"
-//            + std::to_string(SharedGlobalDataObj->Global_LocalSettingsObj.currentGame.gameId)
-//            + "\\"
-//            + std::to_string(id);
-//    int count = 0;
-//    while(1){
-//        if(count >= 3600)
-//        {
-//            break;
-//        }
-//        if(std::filesystem::exists(path)){
-//            for (auto const& dir_entry : std::filesystem::directory_iterator{path})
-//            {
-//                std::string temp{dir_entry.path().string()};
-//                std::string s2 = temp.substr(temp.size() - 4, 4);
-//                if(s2 == "pack"){
-//                    temp = temp.erase(0, path.size() + 1);
-//                    SharedGlobalDataObj->Global_ModsDataObj[modPosition].steamPackname = temp;
-//                }
-//            }
-//            break;
-//        }
-//        else
-//        {
-//            Sleep(100);
-//            count++;
-//        }
-//    }
-//
-//    SharedGlobalDataObj->Global_ModsDataObj[modPosition].steamModGameId = id;
-//    SharedGlobalDataObj->Global_ModsDataObj[modPosition].steamAuthor = modDetails.m_ulSteamIDOwner;
+
+    SteamApiAccess SteamAPI;
+    SteamAPI.subscribeMod(id);
+    if(SteamAPI.updateMod(id))
+    {
+        // Insert item into launcher
+        sModsData data = SteamAPI.getModData(id);
+        data.laucherId = GlobalDataObj->ModsDataObj.size();
+
+        SteamAPI.setModPackname(data);
+        GlobalDataObj->ModsDataObj.emplaceBack(data);
+    }
+    else{
+        SteamAPI.unsubscribeMod(id);
+        LoggingSystem::saveLog("qtgeneralbackend.cpp: addMod: Failed to download mod from steam");
+    }
 }
 
 void QtGeneralBackend::removeMod(uint64_t id){
@@ -232,7 +192,6 @@ void QtGeneralBackend::removeMod(uint64_t id){
             GlobalDataObj->ModsDataObj.erase(GlobalDataObj->ModsDataObj.begin() + i);
         }
     }
-    GlobalDataObj->LocalSettingsObj.modsAmount--;
 
     SteamApiAccess steamApi;
 
@@ -243,6 +202,7 @@ void QtGeneralBackend::removeMod(uint64_t id){
                 + "\\"
                 + std::to_string(id);
         if(std::filesystem::exists(path)){
+            qDebug() << "Path exist?";
             std::filesystem::remove_all(path);
         }
     }
