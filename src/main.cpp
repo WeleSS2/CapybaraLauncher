@@ -64,6 +64,8 @@
  * - Crashifier, check did game is running if crashed disable half of the mods and check until game is not running correctly.
  *
  *
+ * - Worskapces/Backups for local mods
+ *
  * Patch 0.0.8 Until 20.03
  * - Neccesary add-ons and fixes
  * - Idk what exactly, to be added
@@ -125,7 +127,7 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
     GlobalDataObj->enginePtr = &engine;
 
-    QCoreApplication::setApplicationVersion("v0.0.5.5");
+    QCoreApplication::setApplicationVersion("v0.0.5.6");
 
     LoggingSystem::clearLogs();
 

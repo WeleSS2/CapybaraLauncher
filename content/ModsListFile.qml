@@ -13,6 +13,7 @@ Item {
     property int mousePositionY
     property int currentIndexPos
     property string currentName
+    property string currentPackname
     property string currentId
     property alias overModList : overModList
     enabled: modListEnabled
@@ -183,6 +184,7 @@ Item {
                                mousePositionX = position.x;
                                mousePositionY = position.y;
                                currentName = model.name;
+                               currentPackname = model.packname;
                                currentId = model.modgameid;
                                currentIndexPos = model.id;
                                if (model.colorWarn.r === 0.8823529481887817 && model.colorWarn.g === 0.8823529481887817 && model.colorWarn.b === 0)
@@ -203,6 +205,7 @@ Item {
                               mousePositionX = position.x;
                               mousePositionY = position.y;
                               currentName = model.name;
+                              currentPackname = model.packname;
                               currentId = model.modgameid;
                               currentIndexPos = model.id;
                               if (model.colorWarn.r === 0.8823529481887817 && model.colorWarn.g === 0.8823529481887817 && model.colorWarn.b === 0)
@@ -508,7 +511,7 @@ Item {
                  position = mapToGlobal(mouseX, mouseY);
                  if(actionMenu.visible){
                     if(position.x !== 0){
-                        if(position.x > actionMenu.x + 200 || position.x < actionMenu.x + 25
+                        if(position.x > actionMenu.x + 175 || position.x < actionMenu.x + 25
                            || position.y > actionMenu.y + 350 || position.y < actionMenu.y + 40)
                         {
                             actionMenu.visible = false;
@@ -523,7 +526,7 @@ Item {
             y: 5
             width: 165
             clip: true
-            text:  currentName
+            text: currentName !== "Local mod" ? currentName : currentPackname
         }
 
         Button {
@@ -642,7 +645,6 @@ Item {
             }
         }
 
-        // Local only
         Button {
             id: modsListFile_Button_OpenRPFM
             x: 10
