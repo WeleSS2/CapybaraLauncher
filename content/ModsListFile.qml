@@ -641,6 +641,18 @@ Item {
                 refreshModlist();
             }
         }
+
+        // Local only
+        Button {
+            id: modsListFile_Button_OpenRPFM
+            x: 10
+            y: currentId === "0" ? modsListFile_Button_Remove.y + 30 : modsListFile_Button_MakeLocalCopy.y + 30
+            text: "Open packfile"
+            onClicked: {
+                modsList.currentIndex = currentIndexPos;
+                qtGeneralBackendObj.openInRPFM(currentIndexPos);
+            }
+        }
     }
     function refreshModlist() {
         modsList.model.refreshList();

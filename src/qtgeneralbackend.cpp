@@ -275,13 +275,37 @@ void QtGeneralBackend::removeLocalCopy(uint64_t id){
             + std::to_string(GlobalDataObj->LocalSettingsObj.currentGame.gameId)
             + "\\"
             + GlobalDataObj->getModById(id)->steamPackname.toStdString();
-    qDebug() << QString::fromStdString(path);
     if(std::filesystem::exists(path)){
         std::filesystem::remove(path);
         GlobalDataObj->ModsDataObj.erase(GlobalDataObj->ModsDataObj.begin() + id);
     }
     else
         LoggingSystem::saveLog("qtgeneralbackend.cpp: removeLocalCopy: Failed to remove local copy");
+}
+
+void QtGeneralBackend::openInRPFM(uint64_t id){
+    std::string path = "";
+    if(GlobalDataObj->getModById(id)->laucherId == 0){
+        path = GlobalDataObj->LocalSettingsObj.localPath.toStdString()
+                + "\\LocalMods\\"
+                + std::to_string(GlobalDataObj->LocalSettingsObj.currentGame.gameId)
+                + "\\"
+                + GlobalDataObj->getModById(id)->steamPackname.toStdString();
+    }
+    else
+    {
+        path = GlobalDataObj->LocalSettingsObj.currentGame.gamePath.toStdString()
+                + "\\steamapps\\workshop\\content\\"
+                + std::to_string(GlobalDataObj->LocalSettingsObj.currentGame.gameId)
+                + "\\"
+                + std::to_string(GlobalDataObj->getModById(id)->steamModGameId)
+                + "\\"
+                + GlobalDataObj->getModById(id)->steamPackname.toStdString();
+    }
+
+    if(std::filesystem::exists(path)){
+        QDesktopServices::openUrl(QUrl::fromLocalFile(QString::fromStdString(path)));
+    }
 }
 
 void QtGeneralBackend::closeSteamAPIIfOn(){
