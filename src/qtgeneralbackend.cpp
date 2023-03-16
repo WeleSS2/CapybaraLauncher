@@ -14,7 +14,7 @@
 #include "steamapi/steamapiaccess.h"
 #include "globaldata.h"
 #include "github/githubupdater.h"
-//#include "qt/customModules/infobox.h"
+#include "qt/customModules/infobox.h"
 #include "utility/utility.h"
 #include "localfiles/localmods.h"
 #include "utility/loggingsystem.h"
@@ -165,8 +165,8 @@ void QtGeneralBackend::updateMod(uint64_t id){
 }
 
 void QtGeneralBackend::addMod(uint64_t id){
-//    Utility objUtility;
-//    objUtility.showSimpleInfoBox("Downloading mod with id: " + QString::fromStdString(std::to_string(id)));
+    Utility objUtility;
+    objUtility.showSimpleInfoBox("Downloading mod with id: " + QString::fromStdString(std::to_string(id)));
 
     SteamApiAccess SteamAPI;
     SteamAPI.subscribeMod(id);
@@ -267,6 +267,21 @@ void QtGeneralBackend::makeLocalCopy(uint64_t id)
     {
         LoggingSystem::saveLog("qtgeneralbackend.cpp: makeLocalCopy: Failed to copy mod from steam folder");
     }
+}
+
+void QtGeneralBackend::removeLocalCopy(uint64_t id){
+    std::string path = GlobalDataObj->LocalSettingsObj.localPath.toStdString()
+            + "\\LocalMods\\"
+            + std::to_string(GlobalDataObj->LocalSettingsObj.currentGame.gameId)
+            + "\\"
+            + GlobalDataObj->getModById(id)->steamPackname.toStdString();
+    qDebug() << QString::fromStdString(path);
+    if(std::filesystem::exists(path)){
+        std::filesystem::remove(path);
+        GlobalDataObj->ModsDataObj.erase(GlobalDataObj->ModsDataObj.begin() + id);
+    }
+    else
+        LoggingSystem::saveLog("qtgeneralbackend.cpp: removeLocalCopy: Failed to remove local copy");
 }
 
 void QtGeneralBackend::closeSteamAPIIfOn(){

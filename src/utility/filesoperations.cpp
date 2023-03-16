@@ -43,7 +43,7 @@ bool FilesOperations::saveSettings(){
             QTextStream out(&file);
             out << "var settings = {" << Qt::endl;
             out << "  steamPath: R\""
-                << QString::fromStdString(SharedGlobalDataObj->Global_LocalSettingsObj.steampath)
+                << GlobalDataObj->LocalSettingsObj.steampath
                 << "\"," << Qt::endl;
             out << "};" << Qt::endl;
 
@@ -119,20 +119,20 @@ QString FilesOperations::findLocalFolder(){
         {
             if(std::filesystem::is_directory(pathWh3))
             {
-                SharedGlobalDataObj->Global_LocalSettingsObj.localPath = pathWh3;
+                GlobalDataObj->LocalSettingsObj.localPath.toStdString() = pathWh3;
                 return QString::fromStdString(pathWh3);
             }
             else
             {
                 std::filesystem::create_directory(pathWh3);
-                SharedGlobalDataObj->Global_LocalSettingsObj.localPath = pathWh3;
+                GlobalDataObj->LocalSettingsObj.localPath.toStdString() = pathWh3;
                 return QString::fromStdString(pathWh3);
             }
         }
         else
         {
             std::filesystem::create_directories(pathWh3);
-            SharedGlobalDataObj->Global_LocalSettingsObj.localPath = pathWh3;
+            GlobalDataObj->LocalSettingsObj.localPath.toStdString() = pathWh3;
             return QString::fromStdString(pathWh3);
         }
     }

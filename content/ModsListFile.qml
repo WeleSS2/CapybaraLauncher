@@ -612,6 +612,7 @@ Item {
             }
         }
 
+        // Steam only
         Button {
             visible: currentId !== "0"
             id: modsListFile_Button_MakeLocalCopy
@@ -621,6 +622,21 @@ Item {
             onClicked: {
                 modsList.currentIndex = currentIndexPos;
                 qtGeneralBackendObj.makeLocalCopy(currentId);
+                objModsList.refreshModlistVector();
+                refreshModlist();
+            }
+        }
+
+        // Local Only
+        Button {
+            visible: currentId === "0"
+            id: modsListFile_Button_Remove
+            x: 10
+            y: currentId === "0" ? modsListFile_Button_OpenLocalFiles.y + 30 : 0
+            text: "Remove"
+            onClicked: {
+                modsList.currentIndex = currentIndexPos;
+                qtGeneralBackendObj.removeLocalCopy(currentIndexPos);
                 objModsList.refreshModlistVector();
                 refreshModlist();
             }

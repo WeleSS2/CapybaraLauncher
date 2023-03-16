@@ -48,9 +48,9 @@
  * - Last changelog for mod (hiperlink) - For what? Not needed
  * - Change mod color if not updated and add option to update mod +
  * - Make copy of steam mod as local mod +
- * - Option to remove local mods
+ * - Option to remove local mods +
  * - Open mod with rpfm
- * - Make new local mod
+ * - Make new local mod +
  *
  * Patch 0.0.6 Until 12.03
  * - Web layer
@@ -101,32 +101,7 @@
 #include "qt/customModules/gamechanger.h"
 #include "qt/customModules/modslistfile.h"
 #include "qt/customModules/modpackslist.h"
-//#include "qt/customModules/infobox.h"
-
-//#include "import_qml_plugins.h"
-//#include "steam_api.h"
-//
-//#include "globaldata.h"
-//#include "exit.h"
-//#include "modpackslist.h"
-//
-//
-//#include "utility/filesoperations.h"
-//#include "localfiles/localmods.h"
-//
-//class steam
-//{
-//public:
-//    steam()
-//    {
-//        if(SteamAPI_Init())
-//        {
-//            CSteamTools steamOperations;
-//            SharedSteamToolsObj->LoadItemsToQuery();
-//            SharedSteamToolsObj->LoadItemsDataFromQuery();
-//        }
-//    };
-//};
+#include "qt/customModules/infobox.h"
 
 void settingsLoading()
 {
@@ -236,8 +211,8 @@ int main(int argc, char *argv[])
     //                  InfoBox
     //--------------------------------------------
 
-    //InfoBox ObjInfoBox;
-    //engine.rootContext()->setContextProperty("ObjInfoBox", &ObjInfoBox);
+    InfoBox ObjInfoBox;
+    engine.rootContext()->setContextProperty("ObjInfoBox", &ObjInfoBox);
 
     //--------------------------------------------
 

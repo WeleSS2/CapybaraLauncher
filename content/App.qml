@@ -92,9 +92,9 @@ Window {
         id: qmlBottomGameMenu
     }
 
-    //InfoBox {
-    //    id: infoBoxQML
-    //}
+    InfoBox {
+        id: infoBoxQML
+    }
 
     onClosing: {
         console.log("Closing")
