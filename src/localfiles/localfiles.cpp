@@ -105,6 +105,18 @@ void localFiles::saveLocalSettings()
         if(GlobalDataObj->getGameById(885970) != nullptr){
             file << "\"whRomeRemPath\" " << GlobalDataObj->getGameById(885970)->gamePath.toStdString() << "\n";
         }
+        if(GlobalDataObj->getGameById(214950) != nullptr){
+            file << "\"whRomeIIEmpPath\" " << GlobalDataObj->getGameById(214950)->gamePath.toStdString() << "\n";
+        }
+        if(GlobalDataObj->getGameById(4700) != nullptr){
+            file << "\"whMedIIDefPath\" " << GlobalDataObj->getGameById(4700)->gamePath.toStdString() << "\n";
+        }
+        if(GlobalDataObj->getGameById(34330) != nullptr){
+            file << "\"whShogunIIPath\" " << GlobalDataObj->getGameById(34330)->gamePath.toStdString() << "\n";
+        }
+        if(GlobalDataObj->getGameById(325610) != nullptr){
+            file << "\"whAtillaPath\" " << GlobalDataObj->getGameById(325610)->gamePath.toStdString() << "\n";
+        }
         file.close();
     }
 }
@@ -183,6 +195,30 @@ void localFiles::loadLocalSettings()
                     std::string show;
                     getline(file, show);
                     saveTo(&GlobalDataObj->getGameById(885970)->gamePath, show);
+                }
+                else if(text == "\"whRomeIIEmpPath\"")
+                {
+                    std::string show;
+                    getline(file, show);
+                    saveTo(&GlobalDataObj->getGameById(214950)->gamePath, show);
+                }
+                else if(text == "\"whMedIIDefPath\"")
+                {
+                    std::string show;
+                    getline(file, show);
+                    saveTo(&GlobalDataObj->getGameById(4700)->gamePath, show);
+                }
+                else if(text == "\"whShogunIIPath\"")
+                {
+                    std::string show;
+                    getline(file, show);
+                    saveTo(&GlobalDataObj->getGameById(34330)->gamePath, show);
+                }
+                else if(text == "\"whAtillaPath\"")
+                {
+                    std::string show;
+                    getline(file, show);
+                    saveTo(&GlobalDataObj->getGameById(325610)->gamePath, show);
                 }
             }
         }

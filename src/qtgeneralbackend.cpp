@@ -47,6 +47,48 @@ void QtGeneralBackend::startGame()
                 }
             }
         }
+        switch(GlobalDataObj->LocalSettingsObj.currentGame.gameId){
+        case 364360: {
+            gamePath += "\\Warhammer.exe";
+            break;
+        };
+        case 594570: {
+            gamePath += "\\Warhammer2.exe";
+            break;
+        };
+        case 1142710: {
+            gamePath += "\\Warhammer3.exe";
+            break;
+        };
+        case 779340: {
+            //gamePath += "\\"
+            break;
+        };
+        case 1099410: {
+            gamePath += "\\Troy.exe";
+            break;
+        };
+        case 885970: {
+            gamePath += "\\Rome.exe";
+            break;
+        };
+        case 214950: {
+            gamePath += "\\Rome2.exe";
+            break;
+        };
+        case 4700: {
+            gamePath += "\\Medieval2.exe";
+            break;
+        };
+        case 34330: {
+            gamePath += "\\Shogun2.exe";
+            break;
+        };
+        case 325610: {
+            gamePath += "\\Atilla.exe";
+            break;
+        };
+        }
 
         return gamePath;
     }()

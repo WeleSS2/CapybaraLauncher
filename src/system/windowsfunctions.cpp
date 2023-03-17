@@ -172,6 +172,22 @@ bool WindowsFunctions::getSteamPathFromRegistry()
             {
                 GlobalDataObj->getGameById(885970)->gamePath = QString::fromStdString(pathline);
             }
+            else if(text == "\"214950\"")
+            {
+                GlobalDataObj->getGameById(214950)->gamePath = QString::fromStdString(pathline);
+            }
+            else if(text == "\"4700\"")
+            {
+                GlobalDataObj->getGameById(4700)->gamePath = QString::fromStdString(pathline);
+            }
+            else if(text == "\"34330\"")
+            {
+                GlobalDataObj->getGameById(34330)->gamePath = QString::fromStdString(pathline);
+            }
+            else if(text == "\"325610\"")
+            {
+                GlobalDataObj->getGameById(325610)->gamePath = QString::fromStdString(pathline);
+            }
         }
     }
     else
