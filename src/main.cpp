@@ -133,7 +133,7 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
     GlobalDataObj->enginePtr = &engine;
 
-    QCoreApplication::setApplicationVersion("v0.0.5.6");
+    QCoreApplication::setApplicationVersion("v0.0.5.7");
 
     LoggingSystem::clearLogs();
 
