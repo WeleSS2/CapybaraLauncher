@@ -47,19 +47,7 @@ void QtGeneralBackend::startGame()
                 }
             }
         }
-        std::string tempP = GlobalDataObj->LocalSettingsObj.currentGame.gamePath.toStdString()
-                + "\\steamapps\\common\\" + gamePath;
-        if(std::filesystem::exists(tempP))
-        {
-            for(auto const& entry: std::filesystem::directory_iterator(tempP)){
-                std::string exePath{entry.path().string()};
-                if(exePath.substr(exePath.size() - 3, 3) == "exe"){
-                    exePath.erase(0, tempP.size() + 1);
-                    gamePath += "\\" + exePath;
-                }
-            }
-        }
-        qDebug() << QString::fromStdString(gamePath);
+
         return gamePath;
     }()
     + "\"";

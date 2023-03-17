@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.18)
 
-project(WH3_Mod_MenagerApp LANGUAGES CXX VERSION 0.1)
+project(CapybaraLauncher LANGUAGES CXX VERSION 0.1)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
@@ -13,19 +13,19 @@ set(RC_FILE ${CMAKE_CURRENT_SOURCE_DIR}/content/resources/capybaraIcon.rc)
 
 file(GLOB_RECURSE CPPEXECFILES "src/*.cpp")
 
-qt_add_executable(WH3_Mod_MenagerApp ${CPPEXECFILES}
+qt_add_executable(CapybaraLauncher ${CPPEXECFILES}
     ${RC_FILE})
 
 
-qt_add_resources(WH3_Mod_MenagerApp "configuration"
+qt_add_resources(CapybaraLauncher "configuration"
     PREFIX "/"
     FILES
         qtquickcontrols2.conf
 )
 
 find_package(STEAMAPI REQUIRED PATHS ${PROJECT_SOURCE_DIR}/external/STEAM_API)
-target_include_directories(WH3_Mod_MenagerApp PRIVATE "${STEAMAPI_INCLUDE_DIRS}")
-target_link_libraries(WH3_Mod_MenagerApp PRIVATE
+target_include_directories(CapybaraLauncher PRIVATE "${STEAMAPI_INCLUDE_DIRS}")
+target_link_libraries(CapybaraLauncher PRIVATE
     Qt${QT_VERSION_MAJOR}::Core
     Qt${QT_VERSION_MAJOR}::Gui
     Qt${QT_VERSION_MAJOR}::Quick
@@ -57,10 +57,10 @@ set( LIST_NEEDED_DLL
 
 foreach( file_i ${LIST_NEEDED_DLL})
     add_custom_command(
-    TARGET WH3_Mod_MenagerApp
+    TARGET CapybaraLauncher
     POST_BUILD
     COMMAND ${CMAKE_COMMAND}
-    ARGS -E copy ${file_i} $<TARGET_FILE_DIR:WH3_Mod_MenagerApp>
+    ARGS -E copy ${file_i} $<TARGET_FILE_DIR:CapybaraLauncher>
 )
 
 endforeach( file_i )

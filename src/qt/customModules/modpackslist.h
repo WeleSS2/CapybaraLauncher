@@ -1,6 +1,6 @@
 #pragma once
 #include <QAbstractListModel>
-#include "../../globaldata.h"
+
 
 class ModpacksContent;
 

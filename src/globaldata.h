@@ -5,14 +5,18 @@
 #include <QSharedDataPointer>
 #include <QQmlApplicationEngine>
 #include <QColor>
-
-// wh1Id 364360
-// wh2Id 594570
-// wh3Id 1132710
-// wh3KingId 779340
-// whTroyId 1099410
-// whRomeRemId 885970
-
+/*
+("Warhammer I", "", "wh1Path", 364360);
+("Warhammer II", "", "wh2Path", 594570);
+("Warhammer III", "", "gamepath", 1142710);
+("Three Kingdoms", "", "wh3KingPath", 779340);
+("Troy", "", "whTroyPath", 1099410);
+("Rome Remastered", "", "whRomeRemPath", 885970);
+("Rome II Emperor", "", "whRomeIIEmpPath", 214950);
+("Medieval II Definitive", "", "whMedIIDefPath", 4700);
+("Shogun II", "", "whShogunIIPath", 34330);
+("Atilla", "", "whAtillaPath", 325610);
+*/
 /* Colors data:
  * White {232, 232, 232, 255} - default
  * Light blue {0, 226, 217, 210} - highlighted

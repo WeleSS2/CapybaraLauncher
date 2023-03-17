@@ -6,6 +6,7 @@
 #include <QtRemoteObjects/QRemoteObjectHost>
 
 #include "steam_api.h"
+#include "isteamapps.h"
 
 struct sModsData {
     bool done;

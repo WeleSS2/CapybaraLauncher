@@ -44,20 +44,24 @@
  * - Add mods to steam support - / Impossible to do as i think...
  * - Multigame support Alpha +
  *
- * ---------------------------- FINISHED 08.03.2023 12:55
+ * ---------------------------- FINISHED 08.03.2023 12:55 also not worked
  * - Last changelog for mod (hiperlink) - For what? Not needed
  * - Change mod color if not updated and add option to update mod +
  * - Make copy of steam mod as local mod +
  * - Option to remove local mods +
  * - Open mod with rpfm +
  * - Make new local mod +
- * - Fix start for every game
+ * - Fix start for every game +
  *
- * Patch 0.0.6 Until 12.03
+ *
+ *
+ * ----------------------------- FINISHED 16.03.2023 + fixes for multigame support...
+ * Patch 0.0.6 Until 20.03
  * - Web layer
+ * - Remove consoles from view
  *
  *
- *  Patch 0.0.7 Until 15.03
+ *  Patch 0.0.7 Until 25.03
  * - Custom server layer
  * - Add news in right panel
  * - Game menagement
@@ -67,7 +71,7 @@
  *
  * - Worskapces/Backups for local mods
  *
- * Patch 0.0.8 Until 20.03
+ * Patch 0.0.8 Until 30.03
  * - Neccesary add-ons and fixes
  * - Idk what exactly, to be added
  *
@@ -152,26 +156,6 @@ int main(int argc, char *argv[])
     winFun.getSteamPathFromRegistry();
 
     settingsLoading();
-    //GlobalDataObj->LocalSettingsObj.currentGame = GlobalDataObj->LocalSettingsObj.installedGames[0];
-    //{
-    //    if(GlobalDataObj->LocalSettingsObj.currentGame.gameId != 0)
-    //    {
-    //        steam runSteam;
-
-    //        LocalMods objLocalMods;
-    //        if(objLocalMods.gameFolderCheck())
-    //        {
-    //            if(!objLocalMods.loadLocalMods())
-    //            {
-    //                LoggingSystem::saveLog("main.cpp: Failed to load local mods folder");
-    //            }
-    //        }
-    //        else
-    //        {
-    //            LoggingSystem::saveLog("main.cpp: Failed to open local mods folder");
-    //        }
-    //    }
-    //}
 
     //---------------------------------------------
     //                 GameChanger

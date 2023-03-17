@@ -3,6 +3,7 @@
 #include <filesystem>
 #include <fstream>
 
+#include "../../globaldata.h"
 #include "modslistfile.h"
 
 ModpacksList::ModpacksList(QObject *parent)

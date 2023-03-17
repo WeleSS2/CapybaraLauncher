@@ -134,6 +134,10 @@ bool WindowsFunctions::getSteamPathFromRegistry()
         GlobalDataObj->LocalSettingsObj.installedGames.emplaceBack("Three Kingdoms", "", "wh3KingPath", 779340);
         GlobalDataObj->LocalSettingsObj.installedGames.emplaceBack("Troy", "", "whTroyPath", 1099410);
         GlobalDataObj->LocalSettingsObj.installedGames.emplaceBack("Rome Remastered", "", "whRomeRemPath", 885970);
+        GlobalDataObj->LocalSettingsObj.installedGames.emplaceBack("Rome II Emperor", "", "whRomeIIEmpPath", 214950);
+        GlobalDataObj->LocalSettingsObj.installedGames.emplaceBack("Medieval II Definitive", "", "whMedIIDefPath", 4700);
+        GlobalDataObj->LocalSettingsObj.installedGames.emplaceBack("Shogun II", "", "whShogunIIPath", 34330);
+        GlobalDataObj->LocalSettingsObj.installedGames.emplaceBack("Atilla", "", "whAtillaPath", 325610);
 
         while(file >> text)
         {
