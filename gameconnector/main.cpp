@@ -57,6 +57,7 @@ QString myFunction(QString arg1, int arg2) {
 
 int main(int argc, char *argv[]){
     QCoreApplication a(argc, argv);
+    FreeConsole();
 
     //Instances for server
     GameConnectorService *ptrGameConnector = new GameConnectorService;

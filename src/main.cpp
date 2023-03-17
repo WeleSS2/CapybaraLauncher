@@ -128,6 +128,7 @@ int main(int argc, char *argv[])
     set_qt_environment();
 
     QGuiApplication app(argc, argv);
+    FreeConsole();
 
     QQmlApplicationEngine engine;
     GlobalDataObj->enginePtr = &engine;
