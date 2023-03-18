@@ -24,6 +24,7 @@ qt6_add_qml_module(content
         fonts/fonts.txt
 
 # backgrounds
+        images/gameBackgrounds/background_0.png
         images/gameBackgrounds/background_1142710.png
         images/gameBackgrounds/background_594570.png
 

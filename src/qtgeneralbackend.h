@@ -6,6 +6,7 @@
 class QtGeneralBackend : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(int currentGameId READ getCurrentGameId WRITE setCurrentGameId NOTIFY currentGameIdChanged)
 public:
     explicit QtGeneralBackend(QObject *parent = nullptr);
 
@@ -28,8 +29,15 @@ public:
 
     Q_INVOKABLE void closeApp();
 
+    int getCurrentGameId() const;
+    void setCurrentGameId(int id);
+
 signals:
 
+    void currentGameIdChanged(int newGameId);
+
+private:
+    int m_currentGameId = 0;
 };
 
 #endif // QTGENERALBACKEND_H

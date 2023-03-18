@@ -61,7 +61,7 @@ void QtGeneralBackend::startGame()
             break;
         };
         case 779340: {
-            //gamePath += "\\"
+            gamePath += "\\Three_Kingdoms.exe";
             break;
         };
         case 1099410: {
@@ -77,7 +77,7 @@ void QtGeneralBackend::startGame()
             break;
         };
         case 4700: {
-            gamePath += "\\Medieval2.exe";
+            gamePath += "\\medieval2.exe";
             break;
         };
         case 34330: {
@@ -377,4 +377,15 @@ void QtGeneralBackend::closeSteamAPIIfOn(){
 
 void QtGeneralBackend::closeApp(){
     exit(EXIT_FAILURE);
+}
+
+int QtGeneralBackend::getCurrentGameId() const {
+    return GlobalDataObj->LocalSettingsObj.currentGame.gameId;
+}
+
+void QtGeneralBackend::setCurrentGameId(int id){
+    if(GlobalDataObj->LocalSettingsObj.currentGame.gameId != m_currentGameId){
+        m_currentGameId = GlobalDataObj->LocalSettingsObj.currentGame.gameId;
+        emit currentGameIdChanged(m_currentGameId);
+    }
 }

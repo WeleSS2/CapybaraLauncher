@@ -5,14 +5,14 @@ import cGameChangerListUrl
 
 Item {
     property var mainTextColor: Qt.rgba(1, 1, 1, 1)
-    property int currentGameId: 1142710
+
     Image {
         id: background
         x: 0
         y: 0
         width: Window.width
         height: Window.height
-        source: "images/gameBackgrounds/background_" + currentGameId + ".png"
+        source: "images/gameBackgrounds/background_" + qtGeneralBackendObj.currentGameId + ".png"
         fillMode: Image.Stretch
     }
 
@@ -40,6 +40,7 @@ Item {
             font.family: "Courier"
         }
     }
+
     ComboBox {
         id: selectGame
         editable: false
@@ -58,6 +59,8 @@ Item {
 
     function setGame(index){
         selectGame.model.setCurrentGame(index);
+        qtGeneralBackendObj.currentGameId = selectGame.model.getCurrentGameId();
+        background.source = "images/gameBackgrounds/background_" + qtGeneralBackendObj.currentGameId + ".png"
         objModsList.refreshModlistVector();
         ObjModpacksContent.modlistAmount();
         qmlBottomGameMenu.refreshModpacksList();

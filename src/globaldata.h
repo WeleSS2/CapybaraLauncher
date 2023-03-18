@@ -56,32 +56,6 @@ struct sGamesData {
     uint64_t gameId = 0;
 };
 
-struct byteInterfaceModsData{
-    bool done;
-    QColor color;
-
-    uint64_t laucherId;
-    uint64_t steamModGameId;
-    uint64_t steamDataInSeconds;
-    uint64_t steamAuthor;
-
-    QString steamModName;
-    QString steamPackname;
-
-    byteInterfaceModsData& operator=(QDataStream& in)
-    {
-        in >> done
-           >> color
-           >> laucherId
-           >> steamModGameId
-           >> steamDataInSeconds
-           >> steamAuthor
-           >> steamModName
-           >> steamPackname;
-        return *this;
-    };
-};
-
 struct sModsData {
     bool done;
     QColor color;

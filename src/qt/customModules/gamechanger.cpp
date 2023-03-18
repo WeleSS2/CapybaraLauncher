@@ -109,7 +109,7 @@ void GameChanger::setList(cGameChangerList *list)
     endResetModel();
 }
 
-void GameChanger::setCurrentGame(uint64_t index){
+void GameChanger::setCurrentGame(uint64_t index) const {
     // Set game and clear data form previous
     GlobalDataObj->LocalSettingsObj.currentGame = GlobalDataObj->LocalSettingsObj.installedGames[index];
     GlobalDataObj->ModsDataObj.clear();
@@ -173,6 +173,9 @@ void GameChanger::setCurrentGame(uint64_t index){
     }
 }
 
+int GameChanger::getCurrentGameId() const {
+    return GlobalDataObj->LocalSettingsObj.currentGame.gameId;
+}
 
 
 
