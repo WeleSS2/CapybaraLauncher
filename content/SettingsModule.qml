@@ -43,7 +43,7 @@ Rectangle {
 
         onActivated: {
             qmlGameSelector.setGame(currentIndex);
-            // Add later saving as default game
+            qtGeneralBackendObj.saveDefaultGame();
         }
         x: 30 + selectDefaultGameText.implicitWidth
         y: 20

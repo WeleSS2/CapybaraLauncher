@@ -379,6 +379,10 @@ void QtGeneralBackend::closeApp(){
     exit(EXIT_FAILURE);
 }
 
+void QtGeneralBackend::saveDefaultGame(){
+    GlobalDataObj->LocalSettingsObj.defaultGame = GlobalDataObj->LocalSettingsObj.currentGame.gameId;
+}
+
 int QtGeneralBackend::getCurrentGameId() const {
     return GlobalDataObj->LocalSettingsObj.currentGame.gameId;
 }

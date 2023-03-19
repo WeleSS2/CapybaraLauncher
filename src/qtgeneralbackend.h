@@ -28,6 +28,7 @@ public:
     Q_INVOKABLE void closeSteamAPIIfOn();
 
     Q_INVOKABLE void closeApp();
+    Q_INVOKABLE void saveDefaultGame();
 
     int getCurrentGameId() const;
     void setCurrentGameId(int id);

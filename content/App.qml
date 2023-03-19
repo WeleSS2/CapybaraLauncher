@@ -74,11 +74,6 @@ Window {
         id: qmlTopMenu
     }
 
-    SettingsModule
-    {
-        id: qmlSettingsModule
-    }
-
     ModsListFile {
         id: qmlModsList
     }
@@ -90,6 +85,11 @@ Window {
     BottomGameMenu
     {
         id: qmlBottomGameMenu
+    }
+
+    SettingsModule
+    {
+        id: qmlSettingsModule
     }
 
     InfoBox {

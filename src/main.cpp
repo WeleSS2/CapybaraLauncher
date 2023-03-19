@@ -56,12 +56,16 @@
  *
  *
  * ----------------------------- FINISHED 16.03.2023 + fixes for multigame support...
- * Patch 0.0.6 Until 20.03
- * - Web layer
- * - Remove consoles from view
  *
+ *
+ *
+ * Patch 0.0.6 Until 20.03
+ * - Add background for every game
+ * - Fix settings menu issues
  *
  *  Patch 0.0.7 Until 25.03
+ * - Web layer
+ * - Remove consoles from view
  * - Custom server layer
  * - Add news in right panel
  * - Game menagement
@@ -158,6 +162,16 @@ int main(int argc, char *argv[])
 
     settingsLoading();
 
+    //--------------------------------------------
+    //            Load default game
+    //--------------------------------------------
+
+    if(GlobalDataObj->LocalSettingsObj.currentGame.gameId > 0){
+        GameChanger obj;
+        obj.setCurrentGame(1000);
+    }
+
+
     //---------------------------------------------
     //                 GameChanger
     //---------------------------------------------
@@ -189,7 +203,7 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("ObjModpacksContent", &ObjModpacksContent);
 
     //--------------------------------------------
-    //                QtGeneralBackend
+    //              QtGeneralBackend
     //--------------------------------------------
 
     QtGeneralBackend qtGeneralBackendObj;
@@ -203,6 +217,16 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("ObjInfoBox", &ObjInfoBox);
 
     //--------------------------------------------
+    //            Load default game
+    //--------------------------------------------
+
+    if(GlobalDataObj->LocalSettingsObj.currentGame.gameId > 0){
+        GameChanger obj;
+        obj.setCurrentGame(1000);
+        ObjModpacksContent.modlistAmount();
+    }
+
+
 
 
     const QUrl url(u"qrc:Main/main.qml"_qs);
@@ -223,6 +247,14 @@ int main(int argc, char *argv[])
 
     if (engine.rootObjects().isEmpty()) {
         return -1;
+    }
+
+    //--------------------------------------------
+    //            Load default game
+    //--------------------------------------------
+
+    if(GlobalDataObj->LocalSettingsObj.currentGame.gameId > 0){
+        ObjModpacksContent.modlistAmount();
     }
 
     return app.exec();

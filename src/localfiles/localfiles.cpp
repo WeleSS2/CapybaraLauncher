@@ -155,7 +155,7 @@ void localFiles::loadLocalSettings()
                 {
                     std::string show;
                     getline(file, show);
-                    if(show.length() > 4){
+                    if(show.length() > 2){
                         GlobalDataObj->LocalSettingsObj.defaultGame = std::stoi(show);
                         GlobalDataObj->LocalSettingsObj.currentGame = *GlobalDataObj->getGameById(std::stoi(show));
                     }

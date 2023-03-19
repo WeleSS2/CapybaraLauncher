@@ -451,34 +451,34 @@ Item {
             font.bold: true
         }
 
-        Rectangle {
-            id: refreshButton
-            x: 980
-            width: 30
-            height: 30
-            color: "transparent"
-            MouseArea{
-                anchors.fill: parent
-                hoverEnabled: true
-                onClicked: {
-                    if(Qt.LeftButton){
-                        objModsList.refreshModlistVector();
-                        refreshModlistTo0();
-                    }
-                }
-                onEntered: {
-                    refreshButtonImage.source = "images/icons/refreshIcon64Light.png"
-                }
-                onExited: {
-                    refreshButtonImage.source = "images/icons/refreshIcon64.png"
-                }
-            }
-            Image {
-                id: refreshButtonImage
-                anchors.fill: parent
-                source: "images/icons/refreshIcon64.png"
-            }
-        }
+        //Rectangle {
+        //    id: refreshButton
+        //    x: 980
+        //    width: 30
+        //    height: 30
+        //    color: "transparent"
+        //    MouseArea{
+        //        anchors.fill: parent
+        //        hoverEnabled: true
+        //        onClicked: {
+        //            if(Qt.LeftButton){
+        //                objModsList.refreshModlistVector();
+        //                refreshModlistTo0();
+        //            }
+        //        }
+        //        onEntered: {
+        //            refreshButtonImage.source = "images/icons/refreshIcon64Light.png"
+        //        }
+        //        onExited: {
+        //            refreshButtonImage.source = "images/icons/refreshIcon64.png"
+        //        }
+        //    }
+        //    Image {
+        //        id: refreshButtonImage
+        //        anchors.fill: parent
+        //        source: "images/icons/refreshIcon64.png"
+        //    }
+        //}
 
         //Text {
         //    x: 977
