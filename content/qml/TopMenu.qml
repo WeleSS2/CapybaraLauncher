@@ -89,7 +89,7 @@ Item {
         Image {
             id: launcherupdateImage
             anchors.fill: parent
-            source: updatestatus ? "images/icons/downloadGreen.png" : "images/icons/downloadRed.png"
+            source: updatestatus ? "../images/icons/downloadGreen.png" : "../images/icons/downloadRed.png"
         }
     }
 
@@ -109,16 +109,16 @@ Item {
                 }
             }
             onEntered: {
-                discordImage.source = "images/discordLight.png";
+                discordImage.source = "../images/icons/discordLight.png";
             }
             onExited: {
-                discordImage.source = "images/discord.png";
+                discordImage.source = "../images/icons/discord.png";
             }
         }
         Image {
             id: discordImage
             anchors.fill: parent
-            source: "images/discord.png"
+            source: "../images/icons/discord.png"
         }
     }
 
@@ -138,16 +138,16 @@ Item {
                 }
             }
             onEntered: {
-                patreonImage.source = "images/patreonLight.png";
+                patreonImage.source = "../images/icons/patreonLight.png";
             }
             onExited: {
-                patreonImage.source = "images/patreon.png";
+                patreonImage.source = "../images/icons/patreon.png";
             }
         }
         Image {
             id: patreonImage
             anchors.fill: parent
-            source: "images/patreon.png"
+            source: "../images/icons/patreon.png"
         }
     }
 

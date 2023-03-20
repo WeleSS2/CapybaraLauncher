@@ -12,7 +12,7 @@ Item {
         y: 0
         width: Window.width
         height: Window.height
-        source: "images/gameBackgrounds/background_" + qtGeneralBackendObj.currentGameId + ".png"
+        source: "../images/gameBackgrounds/background_" + qtGeneralBackendObj.currentGameId + ".png"
         fillMode: Image.Stretch
     }
 
@@ -22,7 +22,7 @@ Item {
         y: 0
         width: 80
         height: 80
-        source: "images/capybaraIcon.png"
+        source: "../images/icons/capybaraIcon.png"
         fillMode: Image.Stretch
         Text {
             id: title
@@ -60,7 +60,7 @@ Item {
     function setGame(index){
         selectGame.model.setCurrentGame(index);
         qtGeneralBackendObj.currentGameId = selectGame.model.getCurrentGameId();
-        background.source = "images/gameBackgrounds/background_" + qtGeneralBackendObj.currentGameId + ".png"
+        background.source = "../images/gameBackgrounds/background_" + qtGeneralBackendObj.currentGameId + ".png"
         objModsList.refreshModlistVector();
         ObjModpacksContent.modlistAmount();
         qmlBottomGameMenu.refreshModpacksList();

@@ -60,18 +60,21 @@
  *
  *
  * Patch 0.0.6 Until 20.03
- * - Add background for every game
- * - Fix settings menu issues
+ * - Add background for every game +
+ * - Fix settings menu issues +
+ * - Custom menu background +
+ *
+ *-------------- FINISHED 19.03
  *
  *  Patch 0.0.7 Until 25.03
  * - Web layer
- * - Remove consoles from view
+ * - Remove consoles from view +
  * - Custom server layer
  * - Add news in right panel
  * - Game menagement
  * - Update game/mods
  * - Crashifier, check did game is running if crashed disable half of the mods and check until game is not running correctly.
- *
+ * - Option, enable steam if not running
  *
  * - Worskapces/Backups for local mods
  *
