@@ -1,6 +1,7 @@
 #include "loggingsystem.h"
 #include "../globaldata.h"
 #include <QFile>
+#include <QTime>
 
 LoggingSystem::LoggingSystem()
 {
@@ -23,7 +24,7 @@ void LoggingSystem::saveLog(QString log)
     QTextStream in(&file);
     {
         qDebug() << log;
-        in << log << "\n";
+        in << QTime::currentTime().toString() << "   " <<  log << "\n";
         file.close();
     }
 }

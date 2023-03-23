@@ -78,9 +78,9 @@ Window {
         id: qmlModsList
     }
 
-    //RightPanel {
+    RightPanel {
 
-    //}
+    }
 
     BottomGameMenu
     {

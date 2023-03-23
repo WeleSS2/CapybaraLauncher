@@ -155,6 +155,7 @@ void GameChanger::setCurrentGame(uint64_t index) const {
 
     // SteamAPI Initialization
     SteamApiAccess objSteamApiAccess;
+
     objSteamApiAccess.closeGameSteamAPI();
 
     if(objSteamApiAccess.runGameSteamAPI())

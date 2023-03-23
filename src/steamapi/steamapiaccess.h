@@ -48,7 +48,6 @@ public:
 
     void loadItemsDataToVector();
 
-    QString callTestFunction();
 
 private slots:
 

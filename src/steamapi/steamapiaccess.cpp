@@ -289,33 +289,3 @@ void SteamApiAccess::linkToServer(QLocalSocket* socket, int maxAttemps){
     }
 }
 
-
-QString SteamApiAccess::callTestFunction(){
-    // Create the local socket to connect to the server
-    QLocalSocket socket;
-    socket.connectToServer("CapybaraWHGameConnector");
-    if (!socket.waitForConnected(2000)) {
-        qDebug() << "SteamApiAccess: callTestFunction: Failed to connect to server: " << socket.errorString();
-        return "Error";
-    }
-    else
-    {
-        // Send a message containing the function name and arguments
-        QString message = "myFunction,arg1,42";
-        qDebug() << socket.isValid() << socket.isOpen() << message.toUtf8();
-        socket.write(message.toUtf8());
-        socket.flush();
-
-        // Wait for a response from the server
-        if (socket.waitForReadyRead(2000)) {
-            // Read the response and use it as desired
-            QString result = QString(socket.readAll());
-            return result;
-        }
-        else
-        {
-            qDebug() << "SteamApiAccess: callTestFunction: Failed to get server ready." << socket.errorString();
-            return "Error";
-        }
-    }
-}

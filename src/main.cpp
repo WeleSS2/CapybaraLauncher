@@ -76,11 +76,12 @@
  * - Crashifier, check did game is running if crashed disable half of the mods and check until game is not running correctly.
  * - Option, enable steam if not running
  *
- * - Worskapces/Backups for local mods
- *
  * Patch 0.0.8 Until 30.03
  * - Neccesary add-ons and fixes
  * - Idk what exactly, to be added
+ * - Worskapces/Backups for local mods
+ *
+ *
  *
  * Open Beta Relase
  *
@@ -116,6 +117,7 @@
 #include "qt/customModules/modslistfile.h"
 #include "qt/customModules/modpackslist.h"
 #include "qt/customModules/infobox.h"
+#include "qt/customModules/news.h"
 
 void settingsLoading()
 {
@@ -142,9 +144,6 @@ int main(int argc, char *argv[])
 
     QCoreApplication::setApplicationVersion("v0.0.6");
 
-    LoggingSystem::clearLogs();
-
-
     // WORKSPACE
     // settings are doubled due to work over transfer to .js
     // DO NOT WORK
@@ -164,6 +163,8 @@ int main(int argc, char *argv[])
     winFun.getSteamPathFromRegistry();
 
     settingsLoading();
+
+    LoggingSystem::clearLogs();
 
     //--------------------------------------------
     //            Load default game
@@ -206,6 +207,20 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("ObjModpacksContent", &ObjModpacksContent);
 
     //--------------------------------------------
+    //                News module
+    //--------------------------------------------
+
+    qmlRegisterType<News>("cNews", 1, 0, "News");
+    qmlRegisterUncreatableType<News>("cNews", 1, 0, "DevNewsList", QString("Smth"));
+    //qmlRegisterUncreatableType<News>("cNewsList", 1, 0, "CommunityNewsList", QString("Smth"));
+
+    DevNewsList cDevNewsList;
+    engine.rootContext()->setContextProperty("cDevNewsList", &cDevNewsList);
+
+    //CommunityNewsList cCommunityNewsList;
+    //engine.rootContext()->setContextProperty("cCommunityNewsList", &cCommunityNewsList);
+
+    //--------------------------------------------
     //              QtGeneralBackend
     //--------------------------------------------
 
@@ -224,8 +239,6 @@ int main(int argc, char *argv[])
     //--------------------------------------------
 
     if(GlobalDataObj->LocalSettingsObj.currentGame.gameId > 0){
-        GameChanger obj;
-        obj.setCurrentGame(1000);
         ObjModpacksContent.modlistAmount();
     }
 
@@ -250,14 +263,6 @@ int main(int argc, char *argv[])
 
     if (engine.rootObjects().isEmpty()) {
         return -1;
-    }
-
-    //--------------------------------------------
-    //            Load default game
-    //--------------------------------------------
-
-    if(GlobalDataObj->LocalSettingsObj.currentGame.gameId > 0){
-        ObjModpacksContent.modlistAmount();
     }
 
     return app.exec();
