@@ -2,15 +2,19 @@
 
 #include <QObject>
 #include <QAbstractTableModel>
+#include <QImage>
 
 class NewsList;
 
 struct NewsItem{
     uint64_t date;
+    QImage image;
+    QString title;
+    QString description;
     QString article;
 };
 
-class News : public QAbstractTableModel
+class News : public QAbstractListModel
 {
     Q_OBJECT
     Q_PROPERTY(NewsList *list READ list WRITE setList)
@@ -19,11 +23,13 @@ public:
 
     enum {
         dateRole,
-        articleRole = Qt::UserRole + 1
+        imageRole,
+        titleRole,
+        descriptionRole,
+        articleRole
     };
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-    int columnCount(const QModelIndex &parent = QModelIndex()) const override;
 
     QVariant data(const QModelIndex &index, int tole = Qt::DisplayRole) const override;
 
@@ -50,7 +56,7 @@ class NewsList : public QObject
 public:
     explicit NewsList(QObject* parent = nullptr) : QObject{parent} {};
 
-    virtual QVector<NewsItem> get_vArticles() const = 0;
+    virtual const QVector<NewsItem> *get_vArticles() const = 0;
     virtual uint64_t getNewsAmount() const = 0;
     virtual bool setItemAt(int index, const NewsItem &item) = 0;
 
@@ -79,7 +85,7 @@ class DevNewsList : public NewsList
 public:
     explicit DevNewsList(QObject* parent = nullptr);
 
-    QVector<NewsItem> get_vArticles() const override {return mNews; };
+    const QVector<NewsItem> *get_vArticles() const override {return &mNews; };
     uint64_t getNewsAmount() const override {return 10; };
 
     bool setItemAt(int index, const NewsItem &item) override;
@@ -104,7 +110,7 @@ class CommunityNewsList : public NewsList
 public:
     explicit CommunityNewsList(QObject* parent = nullptr);
 
-    QVector<NewsItem> get_vArticles() const override {return mNews; };
+    const QVector<NewsItem> *get_vArticles() const override {return &mNews; };
     uint64_t getNewsAmount() const override {return mNews.size(); };
 
     bool setItemAt(int index, const NewsItem &item) override;

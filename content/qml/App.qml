@@ -66,6 +66,10 @@ Window {
         y: 0
     }
 
+    property int width_1: mainScreen.width / 100
+    property int height_1: mainScreen.height / 100
+    property int baseScale: width_1 / height_1
+
     GameSelector {
         id: qmlGameSelector
     }

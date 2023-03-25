@@ -212,13 +212,13 @@ int main(int argc, char *argv[])
 
     qmlRegisterType<News>("cNews", 1, 0, "News");
     qmlRegisterUncreatableType<News>("cNews", 1, 0, "DevNewsList", QString("Smth"));
-    //qmlRegisterUncreatableType<News>("cNewsList", 1, 0, "CommunityNewsList", QString("Smth"));
+    qmlRegisterUncreatableType<News>("cNewsList", 1, 0, "CommunityNewsList", QString("Smth"));
 
     DevNewsList cDevNewsList;
     engine.rootContext()->setContextProperty("cDevNewsList", &cDevNewsList);
 
-    //CommunityNewsList cCommunityNewsList;
-    //engine.rootContext()->setContextProperty("cCommunityNewsList", &cCommunityNewsList);
+    CommunityNewsList cCommunityNewsList;
+    engine.rootContext()->setContextProperty("cCommunityNewsList", &cCommunityNewsList);
 
     //--------------------------------------------
     //              QtGeneralBackend

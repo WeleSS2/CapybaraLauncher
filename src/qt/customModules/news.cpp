@@ -1,7 +1,7 @@
 #include "news.h"
 
 News::News(QObject* parent)
-    : QAbstractTableModel(parent)
+    : QAbstractListModel(parent)
     , mList(nullptr)
 {
 }
@@ -11,28 +11,31 @@ int News::rowCount(const QModelIndex &parent) const
     if(parent.isValid() || !mList)
         return 0;
 
-    return 1;
-}
-
-int News::columnCount(const QModelIndex &parent) const
-{
-    if(parent.isValid() || !mList)
-        return 0;
-
-    return mList->getNewsAmount();
+    return mList->get_vArticles()->size();
 }
 
 QVariant News::data(const QModelIndex &index, int role) const
 {
-    if(index.isValid() || !mList)
+    if(!index.isValid() || !mList)
         return QVariant();
 
-    if(index.row() == 0)
+    if(index.row() >= mList->get_vArticles()->size())
+        return QVariant();
+
+    switch(role)
     {
-        const NewsItem item = mList->get_vArticles().at(index.column() - 1);
-                if (role == articleRole)
-                    return QVariant(item.article);
+    case dateRole:
+    { return mList->get_vArticles()->at(index.row()).date; }
+    case imageRole:
+    { return mList->get_vArticles()->at(index.row()).image; }
+    case titleRole:
+    { return mList->get_vArticles()->at(index.row()).title; }
+    case descriptionRole:
+    { return mList->get_vArticles()->at(index.row()).description; }
+    case articleRole:
+    { return mList->get_vArticles()->at(index.row()).article; }
     }
+
     return QVariant();
 }
 
@@ -41,14 +44,27 @@ bool News::setData(const QModelIndex &index, const QVariant &value, int role)
     if(!mList)
         return false;
 
-    NewsItem item = mList->get_vArticles().at(index.column());
+    if(index.row() >= mList->get_vArticles()->size())
+        return false;
 
-    if(mList->setItemAt(index.column(), item)){
-        emit dataChanged(index, index, {role});
-        return true;
+    NewsItem item = mList->get_vArticles()->at(index.row());
+    switch(role)
+    {
+    case dateRole:
+    { item.date = value.toULongLong(); break; }
+    case imageRole:
+    { break; }
+    case titleRole:
+    { item.title = value.toString(); break; }
+    case descriptionRole:
+    { item.description = value.toString(); break; }
+    case articleRole:
+    { item.article = value.toString(); break; }
     }
 
-    return false;
+    emit dataChanged(index, index, {role});
+
+    return true;
 }
 
 Qt::ItemFlags News::flags(const QModelIndex &index) const
@@ -63,6 +79,9 @@ QHash<int, QByteArray> News::roleNames() const
 {
     QHash<int, QByteArray> names;
     names[dateRole] = "date";
+    names[imageRole] = "image";
+    names[titleRole] = "title";
+    names[descriptionRole] = "description";
     names[articleRole] = "article";
     return names;
 }
@@ -83,19 +102,13 @@ void News::setList(NewsList *list)
 
     if(mList){
         connect(mList, &NewsList::preItemAppened, this, [=]() {
-           const int index = mList->get_vArticles().size();
-           beginInsertColumns(QModelIndex(), index, index);
+            beginResetModel();
         });
         connect(mList, &NewsList::postItemAppened, this, [=]() {
-           endInsertColumns();
-        });
-        connect(mList, &NewsList::preItemRemoved, this, [=](int index){
-           beginRemoveColumns(QModelIndex(), index, index);
-        });
-        connect(mList, &NewsList::postItemRemoved, this, [=](){
-           endRemoveColumns();
+            endResetModel();
         });
     }
+
     endResetModel();
 }
 
@@ -119,7 +132,9 @@ DevNewsList::DevNewsList(QObject* parent)
     {
         NewsItem item;
         item.date = i;
-        item.article = "Item number " + QString::fromStdString(std::to_string(i));
+        item.title = "Title";
+        item.description = "desc";
+        item.article = "Item number DEV " + QString::fromStdString(std::to_string(i));
         mNews.emplace_back(item);
     }
 }
