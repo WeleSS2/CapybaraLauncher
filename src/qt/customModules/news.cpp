@@ -1,5 +1,8 @@
 #include "news.h"
 
+#include "../../github/githubnews.h"
+#include "../../globaldata.h"
+
 News::News(QObject* parent)
     : QAbstractListModel(parent)
     , mList(nullptr)
@@ -128,15 +131,17 @@ void News::refreshList()
 DevNewsList::DevNewsList(QObject* parent)
     : NewsList{parent}
 {
-    for(int i = 0; i < 10; ++i)
-    {
-        NewsItem item;
-        item.date = i;
-        item.title = "Title";
-        item.description = "desc";
-        item.article = "Item number DEV " + QString::fromStdString(std::to_string(i));
-        mNews.emplace_back(item);
-    }
+    GithubNews objGithubNews;
+    objGithubNews.getNewsForGame(mNews, 1142710);
+    //for(int i = 0; i < 10; ++i)
+    //{
+    //    NewsItem item;
+    //    item.date = i;
+    //    item.title = "Title";
+    //    item.description = "desc";
+    //    item.article = "Item number DEV " + QString::fromStdString(std::to_string(i));
+    //    mNews.emplace_back(item);
+    //}
 }
 
 bool DevNewsList::setItemAt(int index, const NewsItem &item)
