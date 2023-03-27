@@ -1,13 +1,14 @@
 cmake_minimum_required(VERSION 3.18)
 
-project(CapybaraLauncher LANGUAGES CXX VERSION 0.1)
+project(CapybaraLauncher LANGUAGES CXX VERSION 0.7)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(QML_IMPORT_TRACE = 1)
-find_package(Qt6 REQUIRED COMPONENTS Gui Qml Quick Network)
+find_package(Qt6 REQUIRED COMPONENTS Gui Qml Quick Network WebEngineQuick)
+find_package(OpenSSL REQUIRED)
 set(ICON_FILE ${CMAKE_CURRENT_SOURCE_DIR}/content/resources/capybaraIcon.ico)
 set(RC_FILE ${CMAKE_CURRENT_SOURCE_DIR}/content/resources/capybaraIcon.rc)
 
@@ -22,16 +23,21 @@ qt_add_resources(CapybaraLauncher "configuration"
     FILES
         qtquickcontrols2.conf
 )
+include_directories(${OPENSSL_INCLUDE_DIR})
 
 find_package(STEAMAPI REQUIRED PATHS ${PROJECT_SOURCE_DIR}/external/STEAM_API)
-target_include_directories(CapybaraLauncher PRIVATE "${STEAMAPI_INCLUDE_DIRS}")
+target_include_directories(CapybaraLauncher PRIVATE
+    "${STEAMAPI_INCLUDE_DIRS}"
+    ${OPENSSL_INCLUDE_DIR})
 target_link_libraries(CapybaraLauncher PRIVATE
     Qt${QT_VERSION_MAJOR}::Core
     Qt${QT_VERSION_MAJOR}::Gui
     Qt${QT_VERSION_MAJOR}::Quick
     Qt${QT_VERSION_MAJOR}::Qml
     Qt${QT_VERSION_MAJOR}::Network
+    Qt${QT_VERSION_MAJOR}::WebEngineQuick
     ${STEAMAPI_LIBRARIES}
+    ${OPENSSL_LIBRARIES}
 )
 #-- GameConnector config part
 file(GLOB_RECURSE GAMECONFILES "gameconnector/*.cpp")

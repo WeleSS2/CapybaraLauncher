@@ -97,6 +97,7 @@
 // Qt neccesary
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QtWebEngineQuick/QtWebEngineQuick>
 
 #include <QObject>
 #include <QQmlContext>
@@ -135,14 +136,18 @@ void settingsLoading()
 int main(int argc, char *argv[])
 {
     set_qt_environment();
+    QCoreApplication::setAttribute(Qt::AA_ShareOpenGLContexts);
 
     QGuiApplication app(argc, argv);
     FreeConsole();
+    QQuickWindow::setGraphicsApi(QSGRendererInterface::OpenGLRhi);
+
+
 
     QQmlApplicationEngine engine;
     GlobalDataObj->enginePtr = &engine;
 
-    QCoreApplication::setApplicationVersion("v0.0.6");
+    QCoreApplication::setApplicationVersion("v0.0.7");
 
     // WORKSPACE
     // settings are doubled due to work over transfer to .js
@@ -243,7 +248,18 @@ int main(int argc, char *argv[])
     }
 
 
+    //------------------------------------------------------------
+    //
+    //                       Connections
+    //
+    //------------------------------------------------------------
 
+    QObject::connect(&app, &QGuiApplication::applicationStateChanged,
+                         [&](Qt::ApplicationState state) {
+            if (state == Qt::ApplicationActive) {
+                QtWebEngineQuick::initialize();
+            }
+        });
 
     const QUrl url(u"qrc:Main/main.qml"_qs);
     QObject::connect(

@@ -30,7 +30,7 @@ QVariant News::data(const QModelIndex &index, int role) const
     case dateRole:
     { return mList->get_vArticles()->at(index.row()).date; }
     case imageRole:
-    { return mList->get_vArticles()->at(index.row()).image; }
+    { return mList->get_vArticles()->at(index.row()).imageUrl; }
     case titleRole:
     { return mList->get_vArticles()->at(index.row()).title; }
     case descriptionRole:
@@ -56,7 +56,7 @@ bool News::setData(const QModelIndex &index, const QVariant &value, int role)
     case dateRole:
     { item.date = value.toULongLong(); break; }
     case imageRole:
-    { break; }
+    { item.imageUrl = value.toString(); break; }
     case titleRole:
     { item.title = value.toString(); break; }
     case descriptionRole:
@@ -81,11 +81,11 @@ Qt::ItemFlags News::flags(const QModelIndex &index) const
 QHash<int, QByteArray> News::roleNames() const
 {
     QHash<int, QByteArray> names;
-    names[dateRole] = "date";
-    names[imageRole] = "image";
-    names[titleRole] = "title";
-    names[descriptionRole] = "description";
-    names[articleRole] = "article";
+    names[dateRole] = "Ndate";
+    names[imageRole] = "Nimage";
+    names[titleRole] = "Ntitle";
+    names[descriptionRole] = "Ndescription";
+    names[articleRole] = "Narticle";
     return names;
 }
 
@@ -195,7 +195,8 @@ CommunityNewsList::CommunityNewsList(QObject *parent)
     {
         NewsItem item;
         item.date = i;
-        item.article = "Item number " + QString::fromStdString(std::to_string(i));
+        item.title = "Item number " + QString::fromStdString(std::to_string(i));
+        item.description = "Item number aaaaaaaaaassssssssssssssssss d d asdafruh hurhfurf hfhhfhru " + QString::fromStdString(std::to_string(i));
         mNews.emplace_back(item);
     }
 }

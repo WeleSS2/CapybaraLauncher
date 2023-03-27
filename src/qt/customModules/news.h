@@ -2,16 +2,16 @@
 
 #include <QObject>
 #include <QAbstractTableModel>
-#include <QImage>
+#include <QUrl>
 
 class NewsList;
 
 struct NewsItem{
     uint64_t date;
-    QImage image;
+    QUrl imageUrl;
     QString title;
     QString description;
-    QString article;
+    QUrl article;
 };
 
 class News : public QAbstractListModel

@@ -100,6 +100,10 @@ Window {
         id: infoBoxQML
     }
 
+    Article {
+        id: qmlArticle
+    }
+
     onClosing: {
         console.log("Closing")
         localFilesObj.saveLocalSettings()
