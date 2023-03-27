@@ -14,4 +14,5 @@ public:
     const QPair<QString, QString> getInfoFromTxt(QNetworkAccessManager &manager, const QJsonObject &obj);
     const QJsonArray returnSubfolderFiles(QNetworkAccessManager &manager, const QJsonObject &obj);
     const QUrl getIcon(QNetworkAccessManager &manager, const QJsonObject &obj);
+    const QUrl getHtmlAdress(QNetworkAccessManager &manager, const QJsonObject &obj);
 };

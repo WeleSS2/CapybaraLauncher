@@ -19,7 +19,7 @@ GithubNews::GithubNews()
 // Main function which iterate inside a selected folder
 const void GithubNews::getNewsForGame(QVector<NewsItem> &vector, uint64_t gameId)
 {
-    QUrl url("https://api.github.com/repos/WeleSS2/CapybaraNEWS/contents/" + QString::fromStdString(std::to_string(gameId)));
+    QUrl url("https://api.github.com/repos/WeleSS2/WeleSS2.github.io/contents/" + QString::fromStdString(std::to_string(gameId)));
     QNetworkAccessManager manager;
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/vnd.github.v3+json");
@@ -46,6 +46,10 @@ const void GithubNews::getNewsForGame(QVector<NewsItem> &vector, uint64_t gameId
 
                     // Get data from .txt file
                     std::tie(vector[i].title, vector[i].description) = getInfoFromTxt(manager, obj);
+
+                    // Get html adress of website
+                    vector[i].article = getHtmlAdress(manager, obj);
+
                     // Get image as icon
                     vector[i].imageUrl = getIcon(manager, obj);
                 }
@@ -145,6 +149,29 @@ const QPair<QString, QString> GithubNews::getInfoFromTxt(QNetworkAccessManager &
     return QPair<QString, QString>(title, desc);
 }
 
+// Get adress from repo to files
+const QUrl GithubNews::getHtmlAdress(QNetworkAccessManager &manager, const QJsonObject &obj){
+    for (const auto& subfolderFile : returnSubfolderFiles(manager, obj)) {
+        if (subfolderFile.isObject()) {
+            QJsonObject subfolderObj = subfolderFile.toObject();
+            QString subfolderName = subfolderObj.value("name").toString();
+            QString subfolderDownloadUrl = subfolderObj.value("download_url").toString();
+
+            if (subfolderName.endsWith(".html")) {
+                QString str = subfolderDownloadUrl;
+                str.erase(str.begin() + 8, str.begin() + 42);
+                str.erase(str.begin() + 25, str.begin() + 30);
+                str.erase(str.end() - 10, str.end());
+                qDebug() << str;
+                return QUrl(str + "index.html");
+            }
+        }
+        else
+            LoggingSystem::saveLog("githubnews.cpp: getIcon: Not an object!");
+    }
+    return QUrl();
+}
+
 // Get icon image from .png file
 const QUrl GithubNews::getIcon(QNetworkAccessManager &manager, const QJsonObject &obj){
     SSL_load_error_strings();
@@ -158,10 +185,7 @@ const QUrl GithubNews::getIcon(QNetworkAccessManager &manager, const QJsonObject
             // Check if the file is a .png file
             if (subfolderName.endsWith(".png")) {
                 QUrl fileUrl(subfolderDownloadUrl);
-                QString str = fileUrl.toString();
-                str.erase(str.begin() + 4, str.begin() + 5);
-                qDebug() << str;
-                return QUrl(str);
+                return fileUrl;
             }
             else
                 LoggingSystem::saveLog("githubnews.cpp: getIcon: No png file in directory!");

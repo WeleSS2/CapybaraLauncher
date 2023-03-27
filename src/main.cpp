@@ -98,6 +98,8 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QtWebEngineQuick/QtWebEngineQuick>
+#include <QtWebView>
+
 
 #include <QObject>
 #include <QQmlContext>
@@ -258,6 +260,7 @@ int main(int argc, char *argv[])
                          [&](Qt::ApplicationState state) {
             if (state == Qt::ApplicationActive) {
                 QtWebEngineQuick::initialize();
+                QtWebView::initialize();
             }
         });
 

@@ -6,6 +6,7 @@ import ModPacksList
 
 Item {
     enabled: bottomGameMenuEnabled
+    y: 100 + mainwindow.height_1 * 72 * mainwindow.baseScale
     Rectangle {
         id: empty_holder_mods
         ComboBox {
@@ -18,7 +19,6 @@ Item {
             onActivated: loadAndRefresh(currentIndex);
             font.pixelSize: 18
             x: 1075
-            y: 790
             width: 300
             height: 30
         }
@@ -26,7 +26,6 @@ Item {
         Button {
             id: createModpack
             x: 1425
-            y: 790
             width: 125
             height: 30
             font.pixelSize: 18
@@ -46,7 +45,7 @@ Item {
         Button {
             id: deleteModpack
             x: 1425
-            y: 835
+            y: 45
             width: 125
             height: 30
             font.pixelSize: 18
@@ -63,7 +62,7 @@ Item {
         Button {
             id: play
             x: 1575
-            y: 880
+            y: 90
             width: 125
             font.pixelSize: 20
             text: qsTr("Play")
@@ -77,7 +76,6 @@ Item {
         Button {
             id: importPack
             x: 1575
-            y: 790
             width: 125
             height: 30
             font.pixelSize: 20
@@ -94,7 +92,7 @@ Item {
         Button {
             id: exportPack
             x: 1575
-            y: 835
+            y: 45
             width: 125
             height: 30
             font.pixelSize: 20

@@ -17,19 +17,21 @@ Item {
         WebView {
             id: webview
             anchors.fill: parent
+            anchors.centerIn: parent
 
-            //url: "https://raw.githubusercontent.com/WeleSS2/CapybaraNEWS/main/1142710/DEV_25.03.2023_CapybaraTestRelease/CapyHTML.html"
-            url: "https://https://doc.qt.io/qt-6/qtwebview-index.html"
+            url: htmlAdress
         }
         Button {
-            x: parent.width - 25
-            y: parent.y + 5
-            height: 25 * mainwindow.baseScale
-            width: 25 * mainwindow.baseScale
+            id: closeWebView
+            x: parent.width
+            y: -2
+            width: 30 * mainwindow.baseScale
+            height: 30 * mainwindow.baseScale
+            text: "X"
             onClicked: {
                 if(Qt.LeftButton)
                 {
-                    articleIN.show = false;
+                    show = false;
                 }
             }
         }

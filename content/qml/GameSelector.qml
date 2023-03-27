@@ -40,5 +40,8 @@ Item {
         ObjModpacksContent.modlistAmount();
         qmlBottomGameMenu.refreshModpacksList();
         qmlModsList.refreshModlist();
+        cDevNewsList.clearNewsVector();
+        cDevNewsList.loadNews(selectGame.model.getCurrentGameId());
+        qmlRightPanel.refreshNewslist();
     }
 }

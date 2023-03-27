@@ -73,6 +73,7 @@ signals:
 public slots:
     virtual void appendItem() = 0;
     virtual void removeItem(uint64_t position) = 0;
+    virtual void clearNewsVector() = 0;
 };
 
 /*--------------------------------------------------------------------------
@@ -92,10 +93,12 @@ public:
     uint64_t getNewsAmount() const override {return 10; };
 
     bool setItemAt(int index, const NewsItem &item) override;
-
 public slots:
     void appendItem() override;
     void removeItem(uint64_t position) override;
+    void clearNewsVector() override;
+
+    void loadNews(uint64_t gameId);
 private:
     QVector<NewsItem> mNews;
 };
@@ -121,6 +124,7 @@ public:
 public slots:
     void appendItem() override;
     void removeItem(uint64_t position) override;
+    void clearNewsVector() override;
 
 private:
     QVector<NewsItem> mNews;

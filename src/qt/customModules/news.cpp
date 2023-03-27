@@ -117,7 +117,9 @@ void News::setList(NewsList *list)
 
 void News::refreshList()
 {
+    beginResetModel();
 
+    endResetModel();
 }
 
 /*--------------------------------------------------------------------------
@@ -131,8 +133,6 @@ void News::refreshList()
 DevNewsList::DevNewsList(QObject* parent)
     : NewsList{parent}
 {
-    GithubNews objGithubNews;
-    objGithubNews.getNewsForGame(mNews, 1142710);
     //for(int i = 0; i < 10; ++i)
     //{
     //    NewsItem item;
@@ -177,6 +177,16 @@ void DevNewsList::removeItem(uint64_t position)
 
         emit postItemRemoved();
     }
+}
+
+void DevNewsList::clearNewsVector()
+{
+    mNews.clear();
+}
+
+void DevNewsList::loadNews(uint64_t gameId){
+    GithubNews objGithubNews;
+    objGithubNews.getNewsForGame(mNews, gameId);
 }
 
 
@@ -234,4 +244,9 @@ void CommunityNewsList::removeItem(uint64_t position)
 
         emit postItemRemoved();
     }
+}
+
+void CommunityNewsList::clearNewsVector()
+{
+    mNews.clear();
 }
