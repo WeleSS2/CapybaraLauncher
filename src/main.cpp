@@ -28,8 +28,6 @@
 ****************************************************************************/
 /* TODO:
  *
- * 2. Napraw ustawienia po usunieciu zeby sie odtwarzaly +
- * 3. Napraw nadpisywnie listy modow, aktualnie nie nadpisuje sie +
  *
  *
  * Patch 0.0.4 + fixes ^ Until 01.03
