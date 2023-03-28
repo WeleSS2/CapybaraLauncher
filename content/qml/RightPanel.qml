@@ -38,6 +38,7 @@ Item {
                             width: 200 * mainwindow.baseScale
                             height: 200 * mainwindow.baseScale
                             Layout.alignment: Qt.AlignCenter
+                            color: "transparent"
 
                             Image {
                                 id: devImage
@@ -46,8 +47,7 @@ Item {
                                 sourceSize.width: 200 * mainwindow.baseScale
                                 sourceSize.height: 200 * mainwindow.baseScale
 
-                                source: Nimage
-                                onStatusChanged: if (devImage.status === Image.Error || devImage.status === Image.Null) devImage.source = "../images/icons/capybaraIcon.png"
+                                source: (Nimage.toString().length === 0) ? "../images/icons/capybaraIcon.png" : Nimage
                             }
                         }
                         Text {
@@ -129,6 +129,7 @@ Item {
                             width: 200 * mainwindow.baseScale
                             height: 200 * mainwindow.baseScale
                             Layout.alignment: Qt.AlignCenter
+                            color: "transparent"
 
                             Image {
                                 id: comImage
@@ -137,8 +138,7 @@ Item {
                                 sourceSize.width: 200 * mainwindow.baseScale
                                 sourceSize.height: 200 * mainwindow.baseScale
 
-                                source: Nimage
-                                onStatusChanged: if (comImage.status === Image.Error || comImage.status === Image.Null) comImage.source = "../images/icons/capybaraIcon.png"
+                                source: (Nimage.toString().length === 0) ? "../images/icons/capybaraIcon.png" : Nimage
                             }
                         }
                         Text {
@@ -180,6 +180,12 @@ Item {
                         onExited: {
                             communityNews_rectangle.color = "transparent"
                         }
+                        onClicked: {
+                            if(Qt.LeftButton){
+                                qmlArticle.htmlAdress = Narticle;
+                                qmlArticle.show = true;
+                            }
+                        }
                     }
                 }
             }
@@ -187,6 +193,6 @@ Item {
     }
     function refreshNewslist() {
         developerCANews.model.refreshList();
-        //communityNews.model.refreshList();
+        communityNews.model.refreshList();
     }
 }

@@ -270,10 +270,12 @@ void ModpacksContent::loadModlist(uint64_t index)
             }
             else
             {
-                if(mModpacksData[index].modFileName[j] == mListGlobalPtr->mItemsData[k].packname)
-                {
-                    mListGlobalPtr->mItemsData[k].done = true;
-                    GlobalDataObj->ModsDataObj[k].done = true;
+                if(mListGlobalPtr->mItemsData[k].modgameid == 0){
+                    if(mModpacksData[index].modFileName[j] == mListGlobalPtr->mItemsData[k].packname)
+                    {
+                        mListGlobalPtr->mItemsData[k].done = true;
+                        GlobalDataObj->ModsDataObj[k].done = true;
+                    }
                 }
             }
         }

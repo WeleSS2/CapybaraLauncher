@@ -126,6 +126,7 @@ public slots:
     void removeItem(uint64_t position) override;
     void clearNewsVector() override;
 
+    void loadNews(uint64_t id);
 private:
     QVector<NewsItem> mNews;
 

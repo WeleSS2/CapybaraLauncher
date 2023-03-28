@@ -186,7 +186,7 @@ void DevNewsList::clearNewsVector()
 
 void DevNewsList::loadNews(uint64_t gameId){
     GithubNews objGithubNews;
-    objGithubNews.getAllNews(mNews, gameId);
+    objGithubNews.getAllNews(mNews, gameId, "dev_ca");
 }
 
 
@@ -201,14 +201,15 @@ void DevNewsList::loadNews(uint64_t gameId){
 CommunityNewsList::CommunityNewsList(QObject *parent)
     : NewsList{parent}
 {
-    for(int i = 0; i < 10; ++i)
-    {
-        NewsItem item;
-        item.date = i;
-        item.title = "Item number " + QString::fromStdString(std::to_string(i));
-        item.description = "Item number aaaaaaaaaassssssssssssssssss d d asdafruh hurhfurf hfhhfhru " + QString::fromStdString(std::to_string(i));
-        mNews.emplace_back(item);
-    }
+    //for(int i = 0; i < 10; ++i)
+    //{
+    //    NewsItem item;
+    //    item.date = i;
+    //    item.title = "Item number " + QString::fromStdString(std::to_string(i));
+    //    item.description = "Item number aaaaaaaaaassssssssssssssssss d d asdafruh hurhfurf hfhhfhru " + QString::fromStdString(std::to_string(i));
+    //    item.imageUrl = QUrl();
+    //    mNews.emplace_back(item);
+    //}
 }
 
 bool CommunityNewsList::setItemAt(int index, const NewsItem &item)
@@ -249,4 +250,9 @@ void CommunityNewsList::removeItem(uint64_t position)
 void CommunityNewsList::clearNewsVector()
 {
     mNews.clear();
+}
+
+void CommunityNewsList::loadNews(uint64_t gameId){
+    GithubNews objGithubNews;
+    objGithubNews.getAllNews(mNews, gameId, "community");
 }

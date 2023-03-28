@@ -40,8 +40,12 @@ Item {
         ObjModpacksContent.modlistAmount();
         qmlBottomGameMenu.refreshModpacksList();
         qmlModsList.refreshModlist();
+
+        // News
         cDevNewsList.clearNewsVector();
         cDevNewsList.loadNews(selectGame.model.getCurrentGameId());
+        cCommunityNewsList.clearNewsVector();
+        cCommunityNewsList.loadNews(selectGame.model.getCurrentGameId());
         qmlRightPanel.refreshNewslist();
     }
 }

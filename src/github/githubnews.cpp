@@ -16,21 +16,25 @@ GithubNews::GithubNews()
 }
 
 // Get universal and game specific news
-const void GithubNews::getAllNews(QVector<NewsItem> &vector, uint64_t gameId){
-    getUniversalNews(vector);
-    getNewsForGame(vector, gameId);
+const void GithubNews::getAllNews(QVector<NewsItem> &vector, uint64_t gameId, QString mainFolder){
+    getUniversalNews(vector, mainFolder);
+    getNewsForGame(vector, gameId, mainFolder);
 }
 
 // Main function which iterate inside a selected folder
-const void GithubNews::getNewsForGame(QVector<NewsItem> &vector, uint64_t gameId)
+const void GithubNews::getNewsForGame(QVector<NewsItem> &vector, uint64_t gameId, const QString mainFolder)
 {
-    QUrl url("https://api.github.com/repos/WeleSS2/WeleSS2.github.io/contents/" + QString::fromStdString(std::to_string(gameId)));
+    QUrl url("https://api.github.com/repos/WeleSS2/WeleSS2.github.io/contents/" + mainFolder + "/" + QString::fromStdString(std::to_string(gameId)));
     QNetworkAccessManager manager;
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/vnd.github.v3+json");
 
     QNetworkReply *reply = manager.get(request);
 
+    //QObject::connect(reply, &QNetworkReply::finished, [&]() {
+    //        getNewsForGameCallback(manager, reply, vector);
+    //        reply->deleteLater(); // Don't forget to clean up the reply object
+    //    });
     QEventLoop loop;
     QObject::connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
     loop.exec();
@@ -49,18 +53,64 @@ const void GithubNews::getNewsForGame(QVector<NewsItem> &vector, uint64_t gameId
                     QJsonObject obj = file.toObject();
 
                     // Get data from .txt file
-                    std::tie(vector[vector.size() - 1].title, vector[vector.size() - 1].description) = getInfoFromTxt(manager, obj);
+                    getInfoFromTxt(vector, manager, obj);
 
-                    // Get html adress of website
-                    vector[vector.size() - 1].article = getHtmlAdress(manager, obj);
-
+                    if(vector[vector.size() - 1].article.toString().size() < 2)
+                    {
+                        qDebug() << vector[vector.size() - 1].article.toString();
+                        // Get html adress of website
+                        vector[vector.size() - 1].article = getHtmlAdress(manager, obj);
+                    }
                     // Get image as icon
                     vector[vector.size() - 1].imageUrl = getIcon(manager, obj);
 
-                    if(vector[vector.size() - 1].article.toString().size() > 2)
+                    if(vector[vector.size() - 1].article.toString().size() < 2)
                     {
+                        vector.erase(std::prev(vector.end()));
+                        LoggingSystem::saveLog("githubnews.cpp: getNewsForGame: News removed, index.html not found" + vector[vector.size() - 1].article.toString());
                     }
-                    else{
+                }
+                else
+                    LoggingSystem::saveLog("githubnews.cpp: getNewsForGame: No objects!");
+            }
+        }
+        else
+            LoggingSystem::saveLog("githubnews.cpp: getNewsForGame: Data not array!");
+    }
+    else
+        LoggingSystem::saveLog("githubnews.cpp: getNewsForGame: Can't connect to github!");
+
+}
+
+const void GithubNews::getNewsForGameCallback(QNetworkAccessManager &manager, QNetworkReply *reply, QVector<NewsItem> &vector)
+{
+    qDebug() << "IN callback";
+    if(reply->error() == QNetworkReply::NoError)
+    {
+        QByteArray response = reply->readAll();
+        QJsonDocument json = QJsonDocument::fromJson(response);
+
+        if (json.isArray()) {
+            QJsonArray files = json.array();
+            // Loop to iterate through every folder inside
+            for (const auto& file : files) {
+                if (file.isObject()) {
+                    vector.emplace_back();
+                    QJsonObject obj = file.toObject();
+
+                    // Get data from .txt file
+                    getInfoFromTxt(vector, manager, obj);
+
+                    if(vector[vector.size() - 1].article.toString().size() < 2)
+                    {
+                        // Get html adress of website
+                        vector[vector.size() - 1].article = getHtmlAdress(manager, obj);
+                    }
+                    // Get image as icon
+                    vector[vector.size() - 1].imageUrl = getIcon(manager, obj);
+
+                    if(vector[vector.size() - 1].article.toString().size() < 2)
+                    {
                         vector.erase(std::prev(vector.end()));
                         LoggingSystem::saveLog("githubnews.cpp: getNewsForGame: News removed, index.html not found");
                     }
@@ -73,11 +123,11 @@ const void GithubNews::getNewsForGame(QVector<NewsItem> &vector, uint64_t gameId
             LoggingSystem::saveLog("githubnews.cpp: getNewsForGame: Data not array!");
     }
     else
-        LoggingSystem::saveLog("githubnews.cpp: getNewsForGame: Can't connect to github! " + url.toString());
+        LoggingSystem::saveLog("githubnews.cpp: getNewsForGame: Can't connect to github!");
 }
 
-const void GithubNews::getUniversalNews(QVector<NewsItem> &vector){
-    QUrl url("https://api.github.com/repos/WeleSS2/WeleSS2.github.io/contents/uni");
+const void GithubNews::getUniversalNews(QVector<NewsItem> &vector, const QString mainFolder){
+    QUrl url("https://api.github.com/repos/WeleSS2/WeleSS2.github.io/contents/" + mainFolder + "/uni");
     QNetworkAccessManager manager;
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/vnd.github.v3+json");
@@ -102,20 +152,20 @@ const void GithubNews::getUniversalNews(QVector<NewsItem> &vector){
                     QJsonObject obj = file.toObject();
 
                     // Get data from .txt file
-                    std::tie(vector[vector.size() - 1].title, vector[vector.size() - 1].description) = getInfoFromTxt(manager, obj);
+                    getInfoFromTxt(vector, manager, obj);
 
-                    // Get html adress of website
-                    vector[vector.size() - 1].article = getHtmlAdress(manager, obj);
-
+                    if(vector[vector.size() - 1].article.toString().size() < 2)
+                    {
+                        // Get html adress of website
+                        vector[vector.size() - 1].article = getHtmlAdress(manager, obj);
+                    }
                     // Get image as icon
                     vector[vector.size() - 1].imageUrl = getIcon(manager, obj);
 
-                    if(vector[vector.size() - 1].article.toString().size() > 2)
+                    if(vector[vector.size() - 1].article.toString().size() < 2)
                     {
-                    }
-                    else{
                         vector.erase(std::prev(vector.end()));
-                        LoggingSystem::saveLog("githubnews.cpp: getUniversalNews: News removed, index.html not found");
+                        LoggingSystem::saveLog("githubnews.cpp: getNewsForGame: News removed, index.html not found");
                     }
                 }
                 else
@@ -163,9 +213,8 @@ const QJsonArray GithubNews::returnSubfolderFiles(QNetworkAccessManager &manager
 }
 
 // Get Title and Description from .txt file
-const QPair<QString, QString> GithubNews::getInfoFromTxt(QNetworkAccessManager &manager, const QJsonObject &obj)
+const void GithubNews::getInfoFromTxt(QVector<NewsItem> &vector, QNetworkAccessManager &manager, const QJsonObject &obj)
 {
-    QString title = "", desc = "";
     for (const auto& subfolderFile : returnSubfolderFiles(manager, obj)) {
         if (subfolderFile.isObject()) {
             QJsonObject subfolderObj = subfolderFile.toObject();
@@ -191,12 +240,18 @@ const QPair<QString, QString> GithubNews::getInfoFromTxt(QNetworkAccessManager &
                         QString line = stream.readLine();
                         if (line.contains("\"title\"")) {
                             line.erase(line.begin(), line.begin() + 7);
-                            title = line;
+                            vector[vector.size() - 1].title = line;
                         }
                         else if(line.contains("\"description\""))
                         {
                             line.erase(line.begin(), line.begin() + 13);
-                            desc = line;
+                            vector[vector.size() - 1].description = line;
+                        }
+                        else if(line.contains("\"urlLink\""))
+                        {
+                            line.erase(line.begin(), line.begin() + 10);
+                            vector[vector.size() - 1].article = QUrl(line);
+                            qDebug() << "urlLink" << vector[vector.size() - 1].article.toString() << "   |   " << line;
                         }
                     }
 
@@ -212,7 +267,6 @@ const QPair<QString, QString> GithubNews::getInfoFromTxt(QNetworkAccessManager &
         else
             LoggingSystem::saveLog("githubnews.cpp: getInfoFromTxt: Not an object!");
     }
-    return QPair<QString, QString>(title, desc);
 }
 
 // Get adress from repo to files
@@ -241,8 +295,6 @@ const QUrl GithubNews::getHtmlAdress(QNetworkAccessManager &manager, const QJson
 
 // Get icon image from .png file
 const QUrl GithubNews::getIcon(QNetworkAccessManager &manager, const QJsonObject &obj){
-    SSL_load_error_strings();
-    SSL_library_init();
     for (const auto& subfolderFile : returnSubfolderFiles(manager, obj)) {
         if (subfolderFile.isObject()) {
             QJsonObject subfolderObj = subfolderFile.toObject();
