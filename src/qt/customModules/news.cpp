@@ -186,7 +186,7 @@ void DevNewsList::clearNewsVector()
 
 void DevNewsList::loadNews(uint64_t gameId){
     GithubNews objGithubNews;
-    objGithubNews.getNewsForGame(mNews, gameId);
+    objGithubNews.getAllNews(mNews, gameId);
 }
 
 

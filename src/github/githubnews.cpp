@@ -15,6 +15,11 @@ GithubNews::GithubNews()
 
 }
 
+// Get universal and game specific news
+const void GithubNews::getAllNews(QVector<NewsItem> &vector, uint64_t gameId){
+    getUniversalNews(vector);
+    getNewsForGame(vector, gameId);
+}
 
 // Main function which iterate inside a selected folder
 const void GithubNews::getNewsForGame(QVector<NewsItem> &vector, uint64_t gameId)
@@ -36,22 +41,29 @@ const void GithubNews::getNewsForGame(QVector<NewsItem> &vector, uint64_t gameId
         QJsonDocument json = QJsonDocument::fromJson(response);
 
         if (json.isArray()) {
-            uint16_t i = 0;
             QJsonArray files = json.array();
             // Loop to iterate through every folder inside
             for (const auto& file : files) {
-                vector.emplace_back();
                 if (file.isObject()) {
+                    vector.emplace_back();
                     QJsonObject obj = file.toObject();
 
                     // Get data from .txt file
-                    std::tie(vector[i].title, vector[i].description) = getInfoFromTxt(manager, obj);
+                    std::tie(vector[vector.size() - 1].title, vector[vector.size() - 1].description) = getInfoFromTxt(manager, obj);
 
                     // Get html adress of website
-                    vector[i].article = getHtmlAdress(manager, obj);
+                    vector[vector.size() - 1].article = getHtmlAdress(manager, obj);
 
                     // Get image as icon
-                    vector[i].imageUrl = getIcon(manager, obj);
+                    vector[vector.size() - 1].imageUrl = getIcon(manager, obj);
+
+                    if(vector[vector.size() - 1].article.toString().size() > 2)
+                    {
+                    }
+                    else{
+                        vector.erase(std::prev(vector.end()));
+                        LoggingSystem::saveLog("githubnews.cpp: getNewsForGame: News removed, index.html not found");
+                    }
                 }
                 else
                     LoggingSystem::saveLog("githubnews.cpp: getNewsForGame: No objects!");
@@ -62,6 +74,60 @@ const void GithubNews::getNewsForGame(QVector<NewsItem> &vector, uint64_t gameId
     }
     else
         LoggingSystem::saveLog("githubnews.cpp: getNewsForGame: Can't connect to github! " + url.toString());
+}
+
+const void GithubNews::getUniversalNews(QVector<NewsItem> &vector){
+    QUrl url("https://api.github.com/repos/WeleSS2/WeleSS2.github.io/contents/uni");
+    QNetworkAccessManager manager;
+    QNetworkRequest request(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/vnd.github.v3+json");
+
+    QNetworkReply *reply = manager.get(request);
+
+    QEventLoop loop;
+    QObject::connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
+    loop.exec();
+
+    if(reply->error() == QNetworkReply::NoError)
+    {
+        QByteArray response = reply->readAll();
+        QJsonDocument json = QJsonDocument::fromJson(response);
+
+        if (json.isArray()) {
+            QJsonArray files = json.array();
+            // Loop to iterate through every folder inside
+            for (const auto& file : files) {
+                if (file.isObject()) {
+                    vector.emplace_back();
+                    QJsonObject obj = file.toObject();
+
+                    // Get data from .txt file
+                    std::tie(vector[vector.size() - 1].title, vector[vector.size() - 1].description) = getInfoFromTxt(manager, obj);
+
+                    // Get html adress of website
+                    vector[vector.size() - 1].article = getHtmlAdress(manager, obj);
+
+                    // Get image as icon
+                    vector[vector.size() - 1].imageUrl = getIcon(manager, obj);
+
+                    if(vector[vector.size() - 1].article.toString().size() > 2)
+                    {
+                    }
+                    else{
+                        vector.erase(std::prev(vector.end()));
+                        LoggingSystem::saveLog("githubnews.cpp: getUniversalNews: News removed, index.html not found");
+                    }
+                }
+                else
+                    LoggingSystem::saveLog("githubnews.cpp: getUniversalNews: No objects!");
+            }
+        }
+        else
+            LoggingSystem::saveLog("githubnews.cpp: getUniversalNews: Data not array!");
+    }
+    else
+        LoggingSystem::saveLog("githubnews.cpp: getUniversalNews: Can't connect to github! " + url.toString());
+
 }
 
 const QJsonArray GithubNews::returnSubfolderFiles(QNetworkAccessManager &manager, const QJsonObject &obj){
@@ -162,12 +228,13 @@ const QUrl GithubNews::getHtmlAdress(QNetworkAccessManager &manager, const QJson
                 str.erase(str.begin() + 8, str.begin() + 42);
                 str.erase(str.begin() + 25, str.begin() + 30);
                 str.erase(str.end() - 10, str.end());
-                qDebug() << str;
                 return QUrl(str + "index.html");
             }
+            else
+                LoggingSystem::saveLog("githubnews.cpp: getHtmlAdress: index.html not found!");
         }
         else
-            LoggingSystem::saveLog("githubnews.cpp: getIcon: Not an object!");
+            LoggingSystem::saveLog("githubnews.cpp: getHtmlAdress: Not an object!");
     }
     return QUrl();
 }
