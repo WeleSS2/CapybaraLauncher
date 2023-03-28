@@ -17,8 +17,24 @@ GithubNews::GithubNews()
 
 // Get universal and game specific news
 const void GithubNews::getAllNews(QVector<NewsItem> &vector, uint64_t gameId, QString mainFolder){
+    qDebug() << "In get news for " + mainFolder;
     getUniversalNews(vector, mainFolder);
     getNewsForGame(vector, gameId, mainFolder);
+    if(vector.size() > 1)
+    {
+        std::sort(vector.begin(), vector.end(), [](const NewsItem& first, const NewsItem& second) -> bool{
+            return first.date > second.date;
+        });
+        for(int i = 0; i < vector.size(); ++i)
+        {
+            qDebug() << vector[i].date;
+        }
+    }
+    if(vector.size() > 10)
+    {
+        vector.resize(10);
+    }
+    qDebug() << "Out get news for " + mainFolder;
 }
 
 // Main function which iterate inside a selected folder
@@ -52,12 +68,16 @@ const void GithubNews::getNewsForGame(QVector<NewsItem> &vector, uint64_t gameId
                     vector.emplace_back();
                     QJsonObject obj = file.toObject();
 
+                    // Set time when news have been uploaded
+                    QString date = obj.value("name").toString().left(10);
+                    QDateTime time = QDateTime::fromString(date, "dd.mm.yyyy");
+                    vector[vector.size() - 1].date = static_cast<uint64_t>(time.toSecsSinceEpoch());
+
                     // Get data from .txt file
                     getInfoFromTxt(vector, manager, obj);
 
                     if(vector[vector.size() - 1].article.toString().size() < 2)
                     {
-                        qDebug() << vector[vector.size() - 1].article.toString();
                         // Get html adress of website
                         vector[vector.size() - 1].article = getHtmlAdress(manager, obj);
                     }
@@ -66,8 +86,8 @@ const void GithubNews::getNewsForGame(QVector<NewsItem> &vector, uint64_t gameId
 
                     if(vector[vector.size() - 1].article.toString().size() < 2)
                     {
-                        vector.erase(std::prev(vector.end()));
                         LoggingSystem::saveLog("githubnews.cpp: getNewsForGame: News removed, index.html not found" + vector[vector.size() - 1].article.toString());
+                        vector.erase(std::prev(vector.end()));
                     }
                 }
                 else
@@ -150,6 +170,11 @@ const void GithubNews::getUniversalNews(QVector<NewsItem> &vector, const QString
                 if (file.isObject()) {
                     vector.emplace_back();
                     QJsonObject obj = file.toObject();
+
+                    // Set time when news have been uploaded
+                    QString date = obj.value("name").toString().left(10);
+                    QDateTime time = QDateTime::fromString(date, "dd.mm.yyyy");
+                    vector[vector.size() - 1].date = static_cast<uint64_t>(time.toSecsSinceEpoch());
 
                     // Get data from .txt file
                     getInfoFromTxt(vector, manager, obj);

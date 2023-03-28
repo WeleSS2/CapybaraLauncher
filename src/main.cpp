@@ -67,10 +67,10 @@
  *-------------- FINISHED 19.03
  *
  *  Patch 0.0.7 Until 25.03
- * - Web layer
+ * - Web layer +
  * - Remove consoles from view +
- * - Custom server layer
- * - Add news in right panel
+ * - Custom server layer +
+ * - Add news in right panel +
  * - Game menagement
  * - Update game/mods
  * - Crashifier, check did game is running if crashed disable half of the mods and check until game is not running correctly.

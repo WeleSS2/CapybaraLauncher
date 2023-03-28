@@ -4,7 +4,7 @@ import QtQuick.Layouts
 import cNews
 
 Item {
-    x: 1000
+    x: 1050
     y: 100
     id: right_panel
     enabled : rightPanelEnabled
