@@ -18,7 +18,7 @@ Item {
             text: ObjInfoBox.boxText
             Connections {
                     target: ObjInfoBox
-                    onPingBoxText: {
+                    function onPingBoxText() {
                         qt_boxText.text = ObjInfoBox.boxText;
                     }
                 }

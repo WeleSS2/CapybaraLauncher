@@ -35,72 +35,15 @@ const void GithubNews::getAllNews(QVector<NewsItem> &vector, uint64_t gameId, QS
 const void GithubNews::getNewsForGame(QVector<NewsItem> &vector, uint64_t gameId, const QString mainFolder)
 {
     QUrl url("https://api.github.com/repos/WeleSS2/WeleSS2.github.io/contents/" + mainFolder + "/" + QString::fromStdString(std::to_string(gameId)));
-    QNetworkAccessManager manager;
-    QNetworkRequest request(url);
-
-    QNetworkReply *reply = manager.get(request);
-
-    QEventLoop loop;
-    QObject::connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
-    loop.exec();
-    if(reply->error() == QNetworkReply::NoError)
-    {
-        QByteArray response = reply->readAll();
-        QJsonDocument json = QJsonDocument::fromJson(response);
-
-        if (json.isArray()) {
-            QJsonArray files = json.array();
-            // Loop to iterate through every folder inside
-            for (const auto& file : files) {
-                if (file.isObject()) {
-                    vector.emplace_back();
-                    QJsonObject obj = file.toObject();
-
-                    // Set time when news have been uploaded
-                    QString date = obj.value("name").toString().left(10);
-                    QDateTime time = QDateTime::fromString(date, "dd.mm.yyyy");
-                    vector[vector.size() - 1].date = static_cast<uint64_t>(time.toSecsSinceEpoch());
-
-
-                    // Set path for downloads
-                    QString currentPath = obj.value("html_url").toString();
-                    currentPath.erase(currentPath.begin(), currentPath.begin() + 55);
-                    QString rawPath = "https://raw.githubusercontent.com/WeleSS2/WeleSS2.github.io/main/";
-                    QString txtPath = rawPath + currentPath + "/info.txt";
-                    QString pngPath = rawPath + currentPath + "/icon.png";
-                    QString htmlPath = rawPath + currentPath + "/index.html";
-
-                    getInfoFromTxt(vector, manager, QUrl(txtPath));
-
-
-                    if(vector[vector.size() - 1].article.toString().size() < 2)
-                    {
-                        // Get html adress of website
-                        vector[vector.size() - 1].article = QUrl(htmlPath);
-                    }
-                    // Get image as icon
-                    vector[vector.size() - 1].imageUrl = QUrl(pngPath);
-
-                    if(vector[vector.size() - 1].article.toString().size() < 2)
-                    {
-                        vector.erase(std::prev(vector.end()));
-                        LoggingSystem::saveLog("githubnews.cpp: getNewsForGame: News removed, index.html not found");
-                    }
-                }
-                else
-                    LoggingSystem::saveLog("githubnews.cpp: getNewsForGame: No objects!");
-            }
-        }
-        else
-            LoggingSystem::saveLog("githubnews.cpp: getNewsForGame: Data not array!");
-    }
-    else
-        LoggingSystem::saveLog("githubnews.cpp: getNewsForGame: Can't connect to github!");
-
+    getNews(vector, url);
 }
 
 const void GithubNews::getUniversalNews(QVector<NewsItem> &vector, const QString mainFolder){
     QUrl url("https://api.github.com/repos/WeleSS2/WeleSS2.github.io/contents/" + mainFolder + "/uni");
+    getNews(vector, url);
+}
+
+const void GithubNews::getNews(QVector<NewsItem> &vector, const QUrl &url){
     QNetworkAccessManager manager;
     QNetworkRequest request(url);
 
@@ -151,18 +94,18 @@ const void GithubNews::getUniversalNews(QVector<NewsItem> &vector, const QString
                     if(vector[vector.size() - 1].article.toString().size() < 2)
                     {
                         vector.erase(std::prev(vector.end()));
-                        LoggingSystem::saveLog("githubnews.cpp: getNewsForGame: News removed, index.html not found");
+                        LoggingSystem::saveLog("githubnews.cpp: getNews: News removed, index.html not found  " + url.toString());
                     }
                 }
                 else
-                    LoggingSystem::saveLog("githubnews.cpp: getUniversalNews: No objects!");
+                    LoggingSystem::saveLog("githubnews.cpp: getNews: No objects!  " + url.toString());
             }
         }
         else
-            LoggingSystem::saveLog("githubnews.cpp: getUniversalNews: Data not array!");
+            LoggingSystem::saveLog("githubnews.cpp: getNews: Data not array!  " + url.toString());
     }
     else
-        LoggingSystem::saveLog("githubnews.cpp: getUniversalNews: Can't connect to github! " + url.toString());
+        LoggingSystem::saveLog("githubnews.cpp: getNews: Can't connect to github!  " + url.toString());
 
 }
 

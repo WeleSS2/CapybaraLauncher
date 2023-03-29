@@ -11,13 +11,13 @@ Item {
 
     Connections {
         target: cDevNewsList
-        onNewsLoaded: {
-            devRefreshNewsList();
-        }
+        function onNewsLoaded() {
+             devRefreshNewsList();
+         }
     }
     Connections {
         target: cCommunityNewsList
-        onNewsLoaded: {
+        function onNewsLoaded() {
             communityRefreshNewsList();
         }
     }
@@ -151,7 +151,7 @@ Item {
                                 sourceSize.width: 200 * mainwindow.baseScale
                                 sourceSize.height: 200 * mainwindow.baseScale
 
-                                source: (Nimage.toString().length === 0) ? "../images/icons/capybaraIcon.png" : Nimage
+                                source: (devImage.status === Image.Error) ? "../images/icons/capybaraIcon.png" : Nimage
                             }
                         }
                         Text {

@@ -133,15 +133,7 @@ void News::refreshList()
 DevNewsList::DevNewsList(QObject* parent)
     : NewsList{parent}
 {
-    //for(int i = 0; i < 10; ++i)
-    //{
-    //    NewsItem item;
-    //    item.date = i;
-    //    item.title = "Title";
-    //    item.description = "desc";
-    //    item.article = "Item number DEV " + QString::fromStdString(std::to_string(i));
-    //    mNews.emplace_back(item);
-    //}
+
 }
 
 bool DevNewsList::setItemAt(int index, const NewsItem &item)
@@ -209,15 +201,7 @@ void DevNewsList::setNews(const QVector<NewsItem>& news) {
 CommunityNewsList::CommunityNewsList(QObject *parent)
     : NewsList{parent}
 {
-    //for(int i = 0; i < 10; ++i)
-    //{
-    //    NewsItem item;
-    //    item.date = i;
-    //    item.title = "Item number " + QString::fromStdString(std::to_string(i));
-    //    item.description = "Item number aaaaaaaaaassssssssssssssssss d d asdafruh hurhfurf hfhhfhru " + QString::fromStdString(std::to_string(i));
-    //    item.imageUrl = QUrl();
-    //    mNews.emplace_back(item);
-    //}
+
 }
 
 bool CommunityNewsList::setItemAt(int index, const NewsItem &item)
