@@ -47,7 +47,7 @@ Item {
                     ColumnLayout {
                         Rectangle {
                             Layout.topMargin: 10
-                            Layout.leftMargin: 10
+                            Layout.leftMargin: 5
                             width: 200 * mainwindow.baseScale
                             height: 200 * mainwindow.baseScale
                             Layout.alignment: Qt.AlignCenter
@@ -60,7 +60,7 @@ Item {
                                 sourceSize.width: 200 * mainwindow.baseScale
                                 sourceSize.height: 200 * mainwindow.baseScale
 
-                                source: (Nimage.toString().length === 0) ? "../images/icons/capybaraIcon.png" : Nimage
+                                source: (devImage.status === Image.Error) ? "../images/icons/capybaraIcon.png" : Nimage
                             }
                         }
                         Text {

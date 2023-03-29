@@ -151,12 +151,13 @@ private:
 
 class NewsLoader : public QThread {
 public:
-    NewsLoader(NewsList* list, uint64_t gameId) :
-        mList(list), mGameId(gameId) {}
+    NewsLoader(NewsList* list, uint64_t gameId, QString folder) :
+        mList(list), mGameId(gameId), mFolder(folder) {}
 
     void run();
 
 private:
     NewsList* mList;
     uint64_t mGameId;
+    QString mFolder;
 };

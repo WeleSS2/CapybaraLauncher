@@ -186,7 +186,7 @@ void DevNewsList::clearNewsVector()
 
 void DevNewsList::loadNews(uint64_t gameId){
     // Create a new thread to load the news items
-    NewsLoader* loader = new NewsLoader(this, gameId);
+    NewsLoader* loader = new NewsLoader(this, gameId, "dev_ca");
     connect(loader, &NewsLoader::finished, loader, &NewsLoader::deleteLater);
     loader->start();
 }
@@ -262,7 +262,7 @@ void CommunityNewsList::clearNewsVector()
 
 void CommunityNewsList::loadNews(uint64_t gameId){
     // Create a new thread to load the news items
-    NewsLoader* loader = new NewsLoader(this, gameId);
+    NewsLoader* loader = new NewsLoader(this, gameId, "community");
     connect(loader, &NewsLoader::finished, loader, &NewsLoader::deleteLater);
     loader->start();
 }
@@ -284,7 +284,7 @@ void NewsLoader::run()
 {
     QVector<NewsItem> news;
     GithubNews objGithubNews;
-    objGithubNews.getAllNews(news, mGameId, "dev_ca");
+    objGithubNews.getAllNews(news, mGameId, mFolder);
 
     // Move the news items to the main thread's event loop
     QMetaObject::invokeMethod(mList, "setNews",
