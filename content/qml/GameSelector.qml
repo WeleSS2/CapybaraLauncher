@@ -46,6 +46,6 @@ Item {
         cDevNewsList.loadNews(selectGame.model.getCurrentGameId());
         cCommunityNewsList.clearNewsVector();
         cCommunityNewsList.loadNews(selectGame.model.getCurrentGameId());
-        qmlRightPanel.refreshNewslist();
+        //qmlRightPanel.refreshNewslist();
     }
 }

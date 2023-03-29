@@ -117,12 +117,6 @@ bool WindowsFunctions::getSteamPathFromRegistry()
     }
     std::string text = "";
     std::string pathline = "";
-    std::string pathWh1 = "";
-    std::string pathWh2 = "";
-    std::string pathWh3 = "";
-    std::string path3King = "";
-    std::string pathTroy = "";
-    std::string pathRomeRem = "";
     std::fstream file;
     file.open(path);
 

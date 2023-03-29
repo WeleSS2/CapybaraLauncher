@@ -3,6 +3,7 @@
 #include <QObject>
 #include <QAbstractTableModel>
 #include <QUrl>
+#include <QThread>
 
 class NewsList;
 
@@ -99,6 +100,11 @@ public slots:
     void clearNewsVector() override;
 
     void loadNews(uint64_t gameId);
+    void setNews(const QVector<NewsItem> &news);
+
+signals:
+    void newsLoaded();
+
 private:
     QVector<NewsItem> mNews;
 };
@@ -127,7 +133,30 @@ public slots:
     void clearNewsVector() override;
 
     void loadNews(uint64_t id);
+    void setNews(const QVector<NewsItem> &news);
+
+signals:
+    void newsLoaded();
+
 private:
     QVector<NewsItem> mNews;
 
+};
+
+//-------------------------------------------------------------------------
+//
+//                              News Loader
+//
+//-------------------------------------------------------------------------
+
+class NewsLoader : public QThread {
+public:
+    NewsLoader(NewsList* list, uint64_t gameId) :
+        mList(list), mGameId(gameId) {}
+
+    void run();
+
+private:
+    NewsList* mList;
+    uint64_t mGameId;
 };

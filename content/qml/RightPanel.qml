@@ -9,6 +9,19 @@ Item {
     id: right_panel
     enabled : rightPanelEnabled
 
+    Connections {
+        target: cDevNewsList
+        onNewsLoaded: {
+            devRefreshNewsList();
+        }
+    }
+    Connections {
+        target: cCommunityNewsList
+        onNewsLoaded: {
+            communityRefreshNewsList();
+        }
+    }
+
     ListView {
         id: developerCANews
         width: Window.width - 1080
@@ -191,8 +204,11 @@ Item {
             }
         }
     }
-    function refreshNewslist() {
+    function devRefreshNewsList() {
         developerCANews.model.refreshList();
+    }
+
+    function communityRefreshNewslist() {
         communityNews.model.refreshList();
     }
 }

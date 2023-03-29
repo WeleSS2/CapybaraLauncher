@@ -69,9 +69,10 @@
  * - Remove consoles from view +
  * - Custom server layer +
  * - Add news in right panel +
- * - Game menagement
- * - Update game/mods
- * - Crashifier, check did game is running if crashed disable half of the mods and check until game is not running correctly.
+ * - Game menagement (What i wanted to do here? Do not remember just) -
+ * - Update game
+ * - Update mods +
+ * - Crashifier, check did game is running if crashed disable half of the mods and check until game is not running correctly. (Later better version, delayed) -
  * - Option, enable steam if not running
  *
  * Patch 0.0.8 Until 30.03
@@ -82,8 +83,8 @@
  *
  *
  * Open Beta Relase
- *
- *
+ * - Remove GlobalData.cpp and translate everything into correct object-oriented app
+ * - Remove qtgeneralbackend.cpp and move correctly.
  *
  *
  *

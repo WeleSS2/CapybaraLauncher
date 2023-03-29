@@ -185,10 +185,18 @@ void DevNewsList::clearNewsVector()
 }
 
 void DevNewsList::loadNews(uint64_t gameId){
-    GithubNews objGithubNews;
-    objGithubNews.getAllNews(mNews, gameId, "dev_ca");
+    // Create a new thread to load the news items
+    NewsLoader* loader = new NewsLoader(this, gameId);
+    connect(loader, &NewsLoader::finished, loader, &NewsLoader::deleteLater);
+    loader->start();
 }
 
+void DevNewsList::setNews(const QVector<NewsItem>& news) {
+    mNews = news;
+
+    // Emit the newsLoaded signal
+    emit newsLoaded();
+}
 
 /*--------------------------------------------------------------------------
  *
@@ -253,6 +261,33 @@ void CommunityNewsList::clearNewsVector()
 }
 
 void CommunityNewsList::loadNews(uint64_t gameId){
+    // Create a new thread to load the news items
+    NewsLoader* loader = new NewsLoader(this, gameId);
+    connect(loader, &NewsLoader::finished, loader, &NewsLoader::deleteLater);
+    loader->start();
+}
+
+void CommunityNewsList::setNews(const QVector<NewsItem>& news) {
+    mNews = news;
+
+    // Emit the newsLoaded signal
+    emit newsLoaded();
+}
+//-------------------------------------------------------------------------
+//
+//                              News Loader
+//
+//-------------------------------------------------------------------------
+
+
+void NewsLoader::run()
+{
+    QVector<NewsItem> news;
     GithubNews objGithubNews;
-    objGithubNews.getAllNews(mNews, gameId, "community");
+    objGithubNews.getAllNews(news, mGameId, "dev_ca");
+
+    // Move the news items to the main thread's event loop
+    QMetaObject::invokeMethod(mList, "setNews",
+                              Qt::QueuedConnection,
+                              Q_ARG(QVector<NewsItem>, news));
 }

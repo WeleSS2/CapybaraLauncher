@@ -54,7 +54,6 @@ const void GithubNews::getNewsForGame(QVector<NewsItem> &vector, uint64_t gameId
     QEventLoop loop;
     QObject::connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
     loop.exec();
-
     if(reply->error() == QNetworkReply::NoError)
     {
         QByteArray response = reply->readAll();
