@@ -149,7 +149,7 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
     GlobalDataObj->enginePtr = &engine;
 
-    QCoreApplication::setApplicationVersion("v0.0.7");
+    QCoreApplication::setApplicationVersion("v0.0.7.1");
 
     // WORKSPACE
     // settings are doubled due to work over transfer to .js

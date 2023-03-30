@@ -79,6 +79,8 @@ Item {
 
                 Item { Layout.preferredWidth: 10 }
 
+                
+                
                 ToolButton {
                     id: closeButton
                     text: qsTr("X")
