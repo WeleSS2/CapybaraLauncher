@@ -7,9 +7,9 @@ Item {
     property url htmlAdress: ""
     property bool show: false
     visible: show
-    x: mainwindow.width_1 * 20 * mainwindow.baseScale
+    x: mainwindow.width_1 * 10 * mainwindow.baseScale
     y: mainwindow.height_1 * 5 * mainwindow.baseScale
-    width: mainwindow.width_1 * 60 * mainwindow.baseScale
+    width: mainwindow.width_1 * 80 * mainwindow.baseScale
     height: mainwindow.height_1 * 90 * mainwindow.baseScale
     Rectangle{
         anchors.fill: parent

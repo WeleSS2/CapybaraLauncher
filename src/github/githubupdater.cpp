@@ -19,7 +19,7 @@ GithubUpdater::GithubUpdater()
 
 bool GithubUpdater::getVersionInfo(){
     menager = new QNetworkAccessManager();
-    QNetworkRequest request(QUrl("https://api.github.com/repos/WeleSS2/WH3_Mod_Menager/releases/latest"));
+    QNetworkRequest request(QUrl("https://api.github.com/repos/WeleSS2/CapybaraLauncher/releases/latest"));
 
     reply = menager->get(request);
 

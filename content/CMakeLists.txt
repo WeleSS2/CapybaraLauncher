@@ -3,7 +3,7 @@
 
 #---------- Add backgrounds
 set(BACKGROUNDS_DIR "images/gameBackgrounds")
-file(GLOB_RECURSE PNG_BACKGROUNDS "${BACKGROUNDS_DIR}/*.png")
+file(GLOB PNG_BACKGROUNDS "${BACKGROUNDS_DIR}/*.png")
 set(PNG_BACKGROUNDS_RESOURCES "")
 foreach(PNG_FILE ${PNG_BACKGROUNDS})
     get_filename_component(PNG_NAME ${PNG_FILE} NAME)
@@ -13,7 +13,7 @@ endforeach()
 #--------- Add icons
 
 set(ICONS_DIR "images/icons")
-file(GLOB_RECURSE PNG_ICONS "${ICONS_DIR}/*.png")
+file(GLOB PNG_ICONS "${ICONS_DIR}/*.png")
 set(PNG_ICONS_RESOURCES "")
 foreach(PNG_FILE ${PNG_ICONS})
     get_filename_component(PNG_NAME ${PNG_FILE} NAME)
@@ -24,7 +24,7 @@ endforeach()
 #--------- Qml Files 
 
 set(QML_DIR "qml")
-file(GLOB_RECURSE QML_FILES "${QML_DIR}/*.qml")
+file(GLOB QML_FILES "${QML_DIR}/*.qml")
 set(QML_RESOURCES "")
 foreach(QML_FILE ${QML_FILES})
     get_filename_component(QML_NAME ${QML_FILE} NAME)
@@ -32,15 +32,30 @@ foreach(QML_FILE ${QML_FILES})
     list(APPEND QML_RESOURCES ${QML_RESOURCE})
 endforeach()
 
+#--------- modsList modules
+
+set(QML_MLDIR "qml/modsList")
+file(GLOB QML_MLFILES "${QML_MLDIR}/*.qml")
+set(QML_MLRESOURCES "")
+foreach(QML_MLFILE ${QML_MLFILES})
+    get_filename_component(QML_MLNAME ${QML_MLFILE} NAME)
+    set(QML_MLRESOURCE "qml/modsList/${QML_MLNAME}")
+    list(APPEND QML_MLRESOURCES ${QML_MLRESOURCE})
+endforeach()
+
+
+#--------------------------------------
 qt_add_library(content STATIC)
+
 qt6_add_qml_module(content
     URI "content"
     VERSION 1.0
     QML_FILES
         ${QML_RESOURCES}
+        ${QML_MLRESOURCES}
     RESOURCES
         fonts/fonts.txt
 
         ${PNG_BACKGROUNDS_RESOURCES}
         ${PNG_ICONS_RESOURCES}
-)
+    )

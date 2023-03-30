@@ -70,17 +70,18 @@
  * - Custom server layer +
  * - Add news in right panel +
  * - Game menagement (What i wanted to do here? Do not remember just) -
- * - Update game
  * - Update mods +
- * - Crashifier, check did game is running if crashed disable half of the mods and check until game is not running correctly. (Later better version, delayed) -
- * - Option, enable steam if not running
  *
+ *
+ *--------------- FINISHED 28.03
  * Patch 0.0.8 Until 30.03
  * - Neccesary add-ons and fixes
  * - Idk what exactly, to be added
  * - Worskapces/Backups for local mods
- *
- *
+ * - Update game
+ * - Option, enable steam if not running
+ * - Crashifier, check did game is running if crashed disable half of the mods and check until game is not running correctly. (Later better version, delayed) -
+ * - Better update system, keep .zip in file and download only zip files from github which have been changed
  *
  * Open Beta Relase
  * - Remove GlobalData.cpp and translate everything into correct object-oriented app

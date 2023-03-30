@@ -31,6 +31,7 @@ import QtQuick
 import QtQuick.Window
 import QtQuick.Controls
 
+import content 1.0
 
 Window {
     id: mainwindow

@@ -5,6 +5,7 @@ import cGameChangerListUrl
 
 Item {
     property var mainTextColor: Qt.rgba(1, 1, 1, 1)
+    property int currentGameId: 0
 
     Image {
         id: background
@@ -34,6 +35,8 @@ Item {
 
     function setGame(index){
         selectGame.model.setCurrentGame(index);
+        currentGameId = selectGame.model.getCurrentGameId();
+
         qtGeneralBackendObj.currentGameId = selectGame.model.getCurrentGameId();
         background.source = "../images/gameBackgrounds/background_" + qtGeneralBackendObj.currentGameId + ".png"
         objModsList.refreshModlistVector();
@@ -46,6 +49,5 @@ Item {
         cDevNewsList.loadNews(selectGame.model.getCurrentGameId());
         cCommunityNewsList.clearNewsVector();
         cCommunityNewsList.loadNews(selectGame.model.getCurrentGameId());
-        //qmlRightPanel.refreshNewslist();
     }
 }

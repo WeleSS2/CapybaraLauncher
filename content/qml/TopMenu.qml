@@ -15,11 +15,11 @@ Item {
             Layout.preferredHeight: 30 * mainwindow.baseScale
             font.pixelSize: 20 * mainwindow.baseScale
             Layout.alignment: Qt.AlignRight
-            text: qsTr("Gamesite")
+            text: qsTr("Totalwar")
             onClicked: {
                if(Qt.LeftButton)
                    {
-                       Qt.openUrlExternally("https://warhammer3.totalwar.com")
+                       Qt.openUrlExternally("https://www.totalwar.com")
                    }
                }
         }
@@ -32,7 +32,7 @@ Item {
             text: qsTr("Workshop")
             onClicked: {
                 if(Qt.LeftButton){
-                    Qt.openUrlExternally("steam://openurl/https://steamcommunity.com/app/1142710/workshop/")
+                    Qt.openUrlExternally("steam://openurl/https://steamcommunity.com/app/" + qmlGameSelector.currentGameId.toString() + "/workshop/")
                 }
             }
         }

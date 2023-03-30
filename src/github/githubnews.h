@@ -1,8 +1,5 @@
 #pragma once
 #include "QNetworkAccessManager"
-#include "QJsonObject"
-#include <QJsonArray>
-#include <QPair>
 
 #include "../qt/customModules/news.h"
 
@@ -16,7 +13,4 @@ public:
     const void getUniversalNews(QVector<NewsItem> &vector, const QString mainFolder);
     const void getNews(QVector<NewsItem> &vector, const QUrl &url);
     const void getInfoFromTxt(QVector<NewsItem> &vector, QNetworkAccessManager &manager, const QUrl &adress);
-
-private:
-    QJsonArray listedFiles;
 };

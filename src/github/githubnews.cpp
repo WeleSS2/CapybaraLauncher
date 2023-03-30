@@ -17,6 +17,7 @@ GithubNews::GithubNews()
 
 // Get universal and game specific news
 const void GithubNews::getAllNews(QVector<NewsItem> &vector, uint64_t gameId, QString mainFolder){
+    qDebug() << "Loading NEWS         " + mainFolder;
     getUniversalNews(vector, mainFolder);
     getNewsForGame(vector, gameId, mainFolder);
     if(vector.size() > 1)
@@ -86,7 +87,10 @@ const void GithubNews::getNews(QVector<NewsItem> &vector, const QUrl &url){
                     if(vector[vector.size() - 1].article.toString().size() < 2)
                     {
                         // Get html adress of website
-                        vector[vector.size() - 1].article = QUrl(htmlPath);
+                        if(QUrl(htmlPath).isValid())
+                        {
+                            vector[vector.size() - 1].article = QUrl(htmlPath);
+                        }
                     }
                     // Get image as icon
                     vector[vector.size() - 1].imageUrl = QUrl(pngPath);
