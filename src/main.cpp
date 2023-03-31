@@ -86,9 +86,12 @@
  * Open Beta Relase
  * - Remove GlobalData.cpp and translate everything into correct object-oriented app
  * - Remove qtgeneralbackend.cpp and move correctly.
+ * - Add some tests
  *
  *
- *
+ * Fixes:
+ * - Change mod color in launcher after update
+ * - Add popup when updating mod
  *
  * TODO:
  * LOG01 - IMPLEMENTATION FOR LOGS, find later and fill
@@ -121,6 +124,7 @@
 #include "qt/customModules/modpackslist.h"
 #include "qt/customModules/infobox.h"
 #include "qt/customModules/news.h"
+#include "qt/webEngineBackend/webenginebackend.h"
 
 void settingsLoading()
 {
@@ -190,8 +194,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<GameChanger>("cGameChangerListUrl", 1, 0, "GameChanger");
     qmlRegisterUncreatableType<cGameChangerList>("cGameChangerListUrl", 1, 0, "GameChangerList", QString("I dont have any reason"));
 
-    cGameChangerList objcGameChangerList;
-    engine.rootContext()->setContextProperty("ObjcGameChangerList", &objcGameChangerList);
+    engine.rootContext()->setContextProperty("ObjcGameChangerList", new cGameChangerList(&engine));
 
     //---------------------------------------------
     //                  ModsList
@@ -200,8 +203,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<Mods>("cMods", 1, 0, "Mods");
     qmlRegisterUncreatableType<ModsList>("cMods", 1, 0, "ModsList", QString("Sometthing"));
 
-    ModsList objModsList;
-    engine.rootContext()->setContextProperty("objModsList", &objModsList);
+    engine.rootContext()->setContextProperty("objModsList", new ModsList(&engine));
 
     //--------------------------------------------
     //               Local Modpacks
@@ -221,25 +223,26 @@ int main(int argc, char *argv[])
     qmlRegisterUncreatableType<News>("cNews", 1, 0, "DevNewsList", QString("Smth"));
     qmlRegisterUncreatableType<News>("cNewsList", 1, 0, "CommunityNewsList", QString("Smth"));
 
-    DevNewsList cDevNewsList;
-    engine.rootContext()->setContextProperty("cDevNewsList", &cDevNewsList);
-
-    CommunityNewsList cCommunityNewsList;
-    engine.rootContext()->setContextProperty("cCommunityNewsList", &cCommunityNewsList);
+    engine.rootContext()->setContextProperty("cDevNewsList", new DevNewsList(&engine));
+    engine.rootContext()->setContextProperty("cCommunityNewsList", new CommunityNewsList(&engine));
 
     //--------------------------------------------
     //              QtGeneralBackend
     //--------------------------------------------
 
-    QtGeneralBackend qtGeneralBackendObj;
-    engine.rootContext()->setContextProperty("qtGeneralBackendObj", &qtGeneralBackendObj);
+    engine.rootContext()->setContextProperty("qtGeneralBackendObj", new QtGeneralBackend(&engine));
 
     //--------------------------------------------
     //                  InfoBox
     //--------------------------------------------
 
-    InfoBox ObjInfoBox;
-    engine.rootContext()->setContextProperty("ObjInfoBox", &ObjInfoBox);
+    engine.rootContext()->setContextProperty("ObjInfoBox", new InfoBox(&engine));
+
+    //--------------------------------------------
+    //              WebEngineBackend
+    //--------------------------------------------
+
+    engine.rootContext()->setContextProperty("backWebEngine", new WebEngineBackend(&engine));
 
     //--------------------------------------------
     //            Load default game

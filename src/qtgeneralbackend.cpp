@@ -229,15 +229,13 @@ void QtGeneralBackend::updateMod(uint64_t id){
 void QtGeneralBackend::addMod(uint64_t id){
     Utility objUtility;
     objUtility.showSimpleInfoBox("Downloading mod with id: " + QString::fromStdString(std::to_string(id)));
-
     SteamApiAccess SteamAPI;
-    SteamAPI.subscribeMod(id);
+    //SteamAPI.subscribeMod(id);
     if(SteamAPI.updateMod(id))
     {
         // Insert item into launcher
         sModsData data = SteamAPI.getModData(id);
         data.laucherId = GlobalDataObj->ModsDataObj.size();
-
         SteamAPI.setModPackname(data);
         GlobalDataObj->ModsDataObj.emplaceBack(data);
     }

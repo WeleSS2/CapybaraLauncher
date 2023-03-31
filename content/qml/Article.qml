@@ -73,8 +73,24 @@ Item {
                     onClicked: {
                         Qt.inputMethod.commit()
                         Qt.inputMethod.hide()
-                        webView.url = utils.fromUserInput(urlField.text)
+                        webView.url = backWebEngine.fromUserInput(urlField.text)
                     }
+                }
+
+                Item { Layout.preferredWidth: 10 }
+
+                ToolButton {
+                    id: downloadButton
+                    icon.source: "../images/icons/downloadGreen.png"
+                    onClicked: {
+                        if(Qt.LeftButton){
+                            qtGeneralBackendObj.addMod(backWebEngine.downloadModFromUrl(urlField.text));
+                            objModsList.refreshModlistVector();
+                            qmlModsList.refreshModlist();
+                        }
+                    }
+
+                    Layout.preferredWidth: navigationBar.height
                 }
 
                 Item { Layout.preferredWidth: 10 }
@@ -89,6 +105,8 @@ Item {
                         }
                     }
                 }
+
+                Item { Layout.preferredWidth: 10 }
              }
         }
     }

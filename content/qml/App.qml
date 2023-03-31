@@ -41,7 +41,7 @@ Window {
     visible: true
     visibility: Window.Maximized
 
-    title: "TW Capybara Laucher"
+    title: "Capybara Launcher"
 
     property string mainTextColor: "#E8E8E8"
     property string highlightTextColor:  "#D900D2E2"
