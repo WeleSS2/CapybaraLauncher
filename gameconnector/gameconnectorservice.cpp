@@ -79,10 +79,12 @@ void GameConnectorService::itemsCallback(SteamUGCQueryCompleted_t* result, bool 
 //---------------- Single mods and others
 
 bool GameConnectorService::updateMod(uint64_t id){
+    qDebug() << "Update 1";
     SteamAPICall_t hDownloadItemResult = SteamUGC()->DownloadItem(id, true);
     SteamAPI_RunCallbacks();
-
+    qDebug() << "Update 11";
     if (waitUntilCallNotFinished(&hDownloadItemResult)) {
+            qDebug() << "Update 2";
             uint64_t itemState = SteamUGC()->GetItemState(id);
             while (true)
             {
@@ -91,6 +93,8 @@ bool GameConnectorService::updateMod(uint64_t id){
                 if (itemState == 5) {
                     return true;
                 }
+                QThread::sleep(100);
+                qDebug() << "|" << id << "    " << itemState;
             }
         }
         return false;
@@ -109,7 +113,7 @@ bool GameConnectorService::subscribeMod(uint64_t id){
             {
                 return true;
             }
-            QThread::sleep(50);
+            QThread::sleep(100);
         }
     }
     else
@@ -139,7 +143,7 @@ bool GameConnectorService::unsubscribeMod(uint64_t id){
                 return true;
             }
 
-            QThread::sleep(50);
+            QThread::sleep(100);
         }
     }
     else

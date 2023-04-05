@@ -32,6 +32,7 @@ void SteamAPIAccess::subscribeMod()
             {
                 break;
             }
+
             Sleep(10);
         }
     }

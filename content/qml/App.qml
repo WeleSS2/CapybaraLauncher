@@ -49,6 +49,9 @@ Window {
     property bool rightPanelEnabled: true
     property bool bottomGameMenuEnabled: true
 
+    property string rectangleColor: "#FC070707"
+    property string rectangleBorder: "#F9DFDFDF"
+
    Connections {
        target: localFilesObj
        function saveLocalSettings(){}
@@ -71,8 +74,14 @@ Window {
     property int height_1: mainScreen.height / 100
     property double baseScale: 1.0
 
-    GameSelector {
-        id: qmlGameSelector
+    Image {
+        id: background
+        x: 0
+        y: 0
+        width: Window.width
+        height: Window.height
+        source: "../images/gameBackgrounds/background_0.png"
+        fillMode: Image.Stretch
     }
 
     TopMenu {
@@ -81,6 +90,10 @@ Window {
 
     ModsListFile {
         id: qmlModsList
+    }
+
+    GameSelector {
+        id: qmlGameSelector
     }
 
     RightPanel {
@@ -92,6 +105,11 @@ Window {
         id: qmlBottomGameMenu
     }
 
+    TaskList
+    {
+        id: qmlTaskList
+    }
+
     SettingsModule
     {
         id: qmlSettingsModule
@@ -99,6 +117,10 @@ Window {
 
     InfoBox {
         id: infoBoxQML
+    }
+
+    ArticleView {
+        id: qmlArticleView
     }
 
     Article {

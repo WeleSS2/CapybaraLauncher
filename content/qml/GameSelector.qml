@@ -7,30 +7,84 @@ Item {
     property var mainTextColor: Qt.rgba(1, 1, 1, 1)
     property int currentGameId: 0
 
-    Image {
-        id: background
-        x: 0
-        y: 0
-        width: Window.width
-        height: Window.height
-        source: "../images/gameBackgrounds/background_" + qtGeneralBackendObj.currentGameId + ".png"
-        fillMode: Image.Stretch
-    }
-
-    ComboBox {
+    ListView {
         id: selectGame
-        editable: false
+        x: 20
+        y: 20
+        width: mainwindow.width_1 * 35 * mainwindow.baseScale
+        height: 120 * mainwindow.baseScale
+        spacing: 10 * mainwindow.baseScale
+
+        clip: true
+        orientation: Qt.Horizontal
+
         model: GameChanger {
             list: ObjcGameChangerList
         }
 
-        onActivated: {
-            setGame(currentIndex);
+        delegate: Item {
+            id: item
+            width: 60 * mainwindow.baseScale
+            height: 60 * mainwindow.baseScale
+            Rectangle {
+                anchors.fill: parent
+                color: "transparent"
+                Rectangle {
+                    anchors.fill: parent
+                    border.width: 1
+                    border.color: mainwindow.rectangleBorder
+                    Image {
+                        x: parent.x + 1
+                        y: parent.y + 1
+                        width: parent.width - 2
+                        height: parent.height - 2
+                        source: "../images/gameBackgrounds/icon_" + model.gameId + ".png"
+                    }
+                }
+                Rectangle {
+                    id: qmlGameName
+                    x: parent.x * mainwindow.baseScale
+                    y: parent.y + parent.height * mainwindow.baseScale
+                    width: 300 * mainwindow.baseScale
+                    height: 30 * mainwindow.baseScale
+                    visible: false
+                    color: mainwindow.rectangleColor
+                    border.color: mainwindow.rectangleBorder
+                    border.width: 1
+                    //Image {
+                    //    anchors.fill: parent
+                    //    source: "../images/icons/backgroundImage.png"
+                    //}
+                    Text {
+                        x: 10
+                        y: 5
+                        clip: true
+                        font.bold: true
+                        font.pixelSize: 16
+                        color: mainTextColor
+                        text: "Total War " + gameName
+                    }
+                }
+
+                MouseArea {
+                    id: mouseHover
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    onClicked: {
+                        if(Qt.LeftButton){
+                            setGame(index);
+                        }
+                    }
+                    onHoveredChanged: (mouse)=> {
+                        if (containsMouse) {
+                            qmlGameName.visible = true;
+                        } else {
+                            qmlGameName.visible = false;
+                        }
+                    }
+                }
+            }
         }
-        x: mainwindow.width_1 * 20 * mainwindow.baseScale
-        y: 0
-        width: 250 * mainwindow.baseScale
-        height: 30 * mainwindow.baseScale
     }
 
     function setGame(index){

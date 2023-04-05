@@ -2,27 +2,29 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
+import content
+
 Item {
+    property bool updatestatus: qtGeneralBackendObj.updateAvialable()
     GridLayout {
-        property bool updatestatus: qtGeneralBackendObj.updateAvialable()
-        x: mainwindow.width_1 * 65 * mainwindow.baseScale
-        width: mainwindow.width_1 * 35 * mainwindow.baseScale
-        columns: 6
+        x: mainwindow.width_1 * 75 * mainwindow.baseScale
+        width: mainwindow.width_1 * 25 * mainwindow.baseScale
+        columns: 5
         rows: 1
-        Button {
-            id: gamesite
-            Layout.preferredWidth: 120 * mainwindow.baseScale
-            Layout.preferredHeight: 30 * mainwindow.baseScale
-            font.pixelSize: 20 * mainwindow.baseScale
-            Layout.alignment: Qt.AlignRight
-            text: qsTr("Totalwar")
-            onClicked: {
-               if(Qt.LeftButton)
-                   {
-                       Qt.openUrlExternally("https://www.totalwar.com")
-                   }
-               }
-        }
+        //Button {
+        //    id: gamesite
+        //    Layout.preferredWidth: 120 * mainwindow.baseScale
+        //    Layout.preferredHeight: 30 * mainwindow.baseScale
+        //    font.pixelSize: 20 * mainwindow.baseScale
+        //    Layout.alignment: Qt.AlignRight
+        //    text: qsTr("Totalwar")
+        //    onClicked: {
+        //       if(Qt.LeftButton)
+        //           {
+        //               Qt.openUrlExternally("https://www.totalwar.com")
+        //           }
+        //       }
+        //}
         Button {
             id: workshop
             Layout.preferredWidth: 120 * mainwindow.baseScale

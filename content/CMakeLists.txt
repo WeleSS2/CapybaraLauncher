@@ -20,7 +20,16 @@ foreach(PNG_FILE ${PNG_ICONS})
     set(PNG_RESOURCE "images/icons/${PNG_NAME}")
     list(APPEND PNG_ICONS_RESOURCES ${PNG_RESOURCE})
 endforeach()
+#--------- Add gifs
 
+set(ICONS_GIF_DIR "images/icons")
+file(GLOB GIF_ICONS "${ICONS_GIF_DIR}/*.gif")
+set(GIF_ICONS_RESOURCES "")
+foreach(GIF_FILE ${GIF_ICONS})
+    get_filename_component(GIF_NAME ${GIF_FILE} NAME)
+    set(GIF_RESOURCE "images/icons/${GIF_NAME}")
+    list(APPEND GIF_ICONS_RESOURCES ${GIF_RESOURCE})
+endforeach()
 #--------- Qml Files 
 
 set(QML_DIR "qml")
@@ -42,8 +51,25 @@ foreach(QML_MLFILE ${QML_MLFILES})
     set(QML_MLRESOURCE "qml/modsList/${QML_MLNAME}")
     list(APPEND QML_MLRESOURCES ${QML_MLRESOURCE})
 endforeach()
+#--------- bottommenu
+set(QML_BMDIR "qml/bottomMenu")
+file(GLOB QML_BMFILES "${QML_BMDIR}/*.qml")
+set(QML_BMRESOURCES "")
+foreach(QML_BMFILE ${QML_BMFILES})
+    get_filename_component(QML_BMNAME ${QML_BMFILE} NAME)
+    set(QML_BMRESOURCE "qml/bottomMenu/${QML_BMNAME}")
+    list(APPEND QML_BMRESOURCES ${QML_BMRESOURCE})
+endforeach()
 
-
+#--------- customQmlModules
+set(QML_CMDIR "qml/customModules")
+file(GLOB QML_CMFILES "${QML_CMDIR}/*.qml")
+set(QML_CMRESOURCES "")
+foreach(QML_CMFILE ${QML_CMFILES})
+    get_filename_component(QML_CMNAME ${QML_CMFILE} NAME)
+    set(QML_CMRESOURCE "qml/customModules/${QML_CMNAME}")
+    list(APPEND QML_CMRESOURCES ${QML_CMRESOURCE})
+endforeach()
 #--------------------------------------
 qt_add_library(content STATIC)
 
@@ -53,9 +79,12 @@ qt6_add_qml_module(content
     QML_FILES
         ${QML_RESOURCES}
         ${QML_MLRESOURCES}
+        ${QML_BMRESOURCES}
+        ${QML_CMRESOURCES}
     RESOURCES
         fonts/fonts.txt
 
         ${PNG_BACKGROUNDS_RESOURCES}
         ${PNG_ICONS_RESOURCES}
+        ${GIF_ICONS_RESOURCES}
     )

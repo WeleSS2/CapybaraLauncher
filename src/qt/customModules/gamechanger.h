@@ -15,7 +15,8 @@ public:
     explicit GameChanger(QObject *parent = nullptr);
 
     enum {
-      NameRole
+        NameRole,
+        GameIdRole
     };
 
     // Basic functionality:

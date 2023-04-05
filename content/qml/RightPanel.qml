@@ -26,6 +26,7 @@ Item {
         id: developerCANews
         width: Window.width - 1080
         height: mainwindow.height_1 * 35 * mainwindow.baseScale
+         spacing: 10 * mainwindow.baseScale
         clip: true
         flickableDirection: Flickable.HorizontalFlick
         orientation: Qt.Horizontal
@@ -44,6 +45,14 @@ Item {
                     width: mainwindow.width_1 * 15 * mainwindow.baseScale
                     height: mainwindow.height_1 * 35 * mainwindow.baseScale
                     color: "transparent"
+                    Rectangle {
+                        id: isHovered
+                        anchors.fill: parent
+                        visible: false
+                        color: mainwindow.rectangleColor
+                        border.color: mainwindow.rectangleBorder
+                        border.width: 1
+                    }
                     ColumnLayout {
                         Rectangle {
                             Layout.topMargin: 10
@@ -96,11 +105,15 @@ Item {
                     MouseArea {
                         anchors.fill: parent
                         hoverEnabled: true
-                        onEntered: {
-                            developerCANews_rectangle.color = "black"
-                        }
-                        onExited: {
-                            developerCANews_rectangle.color = "transparent"
+                        onHoveredChanged: (mouse)=> {
+                            if(!isHovered.visible)
+                            {
+                                isHovered.visible = true;
+                            }
+                            else
+                            {
+                                isHovered.visible = false;
+                            }
                         }
                         onClicked: {
                             if(Qt.LeftButton){
@@ -137,6 +150,7 @@ Item {
                     color: "transparent"
                     ColumnLayout {
                         Rectangle {
+                            property bool isHovered: false
                             Layout.topMargin: 10
                             Layout.leftMargin: 10
                             width: 200 * mainwindow.baseScale
@@ -184,14 +198,22 @@ Item {
                             color: mainTextColor
                         }
                     }
+                    Rectangle {
+                        id: isHoveredC
+                        anchors.fill: parent
+                        visible: false
+                        color: mainwindow.rectangleColor
+                        border.color: mainwindow.rectangleBorder
+                        border.width: 1
+                    }
                     MouseArea {
                         anchors.fill: parent
                         hoverEnabled: true
                         onEntered: {
-                            communityNews_rectangle.color = "black"
+                            isHoveredC = true
                         }
                         onExited: {
-                            communityNews_rectangle.color = "transparent"
+                            isHoveredC = false
                         }
                         onClicked: {
                             if(Qt.LeftButton){

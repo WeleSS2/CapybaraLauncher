@@ -8,23 +8,46 @@ Item {
     property url htmlAdress: ""
     property bool show: false
     visible: show
-    x: mainwindow.width_1 * 10 * mainwindow.baseScale
+    x: mainwindow.width_1 * 3 * mainwindow.baseScale
     y: mainwindow.height_1 * 5 * mainwindow.baseScale
-    width: mainwindow.width_1 * 80 * mainwindow.baseScale
+    width: mainwindow.width_1 * 94 * mainwindow.baseScale
     height: mainwindow.height_1 * 90 * mainwindow.baseScale
     Rectangle{
         anchors.fill: parent
         color: "#CFCFCF"
-        WebView {
-            id: webView
+        Rectangle {
+            y: parent.y + mainwindow.height_1 * 3 * mainwindow.baseScale
+            id: recWebView
             anchors.fill: parent
             anchors.centerIn: parent
 
-            url: htmlAdress
+            WebView {
+                id: webView
+                anchors.fill: parent
+                anchors.centerIn: parent
+
+                url: htmlAdress
+
+                MouseArea {
+                    anchors.fill: parent
+                    acceptedButtons: Qt.RightButton
+                    onReleased: {
+                        if (mouse.button === Qt.RightButton) {
+                            var menu = webView.contextMenu
+                            menu.clear()
+                            var newTabAction = menu.addAction("Open Link in New Tab")
+                            newTabAction.triggered.connect(addElementToList)
+                            menu.popup()
+                        }
+                    }
+                }
+            }
         }
+
+
         ToolBar {
             x: parent.x
-            y: parent.y - mainwindow.height_1 * 3 * mainwindow.baseScale
+            y: parent.y
             width: parent.width
             height: mainwindow.height_1 * 3 * mainwindow.baseScale
             id: navigationBar
@@ -73,7 +96,7 @@ Item {
                     onClicked: {
                         Qt.inputMethod.commit()
                         Qt.inputMethod.hide()
-                        webView.url = backWebEngine.fromUserInput(urlField.text)
+                        htmlAdress = backWebEngine.fromUserInput(urlField.text)
                     }
                 }
 
@@ -84,9 +107,12 @@ Item {
                     icon.source: "../images/icons/downloadGreen.png"
                     onClicked: {
                         if(Qt.LeftButton){
-                            qtGeneralBackendObj.addMod(backWebEngine.downloadModFromUrl(urlField.text));
-                            objModsList.refreshModlistVector();
-                            qmlModsList.refreshModlist();
+                            if(backWebEngine.downloadModFromUrl(urlField.text) !== 0)
+                            {
+                                qtGeneralBackendObj.addMod(backWebEngine.downloadModFromUrl(urlField.text));
+                                objModsList.refreshModlistVector();
+                                qmlModsList.refreshModlist();
+                            }
                         }
                     }
 
@@ -97,7 +123,7 @@ Item {
 
                 ToolButton {
                     id: closeButton
-                    text: qsTr("X")
+                    text: qsTr(" X ")
                     onClicked: {
                         if(Qt.LeftButton)
                         {
@@ -109,5 +135,11 @@ Item {
                 Item { Layout.preferredWidth: 10 }
              }
         }
+    }
+    function openNewTab() {
+        var newName = webView.contextMenuData.linkName
+        var newUrl = webView.contextMenuData.linkUrl
+        var element = {"name": newName ,"url": newUrl}
+        qmlArticleView.openedSites.append(element)
     }
 }

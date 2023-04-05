@@ -37,6 +37,10 @@ QVariant GameChanger::data(const QModelIndex &index, int role) const
         {
             return QVariant(item.gameName);
         }
+        case GameIdRole:
+        {
+            return QVariant(item.gameId);
+        }
     }
 
     return QVariant();
@@ -54,6 +58,10 @@ bool GameChanger::setData(const QModelIndex &index, const QVariant &value, int r
         {
             item.gameName = value.toString();
             break;
+        }
+        case GameIdRole:
+        {
+            item.gameId = value.toUInt();
         }
     }
     if(mList->setItemAt(index.row(), item)){
@@ -79,6 +87,7 @@ QHash<int, QByteArray> GameChanger::roleNames() const
 {
     QHash<int, QByteArray> names;
     names[NameRole] = "gameName";
+    names[GameIdRole] = "gameId";
     return names;
 }
 

@@ -3,6 +3,7 @@ import QtQuick
 Rectangle {
     id: overModList
     y: 100
+    z: 0
 
     property alias enableCanvas : enableCanvas
     property alias nameCanvas : nameCanvas

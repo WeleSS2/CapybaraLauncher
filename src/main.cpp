@@ -74,6 +74,7 @@
  *
  *
  *--------------- FINISHED 28.03
+ * TODO:
  * Patch 0.0.8 Until 30.03
  * - Neccesary add-ons and fixes
  * - Idk what exactly, to be added
@@ -87,13 +88,23 @@
  * - Remove GlobalData.cpp and translate everything into correct object-oriented app
  * - Remove qtgeneralbackend.cpp and move correctly.
  * - Add some tests
+ * - Send mods to download as list
+ * - Downloading mods, updating, e.t.c in separated thread
+ * - Add workspaces for local mods
+ * - Add uploading mods to steam
+ * - Graphical update:
+ * - Add custom buttons
+ * - Rework backgrounds
+ * - Add icons for games and visual buttons list instead of current dropdown
+ *
+ * - Thread pool
+ *
  *
  *
  * Fixes:
  * - Change mod color in launcher after update
  * - Add popup when updating mod
  *
- * TODO:
  * LOG01 - IMPLEMENTATION FOR LOGS, find later and fill
  */
 
@@ -153,7 +164,7 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
     GlobalDataObj->enginePtr = &engine;
 
-    QCoreApplication::setApplicationVersion("v0.0.7.1");
+    QCoreApplication::setApplicationVersion("v0.0.7.2");
 
     // WORKSPACE
     // settings are doubled due to work over transfer to .js

@@ -17,9 +17,7 @@ QUrl WebEngineBackend::fromUserInput(const QString& input){
 uint64_t WebEngineBackend::downloadModFromUrl(const QString& currentUrl){
     if(currentUrl.indexOf("=") != -1)
     {
-        qDebug() << currentUrl.mid(currentUrl.indexOf("=") + 1);
         uint64_t num = currentUrl.mid(currentUrl.indexOf("=") + 1).toULongLong();
-        qDebug() << num;
         return currentUrl.mid(currentUrl.indexOf("=") + 1).toULongLong();
     }
     else
