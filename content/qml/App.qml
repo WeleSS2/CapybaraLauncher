@@ -35,8 +35,8 @@ import content 1.0
 
 Window {
     id: mainwindow
-    width: mainScreen.width
-    height: mainScreen.height
+    width: Screen.width
+    height: Screen.height
 
     visible: true
     visibility: Window.Maximized
@@ -52,26 +52,18 @@ Window {
     property string rectangleColor: "#FC070707"
     property string rectangleBorder: "#F9DFDFDF"
 
-   Connections {
-       target: localFilesObj
-       function saveLocalSettings(){}
-   }
+    Connections {
+        target: localFilesObj
+        function saveLocalSettings(){}
+    }
 
     //Connections {
     //    target: objFilesOperations
     //    function saveSettings(){}
     //}
 
-    Screen01 {
-        id: mainScreen
-        width: Screen.width
-        height: Screen.height
-        x: 0
-        y: 0
-    }
-
-    property int width_1: mainScreen.width / 100
-    property int height_1: mainScreen.height / 100
+    property int width_1: mainwindow.width / 100
+    property int height_1: mainwindow.height / 100
     property double baseScale: 1.0
 
     Image {
@@ -103,6 +95,10 @@ Window {
     BottomGameMenu
     {
         id: qmlBottomGameMenu
+    }
+
+    ModListsOptions {
+        id: qmlModListOptions
     }
 
     TaskList

@@ -65,11 +65,11 @@ public:
     virtual bool setItemAt(int index, const NewsItem &item) = 0;
 
 signals:
-    virtual void preItemAppened();
-    virtual void postItemAppened();
+    void preItemAppened();
+    void postItemAppened();
 
-    virtual void preItemRemoved(int index);
-    virtual void postItemRemoved();
+    void preItemRemoved(int index);
+    void postItemRemoved();
 
 public slots:
     virtual void appendItem() = 0;

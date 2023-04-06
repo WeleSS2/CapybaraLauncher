@@ -6,6 +6,7 @@
 #include "QJsonDocument"
 #include "QJsonArray"
 #include "QJsonObject"
+#include "QFile"
 #include <openssl/ssl.h>
 
 #include "../utility/loggingsystem.h"
@@ -84,11 +85,14 @@ const void GithubNews::getNews(QVector<NewsItem> &vector, const QUrl &url){
                     getInfoFromTxt(vector, manager, QUrl(txtPath));
 
 
-                    if(vector[vector.size() - 1].article.toString().size() < 2)
-                    {
-                        // Get html adress of website
-                        if(QUrl(htmlPath).isValid())
-                        {
+                    if (vector[vector.size() - 1].article.toString().size() < 2) {
+                        QNetworkRequest requestHtml(htmlPath);
+                        QNetworkReply* htmlReply = manager.head(requestHtml);
+
+                        QEventLoop loopH;
+                        QObject::connect(htmlReply, SIGNAL(finished()), &loopH, SLOT(quit()));
+                        loopH.exec();
+                        if(htmlReply->error() == QNetworkReply::NoError){
                             vector[vector.size() - 1].article = QUrl(htmlPath);
                         }
                     }
@@ -98,7 +102,7 @@ const void GithubNews::getNews(QVector<NewsItem> &vector, const QUrl &url){
                     if(vector[vector.size() - 1].article.toString().size() < 2)
                     {
                         vector.erase(std::prev(vector.end()));
-                        LoggingSystem::saveLog("githubnews.cpp: getNews: News removed, index.html not found  " + url.toString());
+                        LoggingSystem::saveLog("githubnews.cpp: getNews: News removed, index.html not found  " + htmlPath);
                     }
                 }
                 else

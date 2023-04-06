@@ -10,7 +10,7 @@ Rectangle {
     property string currentId
 
     x: qmlModsList.mousePositionX - 25
-    y: ((qmlModsList.mousePositionY - 40) < (mainScreen.height - 400)) ? qmlModsList.mousePositionY - 40 : qmlModsList.mousePositionY - 350
+    y: ((qmlModsList.mousePositionY - 40) < (mainwindow.height - 400)) ? qmlModsList.mousePositionY - 40 : qmlModsList.mousePositionY - 350
     width: 200
     height: 350
     visible: false

@@ -6,8 +6,8 @@ Item {
 
     Rectangle {
         id: qt_box
-        x: ObjInfoBox.xPos != 0 ? ObjInfoBox.xPos : (mainScreen.width / 2) - (this.width / 2)
-        y: ObjInfoBox.yPos != 0 ? ObjInfoBox.yPos : (mainScreen.height / 2) - (this.height / 2)
+        x: ObjInfoBox.xPos != 0 ? ObjInfoBox.xPos : (mainwindow.width / 2) - (this.width / 2)
+        y: ObjInfoBox.yPos != 0 ? ObjInfoBox.yPos : (mainwindow.height / 2) - (this.height / 2)
         width: qt_boxText.implicitWidth + 20
         height: ObjInfoBox.containButton ? qt_boxText.implicitHeight + 70 : qt_boxText.implicitHeight + 20
 

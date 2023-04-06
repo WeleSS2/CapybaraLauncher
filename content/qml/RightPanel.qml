@@ -12,8 +12,8 @@ Item {
     Connections {
         target: cDevNewsList
         function onNewsLoaded() {
-             devRefreshNewsList();
-         }
+            devRefreshNewsList();
+        }
     }
     Connections {
         target: cCommunityNewsList
@@ -26,7 +26,7 @@ Item {
         id: developerCANews
         width: Window.width - 1080
         height: mainwindow.height_1 * 35 * mainwindow.baseScale
-         spacing: 10 * mainwindow.baseScale
+        spacing: 10 * mainwindow.baseScale
         clip: true
         flickableDirection: Flickable.HorizontalFlick
         orientation: Qt.Horizontal
@@ -56,7 +56,7 @@ Item {
                     ColumnLayout {
                         Rectangle {
                             Layout.topMargin: 10
-                            Layout.leftMargin: 5
+                            Layout.leftMargin: 10
                             width: 200 * mainwindow.baseScale
                             height: 200 * mainwindow.baseScale
                             Layout.alignment: Qt.AlignCenter
@@ -132,6 +132,7 @@ Item {
         y: mainwindow.height_1 * 36 * mainwindow.baseScale
         width: Window.width - 1080
         height: mainwindow.height_1 * 35 * mainwindow.baseScale
+        spacing: 10 * mainwindow.baseScale
         clip: true
         orientation: Qt.Horizontal
         flickableDirection: Flickable.HorizontalFlick
@@ -141,16 +142,26 @@ Item {
 
         delegate: Item {
             width: mainwindow.width_1 * 15 * mainwindow.baseScale
+            height: mainwindow.height_1 * 35 * mainwindow.baseScale
             Row {
                 id: communityNews_row
+                spacing: 20
                 Rectangle{
                     id: communityNews_rectangle
                     width: mainwindow.width_1 * 15 * mainwindow.baseScale
                     height: mainwindow.height_1 * 35 * mainwindow.baseScale
                     color: "transparent"
+                    Rectangle {
+                        id: isHoveredC
+                        anchors.fill: parent
+                        visible: false
+                        color: mainwindow.rectangleColor
+                        border.color: mainwindow.rectangleBorder
+                        border.width: 1
+                    }
                     ColumnLayout {
+                        Layout.alignment: Qt.AlignCenter
                         Rectangle {
-                            property bool isHovered: false
                             Layout.topMargin: 10
                             Layout.leftMargin: 10
                             width: 200 * mainwindow.baseScale
@@ -165,7 +176,7 @@ Item {
                                 sourceSize.width: 200 * mainwindow.baseScale
                                 sourceSize.height: 200 * mainwindow.baseScale
 
-                                source: (devImage.status === Image.Error) ? "../images/icons/capybaraIcon.png" : Nimage
+                                source: (comImage.status === Image.Error) ? "../images/icons/capybaraIcon.png" : Nimage
                             }
                         }
                         Text {
@@ -198,22 +209,19 @@ Item {
                             color: mainTextColor
                         }
                     }
-                    Rectangle {
-                        id: isHoveredC
-                        anchors.fill: parent
-                        visible: false
-                        color: mainwindow.rectangleColor
-                        border.color: mainwindow.rectangleBorder
-                        border.width: 1
-                    }
                     MouseArea {
                         anchors.fill: parent
+                        enabled: !qmlModListOptions.menuActive
                         hoverEnabled: true
-                        onEntered: {
-                            isHoveredC = true
-                        }
-                        onExited: {
-                            isHoveredC = false
+                        onHoveredChanged: (mouse)=> {
+                            if(!isHoveredC.visible)
+                            {
+                                isHoveredC.visible = true;
+                            }
+                            else
+                            {
+                                isHoveredC.visible = false;
+                            }
                         }
                         onClicked: {
                             if(Qt.LeftButton){
@@ -230,7 +238,7 @@ Item {
         developerCANews.model.refreshList();
     }
 
-    function communityRefreshNewslist() {
+    function communityRefreshNewsList() {
         communityNews.model.refreshList();
     }
 }

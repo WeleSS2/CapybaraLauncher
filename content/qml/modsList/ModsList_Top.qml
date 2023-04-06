@@ -38,7 +38,7 @@ Rectangle {
 
 
                  // the fill color
-                 context.fillStyle = clicked ? "red" : "#FFCC00";
+                 context.fillStyle = clicked ? "green" : "#FFCC00";
                  context.fill();
             }
             MouseArea {
@@ -87,7 +87,7 @@ Rectangle {
 
 
                  // the fill color
-                 context.fillStyle = clicked ? "red" : "#FFCC00";
+                 context.fillStyle = clicked ? "green" : "#FFCC00";
                  context.fill();
             }
             MouseArea {
@@ -135,7 +135,7 @@ Rectangle {
 
 
                  // the fill color
-                 context.fillStyle = clicked ? "red" : "#FFCC00";
+                 context.fillStyle = clicked ? "green" : "#FFCC00";
                  context.fill();
             }
             MouseArea {
@@ -183,7 +183,7 @@ Rectangle {
 
 
                  // the fill color
-                 context.fillStyle = clicked ? "red" : "#FFCC00";
+                 context.fillStyle = clicked ? "green" : "#FFCC00";
                  context.fill();
             }
             MouseArea {

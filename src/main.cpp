@@ -93,9 +93,9 @@
  * - Add workspaces for local mods
  * - Add uploading mods to steam
  * - Graphical update:
- * - Add custom buttons
+ * - Add custom buttons +
  * - Rework backgrounds
- * - Add icons for games and visual buttons list instead of current dropdown
+ * - Add icons for games and visual buttons list instead of current dropdown +
  *
  * - Thread pool
  *

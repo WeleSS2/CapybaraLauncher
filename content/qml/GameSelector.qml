@@ -39,6 +39,11 @@ Item {
                         width: parent.width - 2
                         height: parent.height - 2
                         source: "../images/gameBackgrounds/icon_" + model.gameId + ".png"
+                        Rectangle {
+                            id: lightening
+                            anchors.fill: parent
+                            color: "#00FFFFFF"
+                        }
                     }
                 }
                 Rectangle {
@@ -57,7 +62,8 @@ Item {
                     //}
                     Text {
                         x: 10
-                        y: 5
+                        y: 3
+                        width: 280 * mainwindow.baseScale
                         clip: true
                         font.bold: true
                         font.pixelSize: 16
@@ -78,8 +84,10 @@ Item {
                     onHoveredChanged: (mouse)=> {
                         if (containsMouse) {
                             qmlGameName.visible = true;
+                            lightening.color = "#22FFFFFF"
                         } else {
                             qmlGameName.visible = false;
+                            lightening.color = "#00FFFFFF"
                         }
                     }
                 }
