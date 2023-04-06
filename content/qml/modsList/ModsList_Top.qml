@@ -3,7 +3,6 @@ import QtQuick
 Rectangle {
     id: overModList
     y: 100
-    z: 0
 
     property alias enableCanvas : enableCanvas
     property alias nameCanvas : nameCanvas
@@ -46,6 +45,7 @@ Rectangle {
                 height: 50
                 x: -10
                 y: -10
+                hoverEnabled: true
                 onClicked: (mouse)=>{
                                objModsList.sortByActive();
                                qmlModsList.refreshModlistTo0();
@@ -54,6 +54,15 @@ Rectangle {
                                parent.clicked = true;
                                parent.requestPaint();
                            }
+                onHoveredChanged: (mouse)=>{
+                                      if(containsMouse){
+                                          qmlGameSelector.z = 0;
+                                      }
+                                      else
+                                      {
+                                          qmlGameSelector.z = 1;
+                                      }
+                                  }
             }
         }
     }
@@ -95,6 +104,7 @@ Rectangle {
                 height: 50
                 x: -10
                 y: -10
+                hoverEnabled: true
                 onClicked: (mouse)=>{
                                objModsList.sortByName();
                                qmlModsList.refreshModlistTo0();
@@ -102,6 +112,15 @@ Rectangle {
                                parent.clicked = true;
                                parent.requestPaint();
                            }
+                onHoveredChanged: (mouse)=>{
+                                      if(containsMouse){
+                                          qmlGameSelector.z = 0;
+                                      }
+                                      else
+                                      {
+                                          qmlGameSelector.z = 1;
+                                      }
+                                  }
             }
         }
     }
@@ -143,6 +162,7 @@ Rectangle {
                 height: 50
                 x: -10
                 y: -10
+                hoverEnabled: true
                 onClicked: (mouse)=>{
                                objModsList.sortByDate();
                                qmlModsList.refreshModlistTo0();
@@ -150,6 +170,15 @@ Rectangle {
                                parent.clicked = true;
                                parent.requestPaint();
                            }
+                onHoveredChanged: (mouse)=>{
+                                      if(containsMouse){
+                                          qmlGameSelector.z = 0;
+                                      }
+                                      else
+                                      {
+                                          qmlGameSelector.z = 1;
+                                      }
+                                  }
             }
         }
     }
@@ -191,6 +220,7 @@ Rectangle {
                 height: 50
                 x: -10
                 y: -10
+                hoverEnabled: true
                 onClicked: (mouse)=>{
                                objModsList.sortByPackname();
                                qmlModsList.refreshModlistTo0();
@@ -198,6 +228,15 @@ Rectangle {
                                parent.clicked = true;
                                parent.requestPaint();
                            }
+                onHoveredChanged: (mouse)=>{
+                                      if(containsMouse){
+                                          qmlGameSelector.z = 0;
+                                      }
+                                      else
+                                      {
+                                          qmlGameSelector.z = 1;
+                                      }
+                                  }
             }
         }
     }
@@ -212,46 +251,6 @@ Rectangle {
         font.bold: true
     }
 
-    //Rectangle {
-    //    id: refreshButton
-    //    x: 980
-    //    width: 30
-    //    height: 30
-    //    color: "transparent"
-    //    MouseArea{
-    //        anchors.fill: parent
-    //        hoverEnabled: true
-    //        onClicked: {
-    //            if(Qt.LeftButton){
-    //                objModsList.refreshModlistVector();
-    //                refreshModlistTo0();
-    //            }
-    //        }
-    //        onEntered: {
-    //            refreshButtonImage.source = "images/icons/refreshIcon64Light.png"
-    //        }
-    //        onExited: {
-    //            refreshButtonImage.source = "images/icons/refreshIcon64.png"
-    //        }
-    //    }
-    //    Image {
-    //        id: refreshButtonImage
-    //        anchors.fill: parent
-    //        source: "images/icons/refreshIcon64.png"
-    //    }
-    //}
-
-    //Text {
-    //    x: 977
-    //    y: 100
-    //    width: 108
-    //    height: 30
-    //    color: mainTextColor
-    //    text: qsTr("Author")
-    //    font.pixelSize: 16
-    //    clip: true
-    //    font.bold: true
-    //}
     function clearCanvases(){
         enableCanvas.clicked = false;
         enableCanvas.requestPaint();

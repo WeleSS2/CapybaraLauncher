@@ -25,30 +25,84 @@ Item {
         //           }
         //       }
         //}
-        Button {
+        Rectangle {
             id: workshop
             Layout.preferredWidth: 120 * mainwindow.baseScale
             Layout.preferredHeight: 30 * mainwindow.baseScale
-            font.pixelSize: 20 * mainwindow.baseScale
             Layout.alignment: Qt.AlignRight
-            text: qsTr("Workshop")
-            onClicked: {
-                if(Qt.LeftButton){
-                    Qt.openUrlExternally("steam://openurl/https://steamcommunity.com/app/" + qmlGameSelector.currentGameId.toString() + "/workshop/")
+
+            color: mainwindow.rectangleColor
+            border.width: 1
+            border.color: mainwindow.rectangleBorder
+            Rectangle {
+                anchors.fill: parent
+                color: "#2DFFFFFF"
+                visible: workshopHovered.hovered
+            }
+
+            Text {
+                anchors.centerIn: parent
+                font.pixelSize: 20 * mainwindow.baseScale
+                font.bold: true
+                color: mainwindow.mainTextColor
+                text: qsTr("Workshop")
+            }
+            Item {
+                anchors.fill: parent
+                HoverHandler {
+                    id: workshopHovered
+                    acceptedDevices: PointerDevice.Mouse
+                    cursorShape: Qt.PointingHandCursor
+                }
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    if(Qt.LeftButton){
+                        Qt.openUrlExternally("steam://openurl/https://steamcommunity.com/app/" + qmlGameSelector.currentGameId.toString() + "/workshop/")
+                    }
                 }
             }
         }
-        Button {
+        Rectangle {
             id: settings
             Layout.preferredWidth: 120 * mainwindow.baseScale
             Layout.preferredHeight: 30 * mainwindow.baseScale
-            font.pixelSize: 20 * mainwindow.baseScale
             Layout.alignment: Qt.AlignRight
-            text: qsTr("Settings")
-            onClicked: {
-                if(Qt.LeftButton){
-                    disableLeftRightBottom();
-                    qmlSettingsModule.showSettings();
+
+            color: mainwindow.rectangleColor
+            border.width: 1
+            border.color: mainwindow.rectangleBorder
+            Rectangle {
+                anchors.fill: parent
+                color: "#2DFFFFFF"
+                visible: settingsHovered.hovered
+            }
+
+            Text {
+                anchors.centerIn: parent
+                font.pixelSize: 20 * mainwindow.baseScale
+                font.bold: true
+                color: mainwindow.mainTextColor
+                text: qsTr("Settings")
+            }
+            Item {
+                anchors.fill: parent
+                HoverHandler {
+                    id: settingsHovered
+                    acceptedDevices: PointerDevice.Mouse
+                    cursorShape: Qt.PointingHandCursor
+                }
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    if(Qt.LeftButton){
+                        disableLeftRightBottom();
+                        qmlSettingsModule.showSettings();
+                    }
                 }
             }
         }
@@ -65,20 +119,20 @@ Item {
                 hoverEnabled: true
                 onEntered: {
                     if(updatestatus){
-                        launcherupdateImage.source = "images/icons/downloadGreenLight.png";
+                        launcherupdateImage.source = "../images/icons/downloadGreenLight.png";
                     }
                     else
                     {
-                        launcherupdateImage.source = "images/icons/downloadRed.png";
+                        launcherupdateImage.source = "../images/icons/downloadRed.png";
                     }
                 }
                 onExited: {
                     if(updatestatus){
-                        launcherupdateImage.source = "images/icons/downloadGreen.png";
+                        launcherupdateImage.source = "../images/icons/downloadGreen.png";
                     }
                     else
                     {
-                        launcherupdateImage.source = "images/icons/downloadRed.png";
+                        launcherupdateImage.source = "../images/icons/downloadRed.png";
                     }
                 }
                 onClicked: {

@@ -40,6 +40,7 @@ target_link_libraries(CapybaraLauncher PRIVATE
     ${STEAMAPI_LIBRARIES}
     ${OPENSSL_LIBRARIES}
 )
+#add_subdirectory(customModules)
 #-- GameConnector config part
 file(GLOB_RECURSE GAMECONFILES "gameconnector/*.cpp")
 qt_add_executable(GameConnector ${GAMECONFILES})

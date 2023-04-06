@@ -70,6 +70,7 @@ Window {
         id: background
         x: 0
         y: 0
+        z: 0
         width: Window.width
         height: Window.height
         source: "../images/gameBackgrounds/background_0.png"
@@ -78,49 +79,60 @@ Window {
 
     TopMenu {
         id: qmlTopMenu
-    }
-
-    ModsListFile {
-        id: qmlModsList
+        z: 0
     }
 
     GameSelector {
         id: qmlGameSelector
+        z: 1
+    }
+
+    ModsListFile {
+        id: qmlModsList
+        z: 0
     }
 
     RightPanel {
         id: qmlRightPanel
+        z: 0
     }
 
     BottomGameMenu
     {
         id: qmlBottomGameMenu
+        z: 0
     }
 
     ModListsOptions {
         id: qmlModListOptions
+        z: 0
     }
 
     TaskList
     {
         id: qmlTaskList
+        z: 0
     }
 
     SettingsModule
     {
         id: qmlSettingsModule
+        z: 0
     }
 
     InfoBox {
         id: infoBoxQML
+        z: 0
     }
 
     ArticleView {
         id: qmlArticleView
+        z: 0
     }
 
     Article {
         id: qmlArticle
+        z: 0
     }
 
     onClosing: {

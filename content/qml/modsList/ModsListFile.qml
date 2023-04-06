@@ -172,64 +172,42 @@ Item {
                 acceptedButtons: Qt.LeftButton | Qt.RightButton
                 property point position: mapToGlobal(mouseX, mouseY);
                 onClicked: (mouse)=> {
-                      if (mouse.button === Qt.RightButton)
-                      {
-                          if(!globalActionMenuOpen)
-                          {
-                               mousePositionX = position.x;
-                               mousePositionY = position.y;
-                               qmlModsListClickMenu.currentName = model.name;
-                               qmlModsListClickMenu.currentPackname = model.packname;
-                               qmlModsListClickMenu.currentId = model.modgameid;
-                               qmlModsListClickMenu.currentIndexPos = model.id;
-                               if (model.colorWarn.r === 0.8823529481887817 && model.colorWarn.g === 0.8823529481887817 && model.colorWarn.b === 0)
-                               {
-                                    updateAvailable = true;
-                               }
-                               else
-                               {
-                                   updateAvailable = false;
-                               }
-                               qmlModsListClickMenu.visible = true;
-                          }
-                          else
-                          {
-                              globalActionMenuOpen = false;
-                              actionMenu.visible = false;
+                    if (mouse.button === Qt.RightButton)
+                    {
+                        globalActionMenuOpen = true;
 
-                              mousePositionX = position.x;
-                              mousePositionY = position.y;
-                              qmlModsListClickMenu.currentName = model.name;
-                              qmlModsListClickMenu.currentPackname = model.packname;
-                              qmlModsListClickMenu.currentId = model.modgameid;
-                              qmlModsListClickMenu.currentIndexPos = model.id;
-                              if (model.colorWarn.r === 0.8823529481887817 && model.colorWarn.g === 0.8823529481887817 && model.colorWarn.b === 0)
-                              {
-                                  updateAvailable = true;
-                              }
-                              else
-                              {
-                                  updateAvailable = false;
-                              }
-                              qmlModsListClickMenu.visible = true;
-                          }
-                      }
-                      else if (mouse.button === Qt.LeftButton)
-                      {
-                          if(!globalActionMenuOpen)
-                          {
-                              if(!mod_id.checked)
-                              {
-                                  mod_id.checked = true;
-                                  model.done = true;
-                              }
-                              else
-                              {
-                                  mod_id.checked = false;
-                                  model.done = false;
-                              }
-                          }
-                      }
+                        mousePositionX = position.x;
+                        mousePositionY = position.y;
+                        qmlModsListClickMenu.currentName = model.name;
+                        qmlModsListClickMenu.currentPackname = model.packname;
+                        qmlModsListClickMenu.currentId = model.modgameid;
+                        qmlModsListClickMenu.currentIndexPos = model.id;
+                        if (model.colorWarn.r === 0.8823529481887817 && model.colorWarn.g === 0.8823529481887817 && model.colorWarn.b === 0)
+                        {
+                             updateAvailable = true;
+                        }
+                        else
+                        {
+                            updateAvailable = false;
+                        }
+                        qmlModsListClickMenu.visible = true;
+                    }
+                    else if (mouse.button === Qt.LeftButton)
+                    {
+                        if(!globalActionMenuOpen)
+                        {
+                            if(!mod_id.checked)
+                            {
+                                mod_id.checked = true;
+                                model.done = true;
+                            }
+                            else
+                            {
+                                mod_id.checked = false;
+                                model.done = false;
+                            }
+                        }
+                    }
                   }
             }
         }
@@ -241,6 +219,7 @@ Item {
 
     ModsList_ClickMenu{
         id: qmlModsListClickMenu
+        z: 1
     }
 
     ModsList_Right{

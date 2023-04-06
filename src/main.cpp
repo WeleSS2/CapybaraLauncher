@@ -103,7 +103,6 @@
  *
  * Fixes:
  * - Change mod color in launcher after update
- * - Add popup when updating mod
  *
  * LOG01 - IMPLEMENTATION FOR LOGS, find later and fill
  */

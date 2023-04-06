@@ -24,8 +24,8 @@ Item {
 
     ListView {
         id: developerCANews
-        width: Window.width - 1080
-        height: mainwindow.height_1 * 35 * mainwindow.baseScale
+        width: Window.width - 1080 * mainwindow.baseScale
+        height: 350 * mainwindow.baseScale
         spacing: 10 * mainwindow.baseScale
         clip: true
         flickableDirection: Flickable.HorizontalFlick
@@ -35,15 +35,15 @@ Item {
         }
 
         delegate: Item {
-            width: mainwindow.width_1 * 15 * mainwindow.baseScale
-            height: mainwindow.height_1 * 35 * mainwindow.baseScale
+            width: 300 * mainwindow.baseScale
+            height: 350 * mainwindow.baseScale
             Row {
                 id: developerCANews_row
                 spacing: 20
                 Rectangle{
                     id: developerCANews_rectangle
-                    width: mainwindow.width_1 * 15 * mainwindow.baseScale
-                    height: mainwindow.height_1 * 35 * mainwindow.baseScale
+                    width: 300 * mainwindow.baseScale
+                    height: 350 * mainwindow.baseScale
                     color: "transparent"
                     Rectangle {
                         id: isHovered
@@ -56,7 +56,6 @@ Item {
                     ColumnLayout {
                         Rectangle {
                             Layout.topMargin: 10
-                            Layout.leftMargin: 10
                             width: 200 * mainwindow.baseScale
                             height: 200 * mainwindow.baseScale
                             Layout.alignment: Qt.AlignCenter
@@ -74,8 +73,8 @@ Item {
                         }
                         Text {
                             Layout.leftMargin: 10
-                            Layout.maximumWidth: mainwindow.width_1 * 14 * mainwindow.baseScale
-                            Layout.maximumHeight: mainwindow.height_1 * 4 * mainwindow.baseScale
+                            Layout.maximumWidth: 280 * mainwindow.baseScale
+                            Layout.maximumHeight: 50 * mainwindow.baseScale
                             Layout.alignment: Qt.AlignCenter
 
                             horizontalAlignment: Text.AlignHCenter
@@ -89,8 +88,8 @@ Item {
                         }
                         Text {
                             Layout.leftMargin: 10
-                            Layout.maximumWidth: mainwindow.width_1 * 14 * mainwindow.baseScale
-                            Layout.maximumHeight: mainwindow.height_1 * 10 * mainwindow.baseScale
+                            Layout.maximumWidth: 280 * mainwindow.baseScale
+                            Layout.maximumHeight: 100 * mainwindow.baseScale
                             Layout.alignment: Qt.AlignCenter
 
                             horizontalAlignment: Text.AlignHCenter
@@ -129,9 +128,9 @@ Item {
 
     ListView {
         id: communityNews
-        y: mainwindow.height_1 * 36 * mainwindow.baseScale
-        width: Window.width - 1080
-        height: mainwindow.height_1 * 35 * mainwindow.baseScale
+        y: 360 * mainwindow.baseScale
+        width: Window.width - 1080 * mainwindow.baseScale
+        height: 350 * mainwindow.baseScale
         spacing: 10 * mainwindow.baseScale
         clip: true
         orientation: Qt.Horizontal
@@ -141,15 +140,15 @@ Item {
         }
 
         delegate: Item {
-            width: mainwindow.width_1 * 15 * mainwindow.baseScale
-            height: mainwindow.height_1 * 35 * mainwindow.baseScale
+            width: 300 * mainwindow.baseScale
+            height: 350 * mainwindow.baseScale
             Row {
                 id: communityNews_row
                 spacing: 20
                 Rectangle{
                     id: communityNews_rectangle
-                    width: mainwindow.width_1 * 15 * mainwindow.baseScale
-                    height: mainwindow.height_1 * 35 * mainwindow.baseScale
+                    width: 300 * mainwindow.baseScale
+                    height: 350 * mainwindow.baseScale
                     color: "transparent"
                     Rectangle {
                         id: isHoveredC
@@ -163,7 +162,6 @@ Item {
                         Layout.alignment: Qt.AlignCenter
                         Rectangle {
                             Layout.topMargin: 10
-                            Layout.leftMargin: 10
                             width: 200 * mainwindow.baseScale
                             height: 200 * mainwindow.baseScale
                             Layout.alignment: Qt.AlignCenter
@@ -181,8 +179,8 @@ Item {
                         }
                         Text {
                             Layout.leftMargin: 10
-                            Layout.maximumWidth: mainwindow.width_1 * 14 * mainwindow.baseScale
-                            Layout.maximumHeight: mainwindow.height_1 * 4 * mainwindow.baseScale
+                            Layout.maximumWidth: 280 * mainwindow.baseScale
+                            Layout.maximumHeight: 50 * mainwindow.baseScale
                             Layout.alignment: Qt.AlignCenter
 
                             horizontalAlignment: Text.AlignHCenter
@@ -196,8 +194,8 @@ Item {
                         }
                         Text {
                             Layout.leftMargin: 10
-                            Layout.maximumWidth: mainwindow.width_1 * 14 * mainwindow.baseScale
-                            Layout.maximumHeight: mainwindow.height_1 * 10 * mainwindow.baseScale
+                            Layout.maximumWidth: 280 * mainwindow.baseScale
+                            Layout.maximumHeight: 100 * mainwindow.baseScale
                             Layout.alignment: Qt.AlignCenter
 
                             horizontalAlignment: Text.AlignHCenter
