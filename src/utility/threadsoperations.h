@@ -1,12 +1,26 @@
 #pragma once
 
 #include <QThread>
-#include <QThreadPool>
-#include <QtConcurrent/QtConcurrent>
-#include <QFuture>
 
-class ThreadsOperations
+class ThreadsOperations : public QThread
 {
+    Q_OBJECT
+
 public:
-    ThreadsOperations();
+    ThreadsOperations(std::function<void()> func)
+        : m_func(func)
+    {}
+
+public slots:
+    void runFunction()
+    {
+        m_func();
+        emit finished();
+    }
+
+signals:
+    void finished();
+
+private:
+    std::function<void()> m_func;
 };

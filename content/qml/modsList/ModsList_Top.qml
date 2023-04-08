@@ -24,6 +24,7 @@ Rectangle {
             y: -20
 
             property bool clicked: false
+            property bool hovered: false
 
             onPaint:{
                  var context = getContext("2d");
@@ -37,7 +38,7 @@ Rectangle {
 
 
                  // the fill color
-                 context.fillStyle = clicked ? "green" : "#FFCC00";
+                 context.fillStyle = clicked  || hovered ? "green" : "#FFCC00";
                  context.fill();
             }
             MouseArea {
@@ -57,10 +58,14 @@ Rectangle {
                 onHoveredChanged: (mouse)=>{
                                       if(containsMouse){
                                           qmlGameSelector.z = 0;
+                                          parent.hovered = true;
+                                          parent.requestPaint();
                                       }
                                       else
                                       {
                                           qmlGameSelector.z = 1;
+                                          parent.hovered = false;
+                                          parent.requestPaint();
                                       }
                                   }
             }
@@ -83,6 +88,7 @@ Rectangle {
             y: -20
 
             property bool clicked: false
+            property bool hovered: false
 
             onPaint:{
                  var context = getContext("2d");
@@ -96,7 +102,7 @@ Rectangle {
 
 
                  // the fill color
-                 context.fillStyle = clicked ? "green" : "#FFCC00";
+                 context.fillStyle = clicked  || hovered ? "green" : "#FFCC00";
                  context.fill();
             }
             MouseArea {
@@ -115,10 +121,14 @@ Rectangle {
                 onHoveredChanged: (mouse)=>{
                                       if(containsMouse){
                                           qmlGameSelector.z = 0;
+                                          parent.hovered = true;
+                                          parent.requestPaint();
                                       }
                                       else
                                       {
                                           qmlGameSelector.z = 1;
+                                          parent.hovered = false;
+                                          parent.requestPaint();
                                       }
                                   }
             }
@@ -141,6 +151,7 @@ Rectangle {
             y: -20
 
             property bool clicked: false
+            property bool hovered: false
 
             onPaint:{
                  var context = getContext("2d");
@@ -154,7 +165,7 @@ Rectangle {
 
 
                  // the fill color
-                 context.fillStyle = clicked ? "green" : "#FFCC00";
+                 context.fillStyle = clicked  || hovered ? "green" : "#FFCC00";
                  context.fill();
             }
             MouseArea {
@@ -173,10 +184,14 @@ Rectangle {
                 onHoveredChanged: (mouse)=>{
                                       if(containsMouse){
                                           qmlGameSelector.z = 0;
+                                          parent.hovered = true;
+                                          parent.requestPaint();
                                       }
                                       else
                                       {
                                           qmlGameSelector.z = 1;
+                                          parent.hovered = false;
+                                          parent.requestPaint();
                                       }
                                   }
             }
@@ -199,6 +214,7 @@ Rectangle {
             y: -20
 
             property bool clicked: false
+            property bool hovered: false
 
             onPaint:{
                  var context = getContext("2d");
@@ -212,7 +228,7 @@ Rectangle {
 
 
                  // the fill color
-                 context.fillStyle = clicked ? "green" : "#FFCC00";
+                 context.fillStyle = clicked  || hovered ? "green" : "#FFCC00";
                  context.fill();
             }
             MouseArea {
@@ -231,10 +247,14 @@ Rectangle {
                 onHoveredChanged: (mouse)=>{
                                       if(containsMouse){
                                           qmlGameSelector.z = 0;
+                                          parent.hovered = true;
+                                          parent.requestPaint();
                                       }
                                       else
                                       {
                                           qmlGameSelector.z = 1;
+                                          parent.hovered = false;
+                                          parent.requestPaint();
                                       }
                                   }
             }

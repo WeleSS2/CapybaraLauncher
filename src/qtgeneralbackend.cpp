@@ -20,8 +20,9 @@
 #include "localfiles/localmods.h"
 #include "utility/loggingsystem.h"
 
-QtGeneralBackend::QtGeneralBackend(QObject *parent)
+QtGeneralBackend::QtGeneralBackend(QObject *parent, TaskListList *taskList)
     : QObject{parent}
+    , taskListPtr{taskList}
 {
 
 }
@@ -96,14 +97,14 @@ void QtGeneralBackend::startGame()
 
     QVector<sModsData> localModsList = GlobalDataObj->ModsDataObj;
 
-
-    std::sort(localModsList.begin(),
-              localModsList.end(),
-              [](const sModsData& first, const sModsData& second) -> bool
-    {
-        return first.steamPackname < second.steamPackname;
-    });
-
+    if(!GlobalDataObj->LocalSettingsObj.unsafeMode){
+        std::sort(localModsList.begin(),
+                  localModsList.end(),
+                  [](const sModsData& first, const sModsData& second) -> bool
+        {
+            return first.steamPackname < second.steamPackname;
+        });
+    }
 
     std::string localModsPath = GlobalDataObj->LocalSettingsObj.localPath.toStdString()
             + "\\LocalMods"
@@ -183,12 +184,7 @@ void QtGeneralBackend::importPack(){
       for(int i = 0; i < mods.size() ; ++i){
           if(!mods[i].second)
           {
-              addMod(mods[i].first);
-              for(auto& j: GlobalDataObj->ModsDataObj)
-              {
-                  if(j.steamModGameId == mods[i].first)
-                  j.done = true;
-              }
+              addTask(mods[i].first, "addMod");
           }
       }
 }
@@ -235,6 +231,7 @@ void QtGeneralBackend::addMod(uint64_t id){
     {
         // Insert item into launcher
         sModsData data = SteamAPI.getModData(id);
+        data.done = true;
         data.laucherId = GlobalDataObj->ModsDataObj.size();
         SteamAPI.setModPackname(data);
         GlobalDataObj->ModsDataObj.emplaceBack(data);
@@ -242,6 +239,42 @@ void QtGeneralBackend::addMod(uint64_t id){
     else{
         SteamAPI.unsubscribeMod(id);
         LoggingSystem::saveLog("qtgeneralbackend.cpp: addMod: Failed to download mod from steam");
+    }
+}
+
+void QtGeneralBackend::addTask(uint64_t modId, QString taskName){
+    qDebug() << QString::fromStdString(std::to_string(modId)) << taskName;
+    if(taskName == "addMod"){
+        std::string str = std::to_string(modId);
+        QString StringModId = QString::fromStdString(str);
+
+        taskListPtr->appendAndRunTask([=](){
+            SteamApiAccess SteamAPI;
+            SteamAPI.subscribeMod(modId);
+            if(SteamAPI.updateMod(modId))
+            {
+                // Insert item into launcher
+                sModsData data = SteamAPI.getModData(modId);
+                data.done = true;
+                data.laucherId = GlobalDataObj->ModsDataObj.size();
+                SteamAPI.setModPackname(data);
+                GlobalDataObj->ModsDataObj.emplaceBack(data);
+            }
+            else{
+                SteamAPI.unsubscribeMod(modId);
+                LoggingSystem::saveLog("qtgeneralbackend.cpp: addMod: Failed to download mod from steam");
+            }
+        }, ("addMod" + StringModId) , ("Downloading mod with id " + StringModId));
+    }
+    else if(taskName == "testTask")
+    {
+        auto task = [this](){
+            for(int i = 0; i < 200; ++i){
+                QThread::msleep(100);
+                qDebug() << "From test task";
+            };
+        };
+        taskListPtr->appendAndRunTask(task, "testTask", "Just a test task");
     }
 }
 

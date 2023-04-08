@@ -18,6 +18,7 @@ uint64_t WebEngineBackend::downloadModFromUrl(const QString& currentUrl){
     if(currentUrl.indexOf("=") != -1)
     {
         uint64_t num = currentUrl.mid(currentUrl.indexOf("=") + 1).toULongLong();
+        qDebug() << QString::fromStdString(std::to_string(num));
         return currentUrl.mid(currentUrl.indexOf("=") + 1).toULongLong();
     }
     else

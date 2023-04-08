@@ -98,10 +98,12 @@ struct sLocalSettings {
 
     QString steampath;
     QString localPath;
+    bool unsafeMode;
 
     uint64_t defaultGame;
     uint64_t numInstalledGames;
     uint32_t modsAmount;
+
 
     sGamesData currentGame;
     QVector<sGamesData> installedGames;

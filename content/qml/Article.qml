@@ -109,7 +109,9 @@ Item {
                         if(Qt.LeftButton){
                             if(backWebEngine.downloadModFromUrl(urlField.text) !== 0)
                             {
-                                qtGeneralBackendObj.addMod(backWebEngine.downloadModFromUrl(urlField.text));
+                                console.log("Add mod 1");
+                                qtGeneralBackendObj.addTask(backWebEngine.downloadModFromUrl(urlField.text), "addMod");
+                                console.log("Add mod 2");
                                 objModsList.refreshModlistVector();
                                 qmlModsList.refreshModlist();
                             }

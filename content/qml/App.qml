@@ -127,12 +127,12 @@ Window {
 
     ArticleView {
         id: qmlArticleView
-        z: 0
+        z: 2
     }
 
     Article {
         id: qmlArticle
-        z: 0
+        z: 2
     }
 
     onClosing: {

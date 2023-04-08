@@ -2,10 +2,34 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 
+import TaskListUrl
+
 Item {
     property bool working: false
     property bool isEmpty: true
     property bool menuOn: false
+
+    Connections {
+        target: cppTaskList
+        function onPostItemAppened(){
+            refreshTaskList();
+            if(cppTaskList.getListSize() > 0)
+            {
+                working = true;
+            }
+        }
+    }
+
+    Connections {
+        target: cppTaskList
+        function onPostItemRemoved(){
+            refreshTaskList();
+            qmlModsList.refreshModlist();
+            if(cppTaskList.getListSize() === 0){
+                working = false;
+            }
+        }
+    }
 
     Rectangle
     {
@@ -46,6 +70,26 @@ Item {
         border.color: mainwindow.rectangleBorder
         border.width: 1
 
+        ListView {
+            id: taskList
+            spacing: 25
+            clip: true
+            anchors.fill: parent
+            model: MyTaskList {
+                list: cppTaskList
+            }
+
+            delegate: Item {
+                x: 5
+                y: 5
+                Text {
+                    font.pixelSize: 15
+                    color: mainTextColor
+                    text: model.taskDescription
+                }
+            }
+        }
+
         MouseArea {
             hoverEnabled: true
             anchors.fill: parent
@@ -56,5 +100,10 @@ Item {
                 }
             }
         }
+    }
+
+    function refreshTaskList(){
+        console.log("Refresh called");
+        taskList.model.refreshList();
     }
 }

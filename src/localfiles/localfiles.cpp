@@ -87,6 +87,7 @@ void localFiles::saveLocalSettings()
         file << "\"state\" " << "1" << "\n";
         file << "\"steampath\" " << GlobalDataObj->LocalSettingsObj.steampath.toStdString() << "\n";
         file << "\"defaultGame\" " << GlobalDataObj->LocalSettingsObj.defaultGame << "\n";
+        file << "\"unsafeMode\" " << GlobalDataObj->LocalSettingsObj.unsafeMode << "\n";
         if(GlobalDataObj->getGameById(1142710) != nullptr){
             file << "\"gamepath\" " << GlobalDataObj->getGameById(1142710)->gamePath.toStdString() << "\n";
         }
@@ -165,6 +166,12 @@ void localFiles::loadLocalSettings()
                     std::string show;
                     getline(file, show);
                     saveTo(&GlobalDataObj->getGameById(1142710)->gamePath, show);
+                }
+                else if(text == "\"unsafeMode\"")
+                {
+                    std::string show;
+                    getline(file, show);
+                    GlobalDataObj->LocalSettingsObj.unsafeMode = std::stoi(show);
                 }
                 else if(text == "\"wh1Path\"")
                 {

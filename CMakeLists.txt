@@ -60,7 +60,6 @@ target_link_libraries(GameConnector PRIVATE
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/qmlmodules)
 set( LIST_NEEDED_DLL
-    ${PROJECT_SOURCE_DIR}/external/STEAM_API/lib/win64/steam_api64.dll
     ${PROJECT_SOURCE_DIR}/update.bat
 )
 

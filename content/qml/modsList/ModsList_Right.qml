@@ -4,8 +4,8 @@ import QtQuick.Layouts 1.3
 
 Item {
     x: 980
-    y: 140
-    RowLayout{
+    y: 100
+    ColumnLayout{
         Rectangle {
             id: openGoogle
             width: 35 * mainwindow.baseScale

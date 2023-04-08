@@ -134,6 +134,7 @@
 #include "qt/customModules/modpackslist.h"
 #include "qt/customModules/infobox.h"
 #include "qt/customModules/news.h"
+#include "qt/customModules/tasklist.h"
 #include "qt/webEngineBackend/webenginebackend.h"
 
 void settingsLoading()
@@ -163,7 +164,7 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
     GlobalDataObj->enginePtr = &engine;
 
-    QCoreApplication::setApplicationVersion("v0.0.7.2");
+    QCoreApplication::setApplicationVersion("v0.0.8");
 
     // WORKSPACE
     // settings are doubled due to work over transfer to .js
@@ -195,6 +196,12 @@ int main(int argc, char *argv[])
         GameChanger obj;
         obj.setCurrentGame(1000);
     }
+
+    TaskListList taskList;
+    qmlRegisterType<TaskList>("TaskListUrl", 1, 0, "MyTaskList");
+    qmlRegisterUncreatableType<TaskListList>("TaskListUrl", 1, 0, "TaskListList", QString("I dont have any reason"));
+
+    engine.rootContext()->setContextProperty("cppTaskList", &taskList);
 
 
     //---------------------------------------------
@@ -240,7 +247,8 @@ int main(int argc, char *argv[])
     //              QtGeneralBackend
     //--------------------------------------------
 
-    engine.rootContext()->setContextProperty("qtGeneralBackendObj", new QtGeneralBackend(&engine));
+    QtGeneralBackend qtGeneralBackend(nullptr, &taskList);
+    engine.rootContext()->setContextProperty("qtGeneralBackendObj", &qtGeneralBackend);
 
     //--------------------------------------------
     //                  InfoBox
