@@ -255,7 +255,7 @@ Rectangle {
                             if(Qt.LeftButton){
                                 qmlModsList.setIndex(currentIndexPos);
                                 qtGeneralBackendObj.removeMod(currentId);
-                                qtGeneralBackendObj.addMod(currentId);
+                                qtGeneralBackendObj.addTask(currentId, "addMod");
                                 objModsList.refreshModlistVector();
                                 qmlModsList.refreshModlist();                           }
                         }

@@ -41,6 +41,7 @@ public:
 
     ModsList *list() const;
     void setList(ModsList *list);
+    Q_INVOKABLE bool move(uint64_t sourceRow, uint64_t destinationRow);
 
     Q_INVOKABLE void refreshList();
 private:
@@ -77,7 +78,7 @@ class ModsList : public QObject
 public:
     explicit ModsList(QObject *parent = nullptr);
 
-    QVector<ItemsData> Vs_ItemsData() const;
+    QVector<ItemsData> *Vs_ItemsData();
 
     bool setItemAt(int index, const ItemsData &item);
 signals:

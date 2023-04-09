@@ -16,7 +16,7 @@ int Mods::rowCount(const QModelIndex &parent) const
         return 0;
 
     // FIXME: Implement me!
-    return GlobalDataObj->ModsDataObj.size();
+    return mList->Vs_ItemsData()->size();
 }
 
 QVariant Mods::data(const QModelIndex &index, int role) const
@@ -24,7 +24,7 @@ QVariant Mods::data(const QModelIndex &index, int role) const
     if (!index.isValid() || !mList)
         return QVariant();
 
-    const ItemsData item = mList->Vs_ItemsData().at(index.row());
+    const ItemsData item = mList->Vs_ItemsData()->at(index.row());
     switch (role)
     {
     case ColorRole:
@@ -52,7 +52,7 @@ bool Mods::setData(const QModelIndex &index, const QVariant &value, int role)
     if(!mList)
         return false;
 
-    ItemsData item = mList->Vs_ItemsData().at(index.row());
+    ItemsData item = mList->Vs_ItemsData()->at(index.row());
     switch (role)
     {
     case ColorRole:
@@ -127,7 +127,7 @@ void Mods::setList(ModsList *list)
 
     if(mList){
         connect(mList, &ModsList::preItemAppened, this, [=](){
-            const int index = mList->Vs_ItemsData().size();
+            const int index = mList->Vs_ItemsData()->size();
             beginInsertRows(QModelIndex(), index, index);
         } );
         connect(mList, &ModsList::postItemAppened, this, [=](){
@@ -142,6 +142,20 @@ void Mods::setList(ModsList *list)
     }
     mListGlobalPtr = mList;
     endResetModel();
+}
+
+bool Mods::move(uint64_t sourceRow, uint64_t destinationRow)
+{
+    if (sourceRow == destinationRow) {
+        return false;
+    }
+    if (sourceRow < 0 || sourceRow >= rowCount() || destinationRow < 0 || destinationRow >= rowCount()) {
+        return false;
+    }
+    beginMoveRows(QModelIndex(), sourceRow, sourceRow, QModelIndex(), destinationRow);
+    mList->Vs_ItemsData()->move(sourceRow, destinationRow);
+    endMoveRows();
+    return true;
 }
 
 void Mods::refreshList()
@@ -184,9 +198,9 @@ ModsList::ModsList(QObject *parent)
     }
 }
 
-QVector<ItemsData> ModsList::Vs_ItemsData() const
+QVector<ItemsData> *ModsList::Vs_ItemsData()
 {
-    return mItemsData;
+    return &mItemsData;
 }
 
 bool ModsList::setItemAt(int index, const ItemsData &item)

@@ -42,24 +42,24 @@ Rectangle {
 
             Text {
                 id: selectDefaultGameText
-                text: "Select default game"
+                text: "Select default game (Disabled temporary)"
                 color: mainwindow.mainTextColor
                 font.pointSize: 14
 
-                ComboBox {
-                    id: selectDefaultGame
-                    x: parent.implicitWidth + 5
-                    y: parent.y + 5
-                    editable: false
-                    model: GameChanger {
-                        list: ObjcGameChangerList
-                    }
+                //ComboBox {
+                //    id: selectDefaultGame
+                //    x: parent.implicitWidth + 5
+                //    y: parent.y + 5
+                //    editable: false
+                //    model: GameChanger {
+                //        list: ObjcGameChangerList
+                //    }
 
-                    onActivated: {
-                        qmlGameSelector.setGame(currentIndex);
-                        qtGeneralBackendObj.saveDefaultGame();
-                    }
-                }
+                //    onActivated: {
+                //        qmlGameSelector.setGame(currentIndex);
+                //        qtGeneralBackendObj.saveDefaultGame();
+                //    }
+                //}
             }
         }
         Rectangle {

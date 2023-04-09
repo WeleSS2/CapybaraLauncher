@@ -30,6 +30,7 @@ Item {
 
 
         delegate: Item {
+            id: mainItem
             x: 5
             height: 40
             property bool local_hover
@@ -135,23 +136,38 @@ Item {
                     }
                 }
                 Text {
-                    width: 150
+                    width: 90
                     text: (local_hover2 && globalActionMenuOpen === false) ? steam_packname.implicitWidth <= steam_packname.width ? modgameid : "" : modgameid
                     clip: true
                     font.bold: true
                     font.pixelSize: 16
                     color: ((local_hover || local_hover2 || mouseRow) && !globalActionMenuOpen) ? highlightTextColor : colorWarn
                 }
-                //Text {
-                //    width: 200
-                //    text: model.author
-                //    anchors.verticalCenter: parent.verticalCenter
-                //    clip: true
-                //    font.bold: true
-                //    font.pixelSize: 16
-                //    color: ((local_hover || local_hover2 || mouseRow) && !globalActionMenuOpen) ? highlightTextColor : mainTextColor
-                //}
-
+                Rectangle {
+                    width: 15
+                    height: 15
+                    color: "transparent"
+                    Image {
+                        anchors.fill: parent
+                        source: "../../images/icons/hand2.png"
+                    }
+                    MouseArea {
+                        id: drag
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        onClicked: (mouse)=>{
+                                   }
+                        onHoveredChanged: (mouse)=>{
+                            if(containsMouse){
+                                parent.color = "#00FFFFFF"
+                            }
+                            else
+                            {
+                                parent.color = "transparent"
+                            }
+                        }
+                    }
+                }
             }
             Canvas {
                 id: mycanvas
@@ -167,7 +183,7 @@ Item {
 
             MouseArea {
                 y: -6
-                width: 950
+                width: 920
                 height: 34
                 acceptedButtons: Qt.LeftButton | Qt.RightButton
                 property point position: mapToGlobal(mouseX, mouseY);
@@ -208,7 +224,32 @@ Item {
                             }
                         }
                     }
-                  }
+                }
+            }
+            MouseArea {
+                x: 920
+                y: -6
+                width: 40
+                height: 34
+                acceptedButtons: Qt.RightButton
+                property point defCursPosition: Qt.point(0, 0)
+                property point cursPosition: Qt.point(0, 0)
+                onPressed: {
+                    defCursPosition = mapToGlobal(mouseX, mouseY);
+                }
+                onPositionChanged: {
+                    cursPosition = mapToGlobal(mouseX, mouseY);
+
+                    var dy = defCursPosition.y - cursPosition.y
+                    if (dy > parent.height) {
+                        defCursPosition = cursPosition;
+                        modsList.model.move(index, index-1)
+                    }
+                    else if(dy < -parent.height){
+                        defCursPosition = cursPosition;
+                        modsList.model.move(index, index+1)
+                    }
+                }
             }
         }
     }
