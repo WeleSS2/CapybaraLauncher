@@ -72,7 +72,7 @@ Rectangle {
                             onClicked: {
                                 if(Qt.LeftButton){
                                     qmlModsList.setIndex(currentIndexPos);
-                                    qtGeneralBackendObj.updateMod(currentId);
+                                    qtGeneralBackendObj.addTask(currentId, "updateMod");
                                 }
                             }
                         }

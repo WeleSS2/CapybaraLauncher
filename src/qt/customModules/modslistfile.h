@@ -14,6 +14,8 @@ class Mods : public QAbstractListModel
 public:
     explicit Mods(QObject *parent = nullptr);
 
+    ~Mods();
+
     enum {
         ColorRole,
         IdRole,

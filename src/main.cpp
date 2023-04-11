@@ -88,8 +88,8 @@
  * - Remove GlobalData.cpp and translate everything into correct object-oriented app
  * - Remove qtgeneralbackend.cpp and move correctly.
  * - Add some tests
- * - Send mods to download as list
- * - Downloading mods, updating, e.t.c in separated thread
+ * - Send mods to download as list +
+ * - Downloading mods, updating, e.t.c in separated thread +
  * - Add workspaces for local mods
  * - Add uploading mods to steam
  * - Graphical update:
@@ -97,7 +97,7 @@
  * - Rework backgrounds
  * - Add icons for games and visual buttons list instead of current dropdown +
  *
- * - Thread pool
+ *
  *
  *
  *
@@ -121,6 +121,7 @@
 #include "app_environment.h"
 
 // Other files
+#include <QAbstractItemModelTester>
 
 
 

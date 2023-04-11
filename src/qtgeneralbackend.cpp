@@ -243,11 +243,9 @@ void QtGeneralBackend::addMod(uint64_t id){
 }
 
 void QtGeneralBackend::addTask(uint64_t modId, QString taskName){
-    qDebug() << QString::fromStdString(std::to_string(modId)) << taskName;
+    std::string str = std::to_string(modId);
+    QString StringModId = QString::fromStdString(str);
     if(taskName == "addMod"){
-        std::string str = std::to_string(modId);
-        QString StringModId = QString::fromStdString(str);
-
         taskListPtr->appendAndRunTask([=](){
             SteamApiAccess SteamAPI;
             SteamAPI.subscribeMod(modId);
@@ -265,6 +263,13 @@ void QtGeneralBackend::addTask(uint64_t modId, QString taskName){
                 LoggingSystem::saveLog("qtgeneralbackend.cpp: addMod: Failed to download mod from steam");
             }
         }, ("addMod" + StringModId) , ("Downloading mod with id " + StringModId));
+    }
+    else if(taskName == "updateMod")
+    {
+        taskListPtr->appendAndRunTask([=](){
+            SteamApiAccess steamApi;
+            steamApi.updateMod(modId);
+        }, ("updateMod" + StringModId) , ("Updating mod with id " + StringModId));
     }
     else if(taskName == "testTask")
     {

@@ -8,6 +8,10 @@ Mods::Mods(QObject *parent)
 {
 }
 
+Mods::~Mods(){
+    qDebug() << "Destroyed";
+}
+
 int Mods::rowCount(const QModelIndex &parent) const
 {
     // For list models only the root node (an invalid parent) should return the list's size. For all
@@ -153,7 +157,16 @@ bool Mods::move(uint64_t sourceRow, uint64_t destinationRow)
         return false;
     }
     beginMoveRows(QModelIndex(), sourceRow, sourceRow, QModelIndex(), destinationRow);
-    mList->Vs_ItemsData()->move(sourceRow, destinationRow);
+    if(destinationRow - sourceRow == 2)
+    {
+        mList->Vs_ItemsData()->move(sourceRow, destinationRow - 1);
+        GlobalDataObj->ModsDataObj.move(sourceRow, destinationRow - 1);
+    }
+    else
+    {
+        mList->Vs_ItemsData()->move(sourceRow, destinationRow);
+        GlobalDataObj->ModsDataObj.move(sourceRow, destinationRow);
+    }
     endMoveRows();
     return true;
 }
@@ -164,11 +177,19 @@ void Mods::refreshList()
     QModelIndex currentIndex = listView->property("currentIndex").value<QModelIndex>();
 
     beginResetModel();
+    int index = 0;
     for(auto& i: GlobalDataObj->ModsDataObj)
     {
         if(i.done){
-            mList->mItemsData[i.laucherId].done = true;
+            mList->mItemsData[index].done = true;
+            GlobalDataObj->ModsDataObj[index].done = true;
         }
+        if(i.laucherId != index)
+        {
+            mList->mItemsData[index].id = QString::fromStdString(std::to_string(index));
+            GlobalDataObj->ModsDataObj[index].laucherId = index;
+        }
+        ++index;
     }
     endResetModel();
     listView->setProperty("currentIndex", QVariant::fromValue(currentIndex));

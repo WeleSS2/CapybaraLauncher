@@ -30,32 +30,28 @@ Item {
 
 
         delegate: Item {
-            id: mainItem
-            x: 5
+            id: mod
             height: 40
+            width: 950
             property bool local_hover
             property bool local_hover2
-            property bool mouseRow
             property string copiedText
-            MouseArea {
-                y: -8
-                x: 0
-                width: 925
+            Rectangle {
+                y: -6
+                width: 950
                 height: 38
-                hoverEnabled: true
-                onHoveredChanged: (mouse)=> {
-                   if(!mouseRow)
-                       {
-                           mouseRow = true;
-                       }
-                       else
-                       {
-                           mouseRow = false;
-                       }
+                id: modBackground
+                color: modHovered.hovered ? "#A4070707" : "transparent"
+                visible: true
+                HoverHandler {
+                    id: modHovered
+                    acceptedDevices: PointerDevice.Mouse
+                    cursorShape: Qt.PointingHandCursor
                 }
             }
             Row {
                 spacing: 10
+                x: 5
                 Text {
                     id: lau_id
                     width: this.implicitWidth > 20 ? this.implicitWidth : 20
@@ -63,7 +59,7 @@ Item {
                     clip: true
                     font.bold: true
                     font.pixelSize: 16
-                    color: ((local_hover || local_hover2 || mouseRow) && !globalActionMenuOpen) ? highlightTextColor : colorWarn
+                    color: (modHovered.hovered && !globalActionMenuOpen) ? highlightTextColor : colorWarn
                 }
                 CheckBox {
                     id: mod_id
@@ -80,70 +76,55 @@ Item {
                     width: 300
                     x: -225
                     text: name
-                    clip: (local_hover && !globalActionMenuOpen) ? false : true
+                    clip: (steamNameHovered.hovered && !globalActionMenuOpen) ? false : true
                     font.bold: true
                     font.pixelSize: 16
-                    color: ((local_hover || local_hover2 || mouseRow) && !globalActionMenuOpen) ? highlightTextColor : colorWarn
-                    MouseArea {
-                        y: -8
-                        width: 315
-                        height: 38
-                        hoverEnabled: true
-                        onHoveredChanged: (mouse)=> {
-                             if(!local_hover)
-                                 {
-                                     local_hover = true;
-                                 }
-                                 else
-                                 {
-                                     local_hover = false;
-                                 }
-                          }
+                    color: (modHovered.hovered && !globalActionMenuOpen) ? highlightTextColor : colorWarn
+                    Item {
+                        anchors.fill: parent
+                        HoverHandler {
+                            id: steamNameHovered
+                            acceptedDevices: PointerDevice.Mouse
+                            cursorShape: Qt.PointingHandCursor
+                        }
                     }
                 }
                 Text {
                     id: steam_date
                     width: 100
-                    text: (local_hover && globalActionMenuOpen === false) ? steam_name.implicitWidth <= steam_name.width ? date : "" : date
+                    text: (steamNameHovered.hovered && globalActionMenuOpen === false) ? steam_name.implicitWidth <= steam_name.width ? date : "" : date
                     clip: true
                     font.bold: true
                     font.pixelSize: 16
-                    color: ((local_hover || local_hover2 || mouseRow) && !globalActionMenuOpen) ? highlightTextColor : colorWarn
+                    color: (modHovered.hovered && !globalActionMenuOpen) ? highlightTextColor : colorWarn
                 }
                 Text {
                     id: steam_packname
                     width: 325
-                    text: (local_hover && globalActionMenuOpen === false) ? steam_name.implicitWidth <= steam_name.width + steam_date.width ? packname : "" : packname
-                    clip: (local_hover2 && !globalActionMenuOpen) ? false : true
+                    text: (steamNameHovered.hovered && globalActionMenuOpen === false) ? steam_name.implicitWidth <= steam_name.width + steam_date.width ? packname : "" : packname
+                    clip: (steamPacknameHovered.hovered && !globalActionMenuOpen) ? false : true
                     font.bold: true
                     font.pixelSize: 16
-                    color: ((local_hover || local_hover2 || mouseRow) && !globalActionMenuOpen) ? highlightTextColor : colorWarn
-                    MouseArea {
-                        y: -8
-                        width: 315
-                        height: 38
-                        hoverEnabled: true
-                        onHoveredChanged: (mouse)=> {
-                             if(!local_hover2)
-                                 {
-                                     local_hover2 = true;
-                                 }
-                                 else
-                                 {
-                                     local_hover2 = false;
-                                 }
-                          }
+                    color: (modHovered.hovered && !globalActionMenuOpen) ? highlightTextColor : colorWarn
+                    Item {
+                        anchors.fill: parent
+                        HoverHandler {
+                            id: steamPacknameHovered
+                            acceptedDevices: PointerDevice.Mouse
+                            cursorShape: Qt.PointingHandCursor
+                        }
                     }
                 }
                 Text {
                     width: 90
-                    text: (local_hover2 && globalActionMenuOpen === false) ? steam_packname.implicitWidth <= steam_packname.width ? modgameid : "" : modgameid
+                    text: (steamPacknameHovered.hovered && globalActionMenuOpen === false) ? steam_packname.implicitWidth <= steam_packname.width ? modgameid : "" : modgameid
                     clip: true
                     font.bold: true
                     font.pixelSize: 16
-                    color: ((local_hover || local_hover2 || mouseRow) && !globalActionMenuOpen) ? highlightTextColor : colorWarn
+                    color: (modHovered.hovered && !globalActionMenuOpen) ? highlightTextColor : colorWarn
                 }
                 Rectangle {
+                    y: 5
                     width: 15
                     height: 15
                     color: "transparent"
@@ -151,26 +132,10 @@ Item {
                         anchors.fill: parent
                         source: "../../images/icons/hand2.png"
                     }
-                    MouseArea {
-                        id: drag
-                        anchors.fill: parent
-                        hoverEnabled: true
-                        onClicked: (mouse)=>{
-                                   }
-                        onHoveredChanged: (mouse)=>{
-                            if(containsMouse){
-                                parent.color = "#00FFFFFF"
-                            }
-                            else
-                            {
-                                parent.color = "transparent"
-                            }
-                        }
-                    }
                 }
             }
             Canvas {
-                id: mycanvas
+                id: rowSplitter
                 width: 1000
                 height: 60
                 onPaint: {
@@ -184,7 +149,7 @@ Item {
             MouseArea {
                 y: -6
                 width: 920
-                height: 34
+                height: 38
                 acceptedButtons: Qt.LeftButton | Qt.RightButton
                 property point position: mapToGlobal(mouseX, mouseY);
                 onClicked: (mouse)=> {
@@ -229,25 +194,30 @@ Item {
             MouseArea {
                 x: 920
                 y: -6
-                width: 40
+                width: 30
                 height: 34
                 acceptedButtons: Qt.RightButton
                 property point defCursPosition: Qt.point(0, 0)
                 property point cursPosition: Qt.point(0, 0)
                 onPressed: {
                     defCursPosition = mapToGlobal(mouseX, mouseY);
+                    console.log("Pressed");
+                }
+                onReleased: {
+                    console.log("Released");
+                    refreshModlist();
                 }
                 onPositionChanged: {
                     cursPosition = mapToGlobal(mouseX, mouseY);
 
                     var dy = defCursPosition.y - cursPosition.y
-                    if (dy > parent.height) {
+                    if (dy > parent.height - 7) {
                         defCursPosition = cursPosition;
                         modsList.model.move(index, index-1)
                     }
-                    else if(dy < -parent.height){
+                    else if(dy < -parent.height + 3){
                         defCursPosition = cursPosition;
-                        modsList.model.move(index, index+1)
+                        modsList.model.move(index, index+2)
                     }
                 }
             }
