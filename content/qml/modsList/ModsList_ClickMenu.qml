@@ -499,6 +499,7 @@ Rectangle {
                 if(!hovered){
                     actionMenu.visible = false;
                     qmlModsList.globalActionMenuOpen = false;
+                    qmlModsList.z = 0;
                 }
             }
         }
