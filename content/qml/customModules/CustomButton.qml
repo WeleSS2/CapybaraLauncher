@@ -2,29 +2,43 @@ import QtQuick
 
 Rectangle {
     id: customButton
-    property alias bText: buttomText.text
-
-    color: mainwindow.rectangleColor
-    border.width: 1
-    border.color: mainwindow.rectangleBorder
+    property alias bBackground: customButtonBackground
+    property alias bHover: customButtonHover
+    property alias bImage: customButtonImage
+    property alias bText: customButtonText
     Rectangle {
+        id: customButtonBackground
+        anchors.fill: parent
+        color: mainwindow.rectangleColor
+        border.width: 1
+        border.color: mainwindow.rectangleBorder
+    }
+
+    Rectangle {
+        id: customButtonHover
         anchors.fill: parent
         color: "#2DFFFFFF"
-        visible: settingsHovered.hovered
+        visible: buttonHovered.hovered
+    }
+
+    Image {
+        id: customButtonImage
+        anchors.fill: parent
+        source: ""
     }
 
     Text {
-        id: buttomText
+        id: customButtonText
         anchors.centerIn: parent
-        font.pixelSize: 20 * mainwindow.baseScale
+        font.pixelSize: 16
         font.bold: true
         color: mainwindow.mainTextColor
-        text: bText
+        text: ""
     }
     Item {
         anchors.fill: parent
         HoverHandler {
-            id: settingsHovered
+            id: buttonHovered
             acceptedDevices: PointerDevice.Mouse
             cursorShape: Qt.PointingHandCursor
         }

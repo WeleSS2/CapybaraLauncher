@@ -2,7 +2,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-//import customModules
+import "../customModules"
 
 Rectangle {
     id: actionMenu
@@ -84,7 +84,7 @@ Rectangle {
                 columns: 2
                 rows: 4
                 rowSpacing: 10
-                Rectangle {
+                CustomButton {
                     id: openInBrowser
                     Layout.column: 0
                     Layout.row: 0
@@ -92,31 +92,9 @@ Rectangle {
                     Layout.preferredHeight: 30 * mainwindow.baseScale
                     Layout.alignment: Qt.AlignCenter
                     visible: currentId !== "0"
-
-                    color: mainwindow.rectangleColor
-                    border.width: 1
-                    border.color: mainwindow.rectangleBorder
-                    Rectangle {
-                        anchors.fill: parent
-                        color: "#2DFFFFFF"
-                        visible: openInBrowserHovered.hovered
-                    }
-
-                    Text {
-                        anchors.centerIn: parent
-                        font.pixelSize: 13 * mainwindow.baseScale
-                        font.bold: true
-                        color: mainwindow.mainTextColor
-                        text: qsTr("Open in Browser")
-                    }
-                    Item {
-                        anchors.fill: parent
-                        HoverHandler {
-                            id: openInBrowserHovered
-                            acceptedDevices: PointerDevice.Mouse
-                            cursorShape: Qt.PointingHandCursor
-                        }
-                    }
+                    bImage.visible: false
+                    bText.font.pixelSize: 13 * mainwindow.baseScale
+                    bText.text: qsTr("Open In Browser")
 
                     MouseArea {
                         anchors.fill: parent
@@ -127,7 +105,7 @@ Rectangle {
                         }
                     }
                 }
-                Rectangle {
+                CustomButton {
                     id: openInSteam
                     Layout.column: 0
                     Layout.row: 1
@@ -135,31 +113,9 @@ Rectangle {
                     Layout.preferredHeight: 30 * mainwindow.baseScale
                     Layout.alignment: Qt.AlignCenter
                     visible: currentId !== "0"
-
-                    color: mainwindow.rectangleColor
-                    border.width: 1
-                    border.color: mainwindow.rectangleBorder
-                    Rectangle {
-                        anchors.fill: parent
-                        color: "#2DFFFFFF"
-                        visible: openInSteamHovered.hovered
-                    }
-
-                    Text {
-                        anchors.centerIn: parent
-                        font.pixelSize: 13 * mainwindow.baseScale
-                        font.bold: true
-                        color: mainwindow.mainTextColor
-                        text: qsTr("Open in Steam")
-                    }
-                    Item {
-                        anchors.fill: parent
-                        HoverHandler {
-                            id: openInSteamHovered
-                            acceptedDevices: PointerDevice.Mouse
-                            cursorShape: Qt.PointingHandCursor
-                        }
-                    }
+                    bImage.visible: false
+                    bText.font.pixelSize: 13 * mainwindow.baseScale
+                    bText.text: qsTr("Open In Steam")
 
                     MouseArea {
                         anchors.fill: parent
@@ -170,7 +126,7 @@ Rectangle {
                         }
                     }
                 }
-                Rectangle {
+                CustomButton {
                     id: unsubscribe
                     Layout.column: 0
                     Layout.row: 2
@@ -178,31 +134,9 @@ Rectangle {
                     Layout.preferredHeight: 30 * mainwindow.baseScale
                     Layout.alignment: Qt.AlignCenter
                     visible: currentId !== "0"
-
-                    color: mainwindow.rectangleColor
-                    border.width: 1
-                    border.color: mainwindow.rectangleBorder
-                    Rectangle {
-                        anchors.fill: parent
-                        color: "#2DFFFFFF"
-                        visible: unsubscribeHovered.hovered
-                    }
-
-                    Text {
-                        anchors.centerIn: parent
-                        font.pixelSize: 13 * mainwindow.baseScale
-                        font.bold: true
-                        color: mainwindow.mainTextColor
-                        text: qsTr("Unsubscribe")
-                    }
-                    Item {
-                        anchors.fill: parent
-                        HoverHandler {
-                            id: unsubscribeHovered
-                            acceptedDevices: PointerDevice.Mouse
-                            cursorShape: Qt.PointingHandCursor
-                        }
-                    }
+                    bImage.visible: false
+                    bText.font.pixelSize: 13 * mainwindow.baseScale
+                    bText.text: qsTr("Unsubscribe")
 
                     MouseArea {
                         anchors.fill: parent
@@ -215,7 +149,7 @@ Rectangle {
                         }
                     }
                 }
-                Rectangle {
+                CustomButton {
                     id: resubscribe
                     Layout.column: 0
                     Layout.row: 3
@@ -223,31 +157,9 @@ Rectangle {
                     Layout.preferredHeight: 30 * mainwindow.baseScale
                     Layout.alignment: Qt.AlignCenter
                     visible: currentId !== "0"
-
-                    color: mainwindow.rectangleColor
-                    border.width: 1
-                    border.color: mainwindow.rectangleBorder
-                    Rectangle {
-                        anchors.fill: parent
-                        color: "#2DFFFFFF"
-                        visible: resubscribeHovered.hovered
-                    }
-
-                    Text {
-                        anchors.centerIn: parent
-                        font.pixelSize: 13 * mainwindow.baseScale
-                        font.bold: true
-                        color: mainwindow.mainTextColor
-                        text: qsTr("Resubscribe")
-                    }
-                    Item {
-                        anchors.fill: parent
-                        HoverHandler {
-                            id: resubscribeHovered
-                            acceptedDevices: PointerDevice.Mouse
-                            cursorShape: Qt.PointingHandCursor
-                        }
-                    }
+                    bImage.visible: false
+                    bText.font.pixelSize: 13 * mainwindow.baseScale
+                    bText.text: qsTr("Resubscribe")
 
                     MouseArea {
                         anchors.fill: parent
@@ -261,7 +173,7 @@ Rectangle {
                         }
                     }
                 }
-                Rectangle {
+                CustomButton {
                     id: copyName
                     Layout.column: 1
                     Layout.row: 0
@@ -269,31 +181,9 @@ Rectangle {
                     Layout.preferredHeight: 30 * mainwindow.baseScale
                     Layout.alignment: Qt.AlignCenter
                     visible: currentId !== "0"
-
-                    color: mainwindow.rectangleColor
-                    border.width: 1
-                    border.color: mainwindow.rectangleBorder
-                    Rectangle {
-                        anchors.fill: parent
-                        color: "#2DFFFFFF"
-                        visible: copyNameHovered.hovered
-                    }
-
-                    Text {
-                        anchors.centerIn: parent
-                        font.pixelSize: 13 * mainwindow.baseScale
-                        font.bold: true
-                        color: mainwindow.mainTextColor
-                        text: qsTr("Copy Name")
-                    }
-                    Item {
-                        anchors.fill: parent
-                        HoverHandler {
-                            id: copyNameHovered
-                            acceptedDevices: PointerDevice.Mouse
-                            cursorShape: Qt.PointingHandCursor
-                        }
-                    }
+                    bImage.visible: false
+                    bText.font.pixelSize: 13 * mainwindow.baseScale
+                    bText.text: qsTr("Copy Name")
 
                     MouseArea {
                         anchors.fill: parent
@@ -307,7 +197,7 @@ Rectangle {
                     }
                 }
                 // >---------------- LOCAL MOD REPLACE 1:0
-                Rectangle {
+                CustomButton {
                     id: removeLocal
                     Layout.column: 1
                     Layout.row: 0
@@ -315,31 +205,9 @@ Rectangle {
                     Layout.preferredHeight: 30 * mainwindow.baseScale
                     Layout.alignment: Qt.AlignCenter
                     visible: currentId === "0"
-
-                    color: mainwindow.rectangleColor
-                    border.width: 1
-                    border.color: mainwindow.rectangleBorder
-                    Rectangle {
-                        anchors.fill: parent
-                        color: "#2DFFFFFF"
-                        visible: removeLocalHovered.hovered
-                    }
-
-                    Text {
-                        anchors.centerIn: parent
-                        font.pixelSize: 13 * mainwindow.baseScale
-                        font.bold: true
-                        color: mainwindow.mainTextColor
-                        text: qsTr("Remove Copy")
-                    }
-                    Item {
-                        anchors.fill: parent
-                        HoverHandler {
-                            id: removeLocalHovered
-                            acceptedDevices: PointerDevice.Mouse
-                            cursorShape: Qt.PointingHandCursor
-                        }
-                    }
+                    bImage.visible: false
+                    bText.font.pixelSize: 13 * mainwindow.baseScale
+                    bText.text: qsTr("Remove")
 
                     MouseArea {
                         anchors.fill: parent
@@ -354,38 +222,16 @@ Rectangle {
                     }
                 }
                 // <---------------- LOCAL MOD REPLACE 1:0
-                Rectangle {
+                CustomButton {
                     id: openLocalFiles
                     Layout.column: 1
                     Layout.row: 1
                     Layout.preferredWidth: 120 * mainwindow.baseScale
                     Layout.preferredHeight: 30 * mainwindow.baseScale
                     Layout.alignment: Qt.AlignCenter
-
-                    color: mainwindow.rectangleColor
-                    border.width: 1
-                    border.color: mainwindow.rectangleBorder
-                    Rectangle {
-                        anchors.fill: parent
-                        color: "#2DFFFFFF"
-                        visible: openLocalFilesHovered.hovered
-                    }
-
-                    Text {
-                        anchors.centerIn: parent
-                        font.pixelSize: 13 * mainwindow.baseScale
-                        font.bold: true
-                        color: mainwindow.mainTextColor
-                        text: qsTr("Open Files")
-                    }
-                    Item {
-                        anchors.fill: parent
-                        HoverHandler {
-                            id: openLocalFilesHovered
-                            acceptedDevices: PointerDevice.Mouse
-                            cursorShape: Qt.PointingHandCursor
-                        }
-                    }
+                    bImage.visible: false
+                    bText.font.pixelSize: 13 * mainwindow.baseScale
+                    bText.text: qsTr("Open Local Files")
 
                     MouseArea {
                         anchors.fill: parent
@@ -397,38 +243,16 @@ Rectangle {
                         }
                     }
                 }
-                Rectangle {
+                CustomButton {
                     id: openPack
                     Layout.column: 1
                     Layout.row: 2
                     Layout.preferredWidth: 120 * mainwindow.baseScale
                     Layout.preferredHeight: 30 * mainwindow.baseScale
                     Layout.alignment: Qt.AlignCenter
-
-                    color: mainwindow.rectangleColor
-                    border.width: 1
-                    border.color: mainwindow.rectangleBorder
-                    Rectangle {
-                        anchors.fill: parent
-                        color: "#2DFFFFFF"
-                        visible: openPackHovered.hovered
-                    }
-
-                    Text {
-                        anchors.centerIn: parent
-                        font.pixelSize: 13 * mainwindow.baseScale
-                        font.bold: true
-                        color: mainwindow.mainTextColor
-                        text: qsTr("Open Pack")
-                    }
-                    Item {
-                        anchors.fill: parent
-                        HoverHandler {
-                            id: openPackHovered
-                            acceptedDevices: PointerDevice.Mouse
-                            cursorShape: Qt.PointingHandCursor
-                        }
-                    }
+                    bImage.visible: false
+                    bText.font.pixelSize: 13 * mainwindow.baseScale
+                    bText.text: qsTr("Open Pack File")
 
                     MouseArea {
                         anchors.fill: parent
@@ -440,7 +264,7 @@ Rectangle {
                         }
                     }
                 }
-                Rectangle {
+                CustomButton {
                     id: makeLocalCopy
                     Layout.column: 1
                     Layout.row: 3
@@ -448,31 +272,10 @@ Rectangle {
                     Layout.preferredHeight: 30 * mainwindow.baseScale
                     Layout.alignment: Qt.AlignCenter
                     visible: currentId !== "0"
+                    bImage.visible: false
+                    bText.font.pixelSize: 13 * mainwindow.baseScale
+                    bText.text: qsTr("Make Local Copy")
 
-                    color: mainwindow.rectangleColor
-                    border.width: 1
-                    border.color: mainwindow.rectangleBorder
-                    Rectangle {
-                        anchors.fill: parent
-                        color: "#2DFFFFFF"
-                        visible: makeLocalCopyHovered.hovered
-                    }
-
-                    Text {
-                        anchors.centerIn: parent
-                        font.pixelSize: 13 * mainwindow.baseScale
-                        font.bold: true
-                        color: mainwindow.mainTextColor
-                        text: qsTr("Make Local Copy")
-                    }
-                    Item {
-                        anchors.fill: parent
-                        HoverHandler {
-                            id: makeLocalCopyHovered
-                            acceptedDevices: PointerDevice.Mouse
-                            cursorShape: Qt.PointingHandCursor
-                        }
-                    }
 
                     MouseArea {
                         anchors.fill: parent

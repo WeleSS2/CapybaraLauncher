@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Controls
 
 import ModPacksList
+import "../qml/customModules"
 
 
 Item {
@@ -21,37 +22,15 @@ Item {
         height: 30
     }
 
-    Rectangle {
-        id: play
+    CustomButton {
+        id: playNew
         x: 1600
         y: 90
         width: 160
         height: 50
-        color: mainwindow.rectangleColor
-        border.width: 1
-        border.color: mainwindow.rectangleBorder
-        Rectangle {
-            anchors.fill: parent
-            color: "#2DFFFFFF"
-            visible: playHovered.hovered
-        }
-
-        Text {
-            anchors.centerIn: parent
-            font.pixelSize: 30
-            font.bold: true
-            color: mainwindow.mainTextColor
-            text: qsTr("Play")
-        }
-        Item {
-            anchors.fill: parent
-            HoverHandler {
-                id: playHovered
-                acceptedDevices: PointerDevice.Mouse
-                cursorShape: Qt.PointingHandCursor
-            }
-        }
-
+        bImage.visible: false
+        bText.font.pixelSize: 30 * mainwindow.baseScale
+        bText.text: qsTr("Play")
         MouseArea {
             anchors.fill: parent
             onClicked: {
@@ -62,7 +41,6 @@ Item {
             }
         }
     }
-
 
 
     function loadAndRefresh(index) {

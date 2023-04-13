@@ -79,6 +79,7 @@ qt6_add_qml_module(content
     QML_FILES
         ${QML_RESOURCES}
         ${QML_MLRESOURCES}
+        ${QML_CMRESOURCES}
         ${QML_BMRESOURCES}
     RESOURCES
         fonts/fonts.txt
@@ -88,11 +89,11 @@ qt6_add_qml_module(content
         ${GIF_ICONS_RESOURCES}
     )
 
-qt_add_library(customModules STATIC)
-qt6_add_qml_module(customModules
-    URI "customModules"
-    VERSION 1.0
-    QML_FILES
-        ${QML_CMRESOURCES}
-    OUTPUT_DIRECTORY qml/customModules
-    )
+#qt_add_library(customModules STATIC)
+#qt6_add_qml_module(customModules
+#    URI "customModules"
+#    VERSION 1.0
+#    QML_FILES
+#        ${QML_CMRESOURCES}
+#    OUTPUT_DIRECTORY qml/customModules
+#    )

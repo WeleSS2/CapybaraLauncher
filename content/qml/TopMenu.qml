@@ -3,6 +3,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 
 import content
+import "customModules"
 
 Item {
     property bool updatestatus: qtGeneralBackendObj.updateAvialable()
@@ -11,50 +12,15 @@ Item {
         width: mainwindow.width_1 * 25 * mainwindow.baseScale
         columns: 5
         rows: 1
-        //Button {
-        //    id: gamesite
-        //    Layout.preferredWidth: 120 * mainwindow.baseScale
-        //    Layout.preferredHeight: 30 * mainwindow.baseScale
-        //    font.pixelSize: 20 * mainwindow.baseScale
-        //    Layout.alignment: Qt.AlignRight
-        //    text: qsTr("Totalwar")
-        //    onClicked: {
-        //       if(Qt.LeftButton)
-        //           {
-        //               Qt.openUrlExternally("https://www.totalwar.com")
-        //           }
-        //       }
-        //}
-        Rectangle {
+        CustomButton {
             id: workshop
             Layout.preferredWidth: 120 * mainwindow.baseScale
             Layout.preferredHeight: 30 * mainwindow.baseScale
             Layout.alignment: Qt.AlignRight
+            bImage.visible: false
+            bText.font.pixelSize: 20 * mainwindow.baseScale
+            bText.text: qsTr("Workshop")
 
-            color: mainwindow.rectangleColor
-            border.width: 1
-            border.color: mainwindow.rectangleBorder
-            Rectangle {
-                anchors.fill: parent
-                color: "#2DFFFFFF"
-                visible: workshopHovered.hovered
-            }
-
-            Text {
-                anchors.centerIn: parent
-                font.pixelSize: 20 * mainwindow.baseScale
-                font.bold: true
-                color: mainwindow.mainTextColor
-                text: qsTr("Workshop")
-            }
-            Item {
-                anchors.fill: parent
-                HoverHandler {
-                    id: workshopHovered
-                    acceptedDevices: PointerDevice.Mouse
-                    cursorShape: Qt.PointingHandCursor
-                }
-            }
 
             MouseArea {
                 anchors.fill: parent
@@ -65,36 +31,14 @@ Item {
                 }
             }
         }
-        Rectangle {
+        CustomButton {
             id: settings
             Layout.preferredWidth: 120 * mainwindow.baseScale
             Layout.preferredHeight: 30 * mainwindow.baseScale
             Layout.alignment: Qt.AlignRight
-
-            color: mainwindow.rectangleColor
-            border.width: 1
-            border.color: mainwindow.rectangleBorder
-            Rectangle {
-                anchors.fill: parent
-                color: "#2DFFFFFF"
-                visible: settingsHovered.hovered
-            }
-
-            Text {
-                anchors.centerIn: parent
-                font.pixelSize: 20 * mainwindow.baseScale
-                font.bold: true
-                color: mainwindow.mainTextColor
-                text: qsTr("Settings")
-            }
-            Item {
-                anchors.fill: parent
-                HoverHandler {
-                    id: settingsHovered
-                    acceptedDevices: PointerDevice.Mouse
-                    cursorShape: Qt.PointingHandCursor
-                }
-            }
+            bImage.visible: false
+            bText.font.pixelSize: 20 * mainwindow.baseScale
+            bText.text: qsTr("Settings")
 
             MouseArea {
                 anchors.fill: parent
