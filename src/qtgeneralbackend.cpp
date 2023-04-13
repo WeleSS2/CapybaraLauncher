@@ -113,6 +113,7 @@ void QtGeneralBackend::startGame()
 
     for(auto& i: localModsList){
         if(i.done){
+            qDebug() <<  i.laucherId << i.steamPackname << i.steamModName;
             if(i.steamModGameId != 0)
             {
                 run += "  add_working_directory  \""

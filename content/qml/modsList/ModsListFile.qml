@@ -45,6 +45,7 @@ Item {
                 visible: true
                 HoverHandler {
                     id: modHovered
+                    enabled: modListEnabled && globalActionMenuOpen === false
                     acceptedDevices: PointerDevice.Mouse
                     cursorShape: Qt.PointingHandCursor
                 }
@@ -201,10 +202,8 @@ Item {
                 property point cursPosition: Qt.point(0, 0)
                 onPressed: {
                     defCursPosition = mapToGlobal(mouseX, mouseY);
-                    console.log("Pressed");
                 }
                 onReleased: {
-                    console.log("Released");
                     refreshModlist();
                 }
                 onPositionChanged: {
