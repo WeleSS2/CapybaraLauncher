@@ -180,8 +180,8 @@ void Mods::findMod(QString Key){
     QVector<uint64_t> list;
     for(const auto& i : GlobalDataObj->ModsDataObj)
     {
-        if(i.steamModName.contains(Key) || i.steamPackname.contains(Key)){
-            list.emplaceBack(i.steamModGameId);
+        if(i.steamModName.toLower().contains(Key.toLower()) || i.steamPackname.toLower().contains(Key.toLower())){
+            list.emplaceBack(i.laucherId);
         }
     }
     mList->setList(list);
@@ -249,6 +249,7 @@ void Mods::refreshList()
             auto it = packNames.find(i.steamPackname);
             if (it != packNames.end())
             {
+                qDebug() << it->first;
                 j = it->second;
             }
         }
@@ -256,6 +257,12 @@ void Mods::refreshList()
         if (GlobalDataObj->ModsDataObj[index].done)
         {
             mList->mItemsData[j].done = true;
+        }
+
+        if(i.laucherId != index)
+        {
+            mList->mItemsData[index].id = QString::fromStdString(std::to_string(index));
+            GlobalDataObj->ModsDataObj[index].laucherId = index;
         }
 
         ++index;
@@ -412,14 +419,8 @@ void ModsList::refreshModlistVector(){
 
 void ModsList::setList(QVector<uint64_t> list){
     mItemsData.clear();
-    for(const auto& i : GlobalDataObj->ModsDataObj)
-    {
-        for(const auto& j : list){
-            if(j == i.steamModGameId){
-                pushItem(i.laucherId);
-                break;
-            }
-        }
+    for(const auto& j : list){
+        pushItem(j);
     }
 }
 
