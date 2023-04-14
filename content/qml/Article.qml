@@ -8,15 +8,15 @@ Item {
     property url htmlAdress: ""
     property bool show: false
     visible: show
-    x: mainwindow.width_1 * 3 * mainwindow.baseScale
-    y: mainwindow.height_1 * 5 * mainwindow.baseScale
-    width: mainwindow.width_1 * 94 * mainwindow.baseScale
-    height: mainwindow.height_1 * 90 * mainwindow.baseScale
+    x: mainwindow.width_1 * 2 * mainwindow.baseScale
+    y: mainwindow.height_1 * 6 * mainwindow.baseScale
+    width: mainwindow.width_1 * 96 * mainwindow.baseScale
+    height: mainwindow.height_1 * 91 * mainwindow.baseScale
     Rectangle{
         anchors.fill: parent
         color: "#CFCFCF"
         Rectangle {
-            y: parent.y + mainwindow.height_1 * 3 * mainwindow.baseScale
+            y: parent.y
             id: recWebView
             anchors.fill: parent
             anchors.centerIn: parent
@@ -47,7 +47,7 @@ Item {
 
         ToolBar {
             x: parent.x
-            y: parent.y
+            y: parent.y - (mainwindow.height_1 * 3 * mainwindow.baseScale)
             width: parent.width
             height: mainwindow.height_1 * 3 * mainwindow.baseScale
             id: navigationBar

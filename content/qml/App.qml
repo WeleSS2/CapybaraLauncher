@@ -89,17 +89,20 @@ Window {
 
     ModsListFile {
         id: qmlModsList
+        visible: qmlGameSelector.currentGameId !== 0 ? true : false
         z: 0
     }
 
     RightPanel {
         id: qmlRightPanel
+        visible: qmlGameSelector.currentGameId !== 0 ? true : false
         z: 0
     }
 
     BottomGameMenu
     {
         id: qmlBottomGameMenu
+        visible: qmlGameSelector.currentGameId !== 0 ? true : false
         z: 0
     }
 

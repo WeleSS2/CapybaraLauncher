@@ -70,9 +70,9 @@ const void GithubNews::getNews(QVector<NewsItem> &vector, const QUrl &url){
 
                     // Set time when news have been uploaded
                     QString date = obj.value("name").toString().left(10);
-                    QDateTime time = QDateTime::fromString(date, "dd.mm.yyyy");
+                    QDateTime time = QDateTime::fromString(date, "dd.MM.yyyy");
                     vector[vector.size() - 1].date = static_cast<uint64_t>(time.toSecsSinceEpoch());
-
+                    qDebug() << time << "    " <<  obj.value("name").toString();
 
                     // Set path for downloads
                     QString currentPath = obj.value("html_url").toString();

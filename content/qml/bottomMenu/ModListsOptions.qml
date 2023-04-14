@@ -2,6 +2,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
+import "../customModules"
+
 Item {
     enabled: bottomGameMenuEnabled
     property bool showMenu: false
@@ -54,74 +56,97 @@ Item {
     Rectangle {
         id: modsListOptions
         y: -100
-        width: 250
-        height: 100
+        width: 320
+        height: 120
         visible: menuHovered.hovered || showMenu
         color: mainwindow.rectangleColor
         border.width: 1
         border.color: mainwindow.rectangleBorder
+        property int buttonsWidth: 140 * mainwindow.baseScale
+        property int buttonsHeight: 30 * mainwindow.baseScale
+        property int buttonsTextSize: 18 * mainwindow.baseScale
         GridLayout {
             anchors.fill: parent
             columns: 2
             rows: 2
-            Button {
+            CustomButton {
                 id: createModpack
                 Layout.column: 0
                 Layout.row: 0
                 Layout.alignment: Qt.AlignCenter
-                Layout.preferredWidth: this.implicitWidth + 20
-                font.pixelSize: 18
-                text: qsTr("Save Modlist")
-                onClicked: {
-                    if(Qt.LeftButton){
-                        qmlBottomGameMenu.qSaveModlist()
-                        qmlBottomGameMenu.refreshModpacksList()
+                Layout.preferredWidth: 140 * mainwindow.baseScale
+                Layout.preferredHeight: 30 * mainwindow.baseScale
+                bImage.visible: false
+                bText.font.pixelSize: 18
+                bText.text: qsTr("Save Modlist")
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        if(Qt.LeftButton){
+                            qmlBottomGameMenu.qSaveModlist()
+                            qmlBottomGameMenu.refreshModpacksList()
+                        }
                     }
                 }
             }
 
-            Button {
+            CustomButton {
                 id: deleteModpack
                 Layout.column: 0
                 Layout.row: 1
                 Layout.alignment: Qt.AlignCenter
-                Layout.preferredWidth: this.implicitWidth + 20
-                font.pixelSize: 18
-                text: qsTr("Delete Modlist")
-                onClicked: {
-                    if(Qt.LeftButton){
-                        qmlBottomGameMenu.qRemoveModpack()
-                        qmlBottomGameMenu.qRemoveItem()
+                Layout.preferredWidth: 140 * mainwindow.baseScale
+                Layout.preferredHeight: 30 * mainwindow.baseScale
+                bImage.visible: false
+                bText.font.pixelSize: 18
+                bText.text: qsTr("Delete Modlist")
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        if(Qt.LeftButton){
+                            qmlBottomGameMenu.qRemoveModpack()
+                            qmlBottomGameMenu.qRemoveItem()
+                        }
                     }
                 }
             }
-            Button {
+            CustomButton {
                 id: importPack
                 Layout.column: 1
                 Layout.row: 0
                 Layout.alignment: Qt.AlignCenter
-                Layout.preferredWidth: this.implicitWidth + 20
-                font.pixelSize: 20
-                text: qsTr("Import")
-                onClicked: {
-                    if(Qt.LeftButton){
-                        qtGeneralBackendObj.importPack();
-                        objModsList.refreshModlistVector();
-                        qmlModsList.refreshModlistTo0();
+                Layout.preferredWidth: 140 * mainwindow.baseScale
+                Layout.preferredHeight: 30 * mainwindow.baseScale
+                bImage.visible: false
+                bText.font.pixelSize: 20
+                bText.text: qsTr("Import")
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        if(Qt.LeftButton){
+                            qtGeneralBackendObj.importPack();
+                            objModsList.refreshModlistVector();
+                            qmlModsList.refreshModlistTo0();
+                        }
                     }
                 }
             }
-            Button {
+            CustomButton {
                 id: exportPack
                 Layout.column: 1
                 Layout.row: 1
                 Layout.alignment: Qt.AlignCenter
-                Layout.preferredWidth: this.implicitWidth + 20
-                font.pixelSize: 20
-                text: qsTr("Export")
-                onClicked: {
-                    if(Qt.LeftButton){
-                        qtGeneralBackendObj.exportPack();
+                Layout.preferredWidth: 140 * mainwindow.baseScale
+                Layout.preferredHeight: 30 * mainwindow.baseScale
+                bImage.visible: false
+                bText.font.pixelSize: 20
+                bText.text: qsTr("Export")
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        if(Qt.LeftButton){
+                            qtGeneralBackendObj.exportPack();
+                        }
                     }
                 }
             }

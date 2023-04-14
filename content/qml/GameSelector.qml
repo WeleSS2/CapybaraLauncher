@@ -111,5 +111,7 @@ Item {
         cDevNewsList.loadNews(selectGame.model.getCurrentGameId());
         cCommunityNewsList.clearNewsVector();
         cCommunityNewsList.loadNews(selectGame.model.getCurrentGameId());
+
+        qmlModsList.visible = true;
     }
 }

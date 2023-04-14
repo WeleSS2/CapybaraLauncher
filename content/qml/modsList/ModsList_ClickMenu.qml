@@ -21,6 +21,9 @@ Rectangle {
         color: mainwindow.rectangleColor
         border.width: 1
         border.color: mainwindow.rectangleBorder
+        property int buttonsWidth: 120 * mainwindow.baseScale
+        property int buttonsHeight: 30 * mainwindow.baseScale
+        property int buttonsTextSize: 15 * mainwindow.baseScale
         ColumnLayout {
             anchors.fill: parent
             Text {
