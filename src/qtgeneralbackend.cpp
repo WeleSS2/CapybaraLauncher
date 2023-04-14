@@ -207,42 +207,6 @@ bool QtGeneralBackend::updateAvialable(){
     return obj.getVersionInfo();
 }
 
-void QtGeneralBackend::updateLauncher(){
-    GithubUpdater obj;
-    obj.getVersionInfo();
-    obj.downloadPatch();
-    obj.openPatchFile();
-    obj.patchAndResetApp();
-}
-
-void QtGeneralBackend::updateMod(uint64_t id){
-//    Utility objUtility;
-//    objUtility.showSimpleInfoBox("Downloading mod with id: " + QString::fromStdString(std::to_string(id)));
-
-    SteamApiAccess steamApi;
-    steamApi.updateMod(id);
-}
-
-void QtGeneralBackend::addMod(uint64_t id){
-    Utility objUtility;
-    objUtility.showSimpleInfoBox("Downloading mod with id: " + QString::fromStdString(std::to_string(id)));
-    SteamApiAccess SteamAPI;
-    SteamAPI.subscribeMod(id);
-    if(SteamAPI.updateMod(id))
-    {
-        // Insert item into launcher
-        sModsData data = SteamAPI.getModData(id);
-        data.done = true;
-        data.laucherId = GlobalDataObj->ModsDataObj.size();
-        SteamAPI.setModPackname(data);
-        GlobalDataObj->ModsDataObj.emplaceBack(data);
-    }
-    else{
-        SteamAPI.unsubscribeMod(id);
-        LoggingSystem::saveLog("qtgeneralbackend.cpp: addMod: Failed to download mod from steam");
-    }
-}
-
 void QtGeneralBackend::addTask(uint64_t modId, QString taskName){
     std::string str = std::to_string(modId);
     QString StringModId = QString::fromStdString(str);
@@ -281,6 +245,16 @@ void QtGeneralBackend::addTask(uint64_t modId, QString taskName){
             };
         };
         taskListPtr->appendAndRunTask(task, "testTask", "Just a test task");
+    }
+    else if(taskName == "updateLauncher")
+    {
+        taskListPtr->appendAndRunTask([=](){
+            GithubUpdater obj;
+            obj.getVersionInfo();
+            obj.downloadPatch();
+            obj.openPatchFile();
+            obj.patchAndResetApp();
+        }, "updateLauncher", "Updating launcher");
     }
 }
 

@@ -305,6 +305,7 @@ Rectangle {
                 if(!hovered){
                     actionMenu.visible = false;
                     qmlModsList.globalActionMenuOpen = false;
+                    rightPanelEnabled = true;
                     qmlModsList.z = 0;
                 }
             }

@@ -157,6 +157,7 @@ Item {
                     if (mouse.button === Qt.RightButton)
                     {
                         globalActionMenuOpen = true;
+                        rightPanelEnabled = false;
                         qmlModsList.z = 1;
 
                         mousePositionX = position.x;

@@ -18,11 +18,7 @@ public:
     Q_INVOKABLE void importPack();
     Q_INVOKABLE void removeModpack(QString name);
     Q_INVOKABLE bool updateAvialable();
-    Q_INVOKABLE void updateLauncher();
 
-
-    Q_INVOKABLE void updateMod(uint64_t id);
-    Q_INVOKABLE void addMod(uint64_t id);
     Q_INVOKABLE void addTask(uint64_t id, QString taskName);
     Q_INVOKABLE void removeMod(uint64_t id);
     Q_INVOKABLE void openLocalFiles(uint64_t id);

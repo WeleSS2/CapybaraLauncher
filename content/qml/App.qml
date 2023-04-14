@@ -104,11 +104,11 @@ Window {
         id: qmlBottomGameMenu
         visible: qmlGameSelector.currentGameId !== 0 ? true : false
         z: 0
-    }
 
-    ModListsOptions {
-        id: qmlModListOptions
-        z: 0
+        ModListsOptions {
+            id: qmlModListOptions
+            z: 0
+        }
     }
 
     TaskList

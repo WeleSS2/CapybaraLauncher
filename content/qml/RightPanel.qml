@@ -105,13 +105,16 @@ Item {
                         anchors.fill: parent
                         hoverEnabled: true
                         onHoveredChanged: (mouse)=> {
-                            if(!isHovered.visible)
+                            if(rightPanelEnabled)
                             {
-                                isHovered.visible = true;
-                            }
-                            else
-                            {
-                                isHovered.visible = false;
+                                if(!isHovered.visible)
+                                {
+                                    isHovered.visible = true;
+                                }
+                                else
+                                {
+                                    isHovered.visible = false;
+                                }
                             }
                         }
                         onClicked: {

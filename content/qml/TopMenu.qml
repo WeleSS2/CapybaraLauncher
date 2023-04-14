@@ -50,48 +50,27 @@ Item {
                 }
             }
         }
-        Rectangle {
+        CustomButton {
             id: launcherupdate
-            Layout.minimumWidth: width
-            Layout.maximumWidth: Layout.preferredWidth
-            width: 35 * mainwindow.baseScale
-            height: 35 * mainwindow.baseScale
+            Layout.preferredWidth: 35 * mainwindow.baseScale
+            Layout.preferredHeight: 35 * mainwindow.baseScale
             Layout.alignment: Qt.AlignRight
             color: "transparent"
+            bBackground.visible: false
+            bText.visible: false
+            bImage.visible: true
+            bImage.source: updatestatus === true ? "../../images/icons/downloadGreen.png" : "../../images/icons/downloadRed.png"
+
             MouseArea {
                 anchors.fill: parent
-                hoverEnabled: true
-                onEntered: {
-                    if(updatestatus){
-                        launcherupdateImage.source = "../images/icons/downloadGreenLight.png";
-                    }
-                    else
-                    {
-                        launcherupdateImage.source = "../images/icons/downloadRed.png";
-                    }
-                }
-                onExited: {
-                    if(updatestatus){
-                        launcherupdateImage.source = "../images/icons/downloadGreen.png";
-                    }
-                    else
-                    {
-                        launcherupdateImage.source = "../images/icons/downloadRed.png";
-                    }
-                }
                 onClicked: {
                     if(Qt.LeftButton){
                         if(updatestatus)
                         {
-                            qtGeneralBackendObj.updateLauncher();
+                            qtGeneralBackendObj.addTask(0, "updateLauncher");
                         }
                     }
                 }
-            }
-            Image {
-                id: launcherupdateImage
-                anchors.fill: parent
-                source: parent.parent.updatestatus ? "../images/icons/downloadGreen.png" : "../images/icons/downloadRed.png"
             }
         }
 

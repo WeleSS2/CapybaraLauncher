@@ -7,6 +7,7 @@ import "../customModules"
 Item {
     x: 980
     y: 100
+    enabled: !qmlModsList.globalActionMenuOpen
     ColumnLayout{
         spacing: 10
         CustomButton {
