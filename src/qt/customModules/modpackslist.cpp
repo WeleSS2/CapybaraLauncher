@@ -214,19 +214,19 @@ void ModpacksContent::saveModlist(QString name)
 
     for(int i = 0; i < GlobalDataObj->ModsDataObj.size(); ++i)
     {
-        if(mListGlobalPtr->mItemsData[i].done)
+        if(mListGlobalPtr->getList()->mItemsData[i].done)
         {
-            if(mListGlobalPtr->mItemsData[i].modgameid != 0)
+            if(mListGlobalPtr->getList()->mItemsData[i].modgameid != 0)
             {
-                localModsId.emplaceBack(mListGlobalPtr->mItemsData[i].modgameid);
+                localModsId.emplaceBack(mListGlobalPtr->getList()->mItemsData[i].modgameid);
                 modFileName.emplaceBack("");
-                file << "S " << mListGlobalPtr->mItemsData[i].modgameid << std::endl;
+                file << "S " << mListGlobalPtr->getList()->mItemsData[i].modgameid << std::endl;
             }
             else
             {
                 localModsId.emplaceBack(0);
-                modFileName.emplaceBack(mListGlobalPtr->mItemsData[i].packname);
-                file << "L " << mListGlobalPtr->mItemsData[i].packname.toStdString() << std::endl;
+                modFileName.emplaceBack(mListGlobalPtr->getList()->mItemsData[i].packname);
+                file << "L " << mListGlobalPtr->getList()->mItemsData[i].packname.toStdString() << std::endl;
             }
         }
     }
@@ -250,30 +250,30 @@ void ModpacksContent::saveModlist(QString name)
 void ModpacksContent::loadModlist(uint64_t index)
 {
     // Set all to false
-    for(int k = 0; k < mListGlobalPtr->mItemsData.size(); ++k)
+    for(int k = 0; k < mListGlobalPtr->getList()->mItemsData.size(); ++k)
     {
-        mListGlobalPtr->mItemsData[k].done = false;
+        mListGlobalPtr->getList()->mItemsData[k].done = false;
         GlobalDataObj->ModsDataObj[k].done = false;
     }
 
     // Check if imported if yes enable
     for(int j = 0; j < mModpacksData[index].modsId.size(); ++j)
     {
-        for(int k = 0; k < mListGlobalPtr->mItemsData.size(); ++k)
+        for(int k = 0; k < mListGlobalPtr->getList()->mItemsData.size(); ++k)
         {
             if(mModpacksData[index].modsId[j] != 0){
-                if(mModpacksData[index].modsId[j] == mListGlobalPtr->mItemsData[k].modgameid)
+                if(mModpacksData[index].modsId[j] == mListGlobalPtr->getList()->mItemsData[k].modgameid)
                 {
-                    mListGlobalPtr->mItemsData[k].done = true;
+                    mListGlobalPtr->getList()->mItemsData[k].done = true;
                     GlobalDataObj->ModsDataObj[k].done = true;
                 }
             }
             else
             {
-                if(mListGlobalPtr->mItemsData[k].modgameid == 0){
-                    if(mModpacksData[index].modFileName[j] == mListGlobalPtr->mItemsData[k].packname)
+                if(mListGlobalPtr->getList()->mItemsData[k].modgameid == 0){
+                    if(mModpacksData[index].modFileName[j] == mListGlobalPtr->getList()->mItemsData[k].packname)
                     {
-                        mListGlobalPtr->mItemsData[k].done = true;
+                        mListGlobalPtr->getList()->mItemsData[k].done = true;
                         GlobalDataObj->ModsDataObj[k].done = true;
                     }
                 }

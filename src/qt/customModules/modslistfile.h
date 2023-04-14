@@ -3,6 +3,7 @@
 #include <QVector>
 #include <QQUickItem>
 #include <QColor>
+#include <unordered_map>
 #include <QAbstractListModel>
 
 class ModsList;
@@ -43,13 +44,19 @@ public:
 
     ModsList *list() const;
     void setList(ModsList *list);
+    ModsList* getList();
+
+    // Invoki
     Q_INVOKABLE bool move(uint64_t sourceRow, uint64_t destinationRow);
+    Q_INVOKABLE void findMod(QString key);
+    Q_INVOKABLE void enableMod(uint64_t id);
+    Q_INVOKABLE void disableMod(uint64_t id);
 
     Q_INVOKABLE void refreshList();
 private:
     ModsList *mList;
 };
-inline ModsList *mListGlobalPtr = nullptr;
+inline Mods *mListGlobalPtr = nullptr;
 
 /* ---------------------------------------------------------
  *
@@ -83,6 +90,8 @@ public:
     QVector<ItemsData> *Vs_ItemsData();
 
     bool setItemAt(int index, const ItemsData &item);
+
+    void setList(QVector<uint64_t> list);
 signals:
     void preItemAppened();
     void postItemAppened();

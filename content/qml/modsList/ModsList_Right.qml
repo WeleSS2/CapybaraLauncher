@@ -26,6 +26,19 @@ Item {
                 onClicked: {
                     if(Qt.LeftButton){
                         //TODO
+                        if(textInputRect.visible)
+                        {
+                            textInputRect.visible = false;
+                            rightPanelEnabled = true;
+                            qmlModsList.z = 0;
+                        }
+                        else
+                        {
+                            textInputRect.visible = true;
+                            rightPanelEnabled = false;
+                            qmlModsList.z = 2;
+                            textEdit.focus = true;
+                        }
                     }
                 }
             }
@@ -54,8 +67,48 @@ Item {
         }
     }
 
-
-
-
-
+    CustomButton {
+        id: textInputRect
+        x: -200
+        y: -30
+        width: 200
+        height: 30
+        color: "transparent"
+        visible: false
+        bText.visible: false
+        bImage.visible: false
+        bHover.enabled: false
+        TextEdit {
+            id: textEdit
+            x: 5
+            width: 160
+            height: 30
+            font.pointSize: 15
+            focus: true
+            clip: true
+            color: mainwindow.mainTextColor
+            text: ""
+            onTextChanged: {
+                qmlModsList.findMod(this.text);
+                qmlModsList.refreshModlist();
+            }
+        }
+        CustomButton {
+            x: parent.x + 170
+            width: 30
+            height: 30
+            color: "transparent"
+            bImage.visible: false
+            bText.text: "X"
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    textEdit.text = "";
+                    textInputRect.visible = false;
+                    rightPanelEnabled = true;
+                    qmlModsList.z = 0;
+                }
+            }
+        }
+    }
 }

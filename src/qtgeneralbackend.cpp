@@ -10,15 +10,13 @@
 #include <QFile>
 #include <QThread>
 
-#include "qqmlcontext.h"
 #include "qtgeneralbackend.h"
 #include "steamapi/steamapiaccess.h"
 #include "globaldata.h"
 #include "github/githubupdater.h"
-#include "qt/customModules/infobox.h"
-#include "utility/utility.h"
 #include "localfiles/localmods.h"
 #include "utility/loggingsystem.h"
+#include "qt/customModules/modslistfile.h"
 
 QtGeneralBackend::QtGeneralBackend(QObject *parent, TaskListList *taskList)
     : QObject{parent}
@@ -234,6 +232,9 @@ void QtGeneralBackend::addTask(uint64_t modId, QString taskName){
         taskListPtr->appendAndRunTask([=](){
             SteamApiAccess steamApi;
             steamApi.updateMod(modId);
+            // Im dumb af, what i was trying to do?
+            //GlobalDataObj->getModById(modId)->color = {0, 0, 0, 0};
+            //mListGlobalPtr->refreshList();
         }, ("updateMod" + StringModId) , ("Updating mod with id " + StringModId));
     }
     else if(taskName == "testTask")

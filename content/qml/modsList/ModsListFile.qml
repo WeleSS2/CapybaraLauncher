@@ -8,7 +8,7 @@ Item {
     anchors.fill: parent
     property bool globalActionMenuOpen: false
     property bool updateAvailable: false
-    property int baseW: 1200
+    property int baseW: 1000
     property int mousePositionX
     property int mousePositionY
     enabled: modListEnabled
@@ -17,7 +17,7 @@ Item {
         id: modsList
         x: 8
         y: 130
-        width: 1200
+        width: baseW
         height: mainwindow.height - 150
         clip: true
         Component.onCompleted: {
@@ -69,7 +69,7 @@ Item {
                         y: 5
                         width: 15
                         height: 15
-                        color: model.done ? "green" : "white"
+                        color: mod_id.checked ? "green" : "white"
                     }
                 }
                 Text {
@@ -117,6 +117,7 @@ Item {
                     }
                 }
                 Text {
+                    id: steamId
                     width: 90
                     text: (steamPacknameHovered.hovered && globalActionMenuOpen === false) ? steam_packname.implicitWidth <= steam_packname.width ? modgameid : "" : modgameid
                     clip: true
@@ -180,15 +181,15 @@ Item {
                     {
                         if(!globalActionMenuOpen)
                         {
-                            if(!mod_id.checked)
+                            if(!mod_id.checked && !model.done)
                             {
+                                enableMod(model.id);
                                 mod_id.checked = true;
-                                model.done = true;
                             }
                             else
                             {
+                                disableMod(model.id);
                                 mod_id.checked = false;
-                                model.done = false;
                             }
                         }
                     }
@@ -238,6 +239,7 @@ Item {
         id: qmlModsListRight
     }
 
+    property int returnedIndex
     function setIndex(index){
         modsList.currentIndex = index;
     }
@@ -248,6 +250,18 @@ Item {
     function refreshModlistTo0(){
         modsList.currentIndex = 0;
         modsList.model.refreshList();
+    }
+
+    function enableMod(id){
+        modsList.model.enableMod(id);
+    }
+
+    function disableMod(id){
+        modsList.model.disableMod(id);
+    }
+
+    function findMod(key){
+        modsList.model.findMod(key);
     }
 
     function onEnable(){

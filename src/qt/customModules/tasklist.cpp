@@ -135,6 +135,7 @@ void TaskListList::appendAndRunTask(std::function<void()> task, QString taskId, 
 {
     emit preItemAppened();
 
+    qDebug() << vTaskListData.size();
     TaskListData item;
     item.taskDescription = taskDescription;
     item.taskID = taskId;
@@ -165,6 +166,8 @@ void TaskListList::appendAndRunTask(std::function<void()> task, QString taskId, 
     QObject::connect(thread, &QThread::finished, thread, &QThread::deleteLater);
 
     thread->start();
+
+    qDebug() << vTaskListData.size();
 }
 
 void TaskListList::removeTask(qint32 index)

@@ -144,8 +144,12 @@ void Mods::setList(ModsList *list)
             endRemoveRows();
         } );
     }
-    mListGlobalPtr = mList;
+    mListGlobalPtr = this;
     endResetModel();
+}
+
+ModsList* Mods::getList(){
+    return mList;
 }
 
 bool Mods::move(uint64_t sourceRow, uint64_t destinationRow)
@@ -171,26 +175,124 @@ bool Mods::move(uint64_t sourceRow, uint64_t destinationRow)
     return true;
 }
 
+void Mods::findMod(QString Key){
+    mList->mItemsData.clear();
+    QVector<uint64_t> list;
+    for(const auto& i : GlobalDataObj->ModsDataObj)
+    {
+        if(i.steamModName.contains(Key) || i.steamPackname.contains(Key)){
+            list.emplaceBack(i.steamModGameId);
+        }
+    }
+    mList->setList(list);
+}
+
+void Mods::enableMod(uint64_t id)
+{
+    GlobalDataObj->ModsDataObj[id].done = true;
+    for(auto& i : mList->mItemsData)
+    {
+        if(i.id == QString::fromStdString(std::to_string(id)))
+        {
+            i.done = true;
+            break;
+        }
+    }
+}
+
+void Mods::disableMod(uint64_t id)
+{
+    GlobalDataObj->ModsDataObj[id].done = false;
+    for(auto& i : mList->mItemsData)
+    {
+        if(i.id == QString::fromStdString(std::to_string(id)))
+        {
+            i.done = false;
+            break;
+        }
+    }
+}
+
 void Mods::refreshList()
 {    
     QQuickItem* listView = mList->getListPointer();
     QModelIndex currentIndex = listView->property("currentIndex").value<QModelIndex>();
 
     beginResetModel();
+
+    std::unordered_map<int, int> gameIds;
+    std::unordered_map<QString, int> packNames;
+
+    for (int i = 0; i < mList->mItemsData.size(); ++i) {
+        const auto& j = mList->mItemsData[i];
+        if (j.modgameid != 0)
+        {
+            gameIds[j.modgameid] = i;
+        }
+        else
+        {
+            packNames[j.packname] = i;
+        }
+    }
+    int index = 0;
+    for (auto& i : GlobalDataObj->ModsDataObj) {
+        int j = -1;
+        if (i.steamModGameId != 0)
+        {
+            auto it = gameIds.find(i.steamModGameId);
+            if (it != gameIds.end())
+            {
+                j = it->second;
+            }
+        }
+        else {
+            auto it = packNames.find(i.steamPackname);
+            if (it != packNames.end())
+            {
+                j = it->second;
+            }
+        }
+
+        if (GlobalDataObj->ModsDataObj[index].done)
+        {
+            mList->mItemsData[j].done = true;
+        }
+
+        ++index;
+    }
+    /* Old loop
     int index = 0;
     for(auto& i: GlobalDataObj->ModsDataObj)
     {
-        if(i.done){
-            mList->mItemsData[index].done = true;
-            GlobalDataObj->ModsDataObj[index].done = true;
-        }
-        if(i.laucherId != index)
+        for(auto& j : mList->mItemsData)
         {
-            mList->mItemsData[index].id = QString::fromStdString(std::to_string(index));
-            GlobalDataObj->ModsDataObj[index].laucherId = index;
+            if(i.steamModGameId != 0)
+            {
+                if(i.steamModGameId == j.modgameid)
+                {
+                    j.done = i.done;
+                }
+                if(i.laucherId != index)
+                {
+                    mList->mItemsData[index].id = QString::fromStdString(std::to_string(index));
+                    GlobalDataObj->ModsDataObj[index].laucherId = index;
+                }
+            }
+            else if (i.steamPackname == j.packname)
+            {
+                if(i.steamModGameId == j.modgameid)
+                {
+                    j.done = i.done;
+                }
+                if(i.laucherId != index)
+                {
+                    mList->mItemsData[index].id = QString::fromStdString(std::to_string(index));
+                    GlobalDataObj->ModsDataObj[index].laucherId = index;
+                }
+            }
         }
         ++index;
-    }
+    }*/
     endResetModel();
     listView->setProperty("currentIndex", QVariant::fromValue(currentIndex));
     listView->setProperty("positionViewAtIndex", QVariant::fromValue(currentIndex.row()));
@@ -305,6 +407,19 @@ void ModsList::refreshModlistVector(){
     for(int i = 0; i < GlobalDataObj->ModsDataObj.size(); ++i)
     {
         pushItem(i);
+    }
+}
+
+void ModsList::setList(QVector<uint64_t> list){
+    mItemsData.clear();
+    for(const auto& i : GlobalDataObj->ModsDataObj)
+    {
+        for(const auto& j : list){
+            if(j == i.steamModGameId){
+                pushItem(i.laucherId);
+                break;
+            }
+        }
     }
 }
 
