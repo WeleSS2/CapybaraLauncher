@@ -60,7 +60,7 @@ Item {
             bText.visible: false
             bImage.visible: true
             bImage.source: updatestatus === true ? "../../images/icons/downloadGreen.png" : "../../images/icons/downloadRed.png"
-
+            bDesc: "Update launcher"
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
@@ -74,59 +74,45 @@ Item {
             }
         }
 
-        Rectangle {
+        CustomButton {
             id: discord
-            width: 35 * mainwindow.baseScale
-            height: 35 * mainwindow.baseScale
+            Layout.preferredWidth: 35 * mainwindow.baseScale
+            Layout.preferredHeight: 35 * mainwindow.baseScale
             Layout.alignment: Qt.AlignRight
             color: "transparent"
+            bBackground.visible: false
+            bText.visible: false
+            bImage.visible: true
+            bImage.source: "../../images/icons/discord.png"
+            bDesc: "Open discord"
             MouseArea {
                 anchors.fill: parent
-                hoverEnabled: true
                 onClicked: {
                     if(Qt.LeftButton){
                         Qt.openUrlExternally("https://discord.gg/vkb8FCFZP6")
                     }
                 }
-                onEntered: {
-                    discordImage.source = "../images/icons/discordLight.png";
-                }
-                onExited: {
-                    discordImage.source = "../images/icons/discord.png";
-                }
-            }
-            Image {
-                id: discordImage
-                anchors.fill: parent
-                source: "../images/icons/discord.png"
             }
         }
 
-        Rectangle {
+        CustomButton {
             id: patreon
-            width: 35 * mainwindow.baseScale
-            height: 35 * mainwindow.baseScale
+            Layout.preferredWidth: 35 * mainwindow.baseScale
+            Layout.preferredHeight: 35 * mainwindow.baseScale
             Layout.alignment: Qt.AlignRight
             color: "transparent"
+            bBackground.visible: false
+            bText.visible: false
+            bImage.visible: true
+            bImage.source: "../../images/icons/patreon.png"
+            bDesc: "Open patreon"
             MouseArea {
                 anchors.fill: parent
-                hoverEnabled: true
                 onClicked: {
                     if(Qt.LeftButton){
                         Qt.openUrlExternally("https://patreon.com/CapybaraStudio")
                     }
                 }
-                onEntered: {
-                    patreonImage.source = "../images/icons/patreonLight.png";
-                }
-                onExited: {
-                    patreonImage.source = "../images/icons/patreon.png";
-                }
-            }
-            Image {
-                id: patreonImage
-                anchors.fill: parent
-                source: "../images/icons/patreon.png"
             }
         }
     }

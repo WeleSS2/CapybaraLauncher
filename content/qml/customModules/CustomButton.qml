@@ -1,4 +1,5 @@
 import QtQuick
+import QtQuick.Controls
 
 Rectangle {
     id: customButton
@@ -6,6 +7,7 @@ Rectangle {
     property alias bHover: customButtonHover
     property alias bImage: customButtonImage
     property alias bText: customButtonText
+    property string bDesc: ""
     Rectangle {
         id: customButtonBackground
         anchors.fill: parent
@@ -42,5 +44,22 @@ Rectangle {
             acceptedDevices: PointerDevice.Mouse
             cursorShape: Qt.PointingHandCursor
         }
+        ToolTip {
+            visible: buttonHovered.hovered && bDesc !== ""
+            contentItem: Text {
+                text: bDesc
+                font.pixelSize: 15
+                font.bold: true
+                color: mainwindow.mainTextColor
+            }
+            background: Rectangle {
+                color: mainwindow.rectangleColor
+                border.width: 1
+                border.color: mainwindow.rectangleBorder
+            }
+        }
+
+        //ToolTip.visible: buttonHovered.hovered && bDesc !== ""
+        //ToolTip.text: bDesc
     }
 }

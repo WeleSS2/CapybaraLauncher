@@ -10,8 +10,10 @@ Item {
     enabled: !qmlModsList.globalActionMenuOpen
     ColumnLayout{
         spacing: 10
+        z: parent.z
         CustomButton {
             id: searchMods
+            z: parent.z
             Layout.preferredWidth: 35 * mainwindow.baseScale
             Layout.preferredHeight: 35 * mainwindow.baseScale
             Layout.alignment: Qt.AlignRight
@@ -20,7 +22,7 @@ Item {
             bText.visible: false
             bImage.visible: true
             bImage.source: "../../images/icons/search.png"
-
+            bDesc: "Find mod"
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
@@ -54,6 +56,7 @@ Item {
             bText.visible: false
             bImage.visible: true
             bImage.source: "../../images/icons/google.png"
+            bDesc: "Open google"
             MouseArea {
                 anchors.fill: parent
                 onClicked: {

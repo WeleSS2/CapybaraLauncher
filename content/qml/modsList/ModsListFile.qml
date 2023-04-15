@@ -228,6 +228,7 @@ Item {
 
     ModsList_Top{
         id: qmlModsListTop
+        z: 0
     }
 
     ModsList_ClickMenu{
@@ -237,6 +238,7 @@ Item {
 
     ModsList_Right{
         id: qmlModsListRight
+        z: 0
     }
 
     property int returnedIndex

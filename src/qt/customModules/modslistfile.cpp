@@ -267,39 +267,6 @@ void Mods::refreshList()
 
         ++index;
     }
-    /* Old loop
-    int index = 0;
-    for(auto& i: GlobalDataObj->ModsDataObj)
-    {
-        for(auto& j : mList->mItemsData)
-        {
-            if(i.steamModGameId != 0)
-            {
-                if(i.steamModGameId == j.modgameid)
-                {
-                    j.done = i.done;
-                }
-                if(i.laucherId != index)
-                {
-                    mList->mItemsData[index].id = QString::fromStdString(std::to_string(index));
-                    GlobalDataObj->ModsDataObj[index].laucherId = index;
-                }
-            }
-            else if (i.steamPackname == j.packname)
-            {
-                if(i.steamModGameId == j.modgameid)
-                {
-                    j.done = i.done;
-                }
-                if(i.laucherId != index)
-                {
-                    mList->mItemsData[index].id = QString::fromStdString(std::to_string(index));
-                    GlobalDataObj->ModsDataObj[index].laucherId = index;
-                }
-            }
-        }
-        ++index;
-    }*/
     endResetModel();
     listView->setProperty("currentIndex", QVariant::fromValue(currentIndex));
     listView->setProperty("positionViewAtIndex", QVariant::fromValue(currentIndex.row()));
