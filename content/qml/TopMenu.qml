@@ -57,8 +57,6 @@ Item {
             Layout.alignment: Qt.AlignRight
             color: "transparent"
             bBackground.visible: false
-            bText.visible: false
-            bImage.visible: true
             bImage.source: updatestatus === true ? "../../images/icons/downloadGreen.png" : "../../images/icons/downloadRed.png"
             bDesc: "Update launcher"
             MouseArea {
@@ -81,8 +79,6 @@ Item {
             Layout.alignment: Qt.AlignRight
             color: "transparent"
             bBackground.visible: false
-            bText.visible: false
-            bImage.visible: true
             bImage.source: "../../images/icons/discord.png"
             bDesc: "Open discord"
             MouseArea {
@@ -102,8 +98,6 @@ Item {
             Layout.alignment: Qt.AlignRight
             color: "transparent"
             bBackground.visible: false
-            bText.visible: false
-            bImage.visible: true
             bImage.source: "../../images/icons/patreon.png"
             bDesc: "Open patreon"
             MouseArea {

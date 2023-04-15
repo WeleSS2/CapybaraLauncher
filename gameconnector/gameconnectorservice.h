@@ -12,6 +12,9 @@ struct sModsData {
     bool done;
     QColor color;
 
+
+    // 1 for steam, 2 for epic
+    uint32_t platform;
     uint64_t laucherId;
     uint64_t steamModGameId;
     uint64_t steamDataInSeconds;
@@ -23,6 +26,7 @@ struct sModsData {
     friend QDataStream& operator<<(QDataStream& out, const sModsData& data){
         out << data.done
             << data.color
+            << data.platform
             << data.laucherId
             << data.steamModGameId
             << data.steamDataInSeconds

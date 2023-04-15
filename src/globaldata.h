@@ -54,12 +54,18 @@ struct sGamesData {
     QString pathName;
 
     uint64_t gameId = 0;
+
+    // 1 for steam, 2 for epic
+    uint32_t platform;
 };
 
 struct sModsData {
     bool done;
     QColor color;
 
+
+    // 1 for steam, 2 for epic
+    uint32_t platform;
     uint64_t laucherId;
     uint64_t steamModGameId;
     uint64_t steamDataInSeconds;
@@ -71,6 +77,7 @@ struct sModsData {
     friend QDataStream& operator<<(QDataStream& out, sModsData& data){
         out << data.done
             << data.color
+            << data.platform
             << data.laucherId
             << data.steamModGameId
             << data.steamDataInSeconds
@@ -82,6 +89,7 @@ struct sModsData {
     friend QDataStream& operator>>(QDataStream& in, sModsData& data) {
         in >> data.done
            >> data.color
+           >> data.platform
            >> data.laucherId
            >> data.steamModGameId
            >> data.steamDataInSeconds

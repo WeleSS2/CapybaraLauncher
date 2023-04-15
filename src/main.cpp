@@ -138,6 +138,7 @@
 #include "qt/customModules/tasklist.h"
 #include "qt/webEngineBackend/webenginebackend.h"
 
+
 void settingsLoading()
 {
     localFiles temp;
@@ -165,7 +166,7 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
     GlobalDataObj->enginePtr = &engine;
 
-    QCoreApplication::setApplicationVersion("v0.0.8.1");
+    QCoreApplication::setApplicationVersion("v0.1");
 
     // WORKSPACE
     // settings are doubled due to work over transfer to .js

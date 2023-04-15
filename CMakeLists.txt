@@ -12,6 +12,19 @@ find_package(Qt6 REQUIRED COMPONENTS Gui Qml Quick Network WebEngineQuick WebVie
 find_package(OpenSSL REQUIRED)
 set(ICON_FILE ${CMAKE_CURRENT_SOURCE_DIR}/content/resources/capybaraIcon.ico)
 set(RC_FILE ${CMAKE_CURRENT_SOURCE_DIR}/content/resources/capybaraIcon.rc)
+set(EOSSDK_LIB ${CMAKE_CURRENT_SOURCE_DIR}/external/EOSSDK/Lib/EOSSDK-Win64-Shipping.lib)
+set(EOSSDK_DIR ${CMAKE_CURRENT_SOURCE_DIR}/external/EOSSDK/Include/eos_sdk.h)
+
+# Add the library directory to the linker path
+link_directories(${CMAKE_CURRENT_SOURCE_DIR}/external/EOSSDK/Lib)
+
+# Add the include directory to the include path
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/external/EOSSDK/Include)
+include_directories(${OPENSSL_INCLUDE_DIR})
+
+# Add the EOS SDK library
+add_library(EOS_SDK SHARED IMPORTED)
+set_target_properties(EOS_SDK PROPERTIES IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/external/EOSSDK/Lib/eos_sdk.dll)
 
 file(GLOB_RECURSE CPPEXECFILES "src/*.cpp")
 
@@ -24,12 +37,14 @@ qt_add_resources(CapybaraLauncher "configuration"
     FILES
         qtquickcontrols2.conf
 )
-include_directories(${OPENSSL_INCLUDE_DIR})
 
 find_package(STEAMAPI REQUIRED PATHS ${PROJECT_SOURCE_DIR}/external/STEAM_API)
+
 target_include_directories(CapybaraLauncher PRIVATE
     "${STEAMAPI_INCLUDE_DIRS}"
-    ${OPENSSL_INCLUDE_DIR})
+    ${OPENSSL_INCLUDE_DIR}
+    #"${EOSSDK_DIR}"
+)
 target_link_libraries(CapybaraLauncher PRIVATE
     Qt${QT_VERSION_MAJOR}::Core
     Qt${QT_VERSION_MAJOR}::Gui
@@ -41,6 +56,8 @@ target_link_libraries(CapybaraLauncher PRIVATE
     Qt${QT_VERSION_MAJOR}::Test
     ${STEAMAPI_LIBRARIES}
     ${OPENSSL_LIBRARIES}
+    ${EOS_SDK}
+    #${EOSSDK_LIB}
 )
 #add_subdirectory(customModules)
 #-- GameConnector config part

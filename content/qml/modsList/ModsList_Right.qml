@@ -74,7 +74,7 @@ Item {
         id: textInputRect
         x: -200
         y: -30
-        width: 200
+        width: 230
         height: 30
         color: "transparent"
         visible: false
@@ -84,7 +84,7 @@ Item {
         TextEdit {
             id: textEdit
             x: 5
-            width: 160
+            width: 200
             height: 30
             font.pointSize: 15
             focus: true

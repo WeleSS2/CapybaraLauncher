@@ -26,12 +26,14 @@ Rectangle {
     Image {
         id: customButtonImage
         anchors.fill: parent
+        visible: source !== ""
         source: ""
     }
 
     Text {
         id: customButtonText
         anchors.centerIn: parent
+        visible: text !== ""
         font.pixelSize: 16
         font.bold: true
         color: mainwindow.mainTextColor
