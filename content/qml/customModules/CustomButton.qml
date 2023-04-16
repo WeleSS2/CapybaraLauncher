@@ -43,6 +43,7 @@ Rectangle {
         anchors.fill: parent
         HoverHandler {
             id: buttonHovered
+            enabled: parent.enabled
             acceptedDevices: PointerDevice.Mouse
             cursorShape: Qt.PointingHandCursor
         }
@@ -60,8 +61,5 @@ Rectangle {
                 border.color: mainwindow.rectangleBorder
             }
         }
-
-        //ToolTip.visible: buttonHovered.hovered && bDesc !== ""
-        //ToolTip.text: bDesc
     }
 }

@@ -46,6 +46,30 @@ Item {
             }
         }
         CustomButton {
+            id: multipleModsOptions
+            Layout.preferredWidth: 35 * mainwindow.baseScale
+            Layout.preferredHeight: 35 * mainwindow.baseScale
+            Layout.alignment: Qt.AlignRight
+            color: "transparent"
+            bBackground.visible: false
+            bImage.source: "../../images/icons/dots.png"
+            bDesc: "Multiple mods options"
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    if(Qt.LeftButton)
+                    {
+                        // TODO show menu for selected mods
+                    }
+                    else if(Qt.RightButton)
+                    {
+                        // TODO show menu for all mods
+                    }
+                }
+            }
+        }
+
+        CustomButton {
             id: updateAllMods
             Layout.preferredWidth: 35 * mainwindow.baseScale
             Layout.preferredHeight: 35 * mainwindow.baseScale

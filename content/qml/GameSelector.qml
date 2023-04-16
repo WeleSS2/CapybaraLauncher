@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Controls
 
 import cGameChangerListUrl
+import "customModules"
 
 Item {
     property var mainTextColor: Qt.rgba(1, 1, 1, 1)
@@ -26,71 +27,29 @@ Item {
             id: item
             width: 60 * mainwindow.baseScale
             height: 60 * mainwindow.baseScale
-            Rectangle {
-                anchors.fill: parent
-                color: "transparent"
-                Rectangle {
-                    anchors.fill: parent
-                    border.width: 1
-                    border.color: mainwindow.rectangleBorder
-                    Image {
-                        x: parent.x + 1
-                        y: parent.y + 1
-                        width: parent.width - 2
-                        height: parent.height - 2
-                        source: "../images/gameBackgrounds/icon_" + model.gameId + ".png"
-                        Rectangle {
-                            id: lightening
-                            anchors.fill: parent
-                            color: "#00FFFFFF"
-                        }
-                    }
-                }
-                Rectangle {
-                    id: qmlGameName
-                    x: parent.x * mainwindow.baseScale
-                    y: parent.y + parent.height * mainwindow.baseScale
-                    width: 300 * mainwindow.baseScale
-                    height: 30 * mainwindow.baseScale
-                    visible: false
-                    color: mainwindow.rectangleColor
-                    border.color: mainwindow.rectangleBorder
-                    border.width: 1
-                    //Image {
-                    //    anchors.fill: parent
-                    //    source: "../images/icons/backgroundImage.png"
-                    //}
-                    Text {
-                        x: 10
-                        y: 3
-                        width: 280 * mainwindow.baseScale
-                        clip: true
-                        font.bold: true
-                        font.pixelSize: 16
-                        color: mainTextColor
-                        text: "Total War " + gameName
-                    }
-                }
-
+            CustomButton {
+                x: 1
+                y: 1
+                width: 58
+                height: 58
+                bImage.source: "../../images/gameBackgrounds/icon_" + model.gameId + ".png"
+                bDesc: "Total War " + gameName
                 MouseArea {
                     id: mouseHover
                     anchors.fill: parent
-                    hoverEnabled: true
                     onClicked: {
                         if(Qt.LeftButton){
                             setGame(index);
                         }
                     }
-                    onHoveredChanged: (mouse)=> {
-                        if (containsMouse) {
-                            qmlGameName.visible = true;
-                            lightening.color = "#22FFFFFF"
-                        } else {
-                            qmlGameName.visible = false;
-                            lightening.color = "#00FFFFFF"
-                        }
-                    }
                 }
+            }
+            Rectangle {
+                id: gameBorder
+                anchors.fill: parent
+                color: "#00000000"
+                border.width: 1
+                border.color: mainwindow.rectangleBorder
             }
         }
     }
