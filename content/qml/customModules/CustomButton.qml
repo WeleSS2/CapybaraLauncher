@@ -1,36 +1,56 @@
 import QtQuick
 import QtQuick.Controls
 
-Rectangle {
+Button {
     id: customButton
     property alias bBackground: customButtonBackground
-    property alias bHover: customButtonHover
     property alias bImage: customButtonImage
+    property bool bHover: true
     property alias bText: customButtonText
     property string bDesc: ""
-    Rectangle {
-        id: customButtonBackground
-        anchors.fill: parent
-        color: mainwindow.rectangleColor
-        border.width: 1
-        border.color: mainwindow.rectangleBorder
-    }
 
-    Rectangle {
-        id: customButtonHover
-        anchors.fill: parent
-        color: "#2DFFFFFF"
-        visible: buttonHovered.hovered
-    }
+    property bool buttonIsHovered: false
 
-    Image {
-        id: customButtonImage
-        anchors.fill: parent
-        visible: source !== ""
-        source: ""
+    background: Rectangle {
+        color: "transparent"
+        Rectangle {
+            id: customButtonBackground
+            anchors.fill: parent
+            color: mainwindow.rectangleColor
+            border.width: 1
+            border.color: mainwindow.rectangleBorder
+        }
+        Image {
+            id: customButtonImage
+            anchors.fill: parent
+            visible: source !== ""
+            source: ""
+        }
+        Rectangle {
+            id: customButtonHover
+            anchors.fill: parent
+            enabled: parent.enabled
+            color: "#2DFFFFFF"
+            visible: buttonIsHovered
+        }
+        MouseArea {
+            id: buttonHovered
+            anchors.fill: parent
+            enabled: parent.enabled
+            hoverEnabled: true
+            onEntered: {
+                if(bHover){
+                    buttonIsHovered = true;
+                }
+            }
+            onExited: {
+                if(bHover){
+                    buttonIsHovered = false;
+                }
+            }
+        }
     }
-
-    Text {
+    indicator: Text {
         id: customButtonText
         anchors.centerIn: parent
         visible: text !== ""
@@ -41,14 +61,8 @@ Rectangle {
     }
     Item {
         anchors.fill: parent
-        HoverHandler {
-            id: buttonHovered
-            enabled: parent.enabled
-            acceptedDevices: PointerDevice.Mouse
-            cursorShape: Qt.PointingHandCursor
-        }
         ToolTip {
-            visible: buttonHovered.hovered && bDesc !== ""
+            visible: buttonIsHovered && bDesc !== ""
             contentItem: Text {
                 text: bDesc
                 font.pixelSize: 15

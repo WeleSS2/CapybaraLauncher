@@ -55,7 +55,7 @@ Item {
             Layout.preferredWidth: 35 * mainwindow.baseScale
             Layout.preferredHeight: 35 * mainwindow.baseScale
             Layout.alignment: Qt.AlignRight
-            color: "transparent"
+            //color: "transparent"
             bBackground.visible: false
             bImage.source: updatestatus === true ? "../../images/icons/downloadGreen.png" : "../../images/icons/downloadRed.png"
             bDesc: "Update launcher"
@@ -77,7 +77,7 @@ Item {
             Layout.preferredWidth: 35 * mainwindow.baseScale
             Layout.preferredHeight: 35 * mainwindow.baseScale
             Layout.alignment: Qt.AlignRight
-            color: "transparent"
+            //color: "transparent"
             bBackground.visible: false
             bImage.source: "../../images/icons/discord.png"
             bDesc: "Open discord"
@@ -96,7 +96,7 @@ Item {
             Layout.preferredWidth: 35 * mainwindow.baseScale
             Layout.preferredHeight: 35 * mainwindow.baseScale
             Layout.alignment: Qt.AlignRight
-            color: "transparent"
+            //color: "transparent"
             bBackground.visible: false
             bImage.source: "../../images/icons/patreon.png"
             bDesc: "Open patreon"

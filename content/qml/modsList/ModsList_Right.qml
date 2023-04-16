@@ -17,7 +17,7 @@ Item {
             Layout.preferredWidth: 35 * mainwindow.baseScale
             Layout.preferredHeight: 35 * mainwindow.baseScale
             Layout.alignment: Qt.AlignRight
-            color: "transparent"
+            //color: "transparent"
             bBackground.visible: false
             bText.visible: false
             bImage.visible: true
@@ -50,7 +50,7 @@ Item {
             Layout.preferredWidth: 35 * mainwindow.baseScale
             Layout.preferredHeight: 35 * mainwindow.baseScale
             Layout.alignment: Qt.AlignRight
-            color: "transparent"
+            //color: "transparent"
             bBackground.visible: false
             bImage.source: "../../images/icons/dots.png"
             bDesc: "Multiple mods options"
@@ -74,7 +74,7 @@ Item {
             Layout.preferredWidth: 35 * mainwindow.baseScale
             Layout.preferredHeight: 35 * mainwindow.baseScale
             Layout.alignment: Qt.AlignRight
-            color: "transparent"
+            //color: "transparent"
             bBackground.visible: false
             bImage.source: "../../images/icons/downloadGreen.png"
             bDesc: "Update all mods"
@@ -94,7 +94,7 @@ Item {
             Layout.preferredWidth: 35 * mainwindow.baseScale
             Layout.preferredHeight: 35 * mainwindow.baseScale
             Layout.alignment: Qt.AlignRight
-            color: "transparent"
+            //color: "transparent"
             bBackground.visible: false
             bText.visible: false
             bImage.visible: true
@@ -119,11 +119,11 @@ Item {
         y: -30
         width: 230
         height: 30
-        color: "transparent"
+        //color: "transparent"
         visible: false
         bText.visible: false
         bImage.visible: false
-        bHover.enabled: false
+        bHover: false
         TextEdit {
             id: textEdit
             x: 5
@@ -143,7 +143,7 @@ Item {
             x: parent.x + 170
             width: 30
             height: 30
-            color: "transparent"
+            //color: "transparent"
             bImage.visible: false
             bText.text: "X"
             MouseArea {
