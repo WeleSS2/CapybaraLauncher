@@ -138,6 +138,7 @@
 #include "qt/customModules/tasklist.h"
 #include "qt/webEngineBackend/webenginebackend.h"
 
+#include "epicapi(eossdk)/eossdkaccess.h"
 
 void settingsLoading()
 {
@@ -189,6 +190,7 @@ int main(int argc, char *argv[])
     settingsLoading();
 
     LoggingSystem::clearLogs();
+
 
     //--------------------------------------------
     //            Load default game
