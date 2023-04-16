@@ -187,7 +187,10 @@ Rectangle {
                     bImage.visible: false
                     bText.font.pixelSize: 13 * mainwindow.baseScale
                     bText.text: qsTr("Copy Name")
-
+                    TextEdit{
+                            id: textEdit
+                            visible: false
+                        }
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {

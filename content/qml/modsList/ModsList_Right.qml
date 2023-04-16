@@ -45,6 +45,25 @@ Item {
                 }
             }
         }
+        CustomButton {
+            id: updateAllMods
+            Layout.preferredWidth: 35 * mainwindow.baseScale
+            Layout.preferredHeight: 35 * mainwindow.baseScale
+            Layout.alignment: Qt.AlignRight
+            color: "transparent"
+            bBackground.visible: false
+            bImage.source: "../../images/icons/downloadGreen.png"
+            bDesc: "Update all mods"
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    if(Qt.LeftButton)
+                    {
+                        qtGeneralBackendObj.addTask(0, "updateAllMods");
+                    }
+                }
+            }
+        }
 
         CustomButton {
             id: openGoogle

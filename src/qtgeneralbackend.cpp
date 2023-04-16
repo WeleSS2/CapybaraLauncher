@@ -257,6 +257,24 @@ void QtGeneralBackend::addTask(uint64_t modId, QString taskName){
             obj.patchAndResetApp();
         }, "updateLauncher", "Updating launcher");
     }
+    else if(taskName == "updateAllMods")
+    {
+        QColor update({225, 225, 0, 255});
+        for(const auto& i : GlobalDataObj->ModsDataObj)
+        {
+            QString localModId = QString::fromStdString(std::to_string(i.steamModGameId));
+            if(i.color == update)
+            {
+                taskListPtr->appendAndRunTask([=](){
+                    SteamApiAccess steamApi;
+                    steamApi.updateMod(i.steamModGameId);
+                    // Im dumb af, what i was trying to do?
+                    //GlobalDataObj->getModById(modId)->color = {0, 0, 0, 0};
+                    //mListGlobalPtr->refreshList();
+                }, ("updateMod" + localModId) , ("Updating mod with id " + localModId));
+            }
+        }
+    }
 }
 
 void QtGeneralBackend::removeMod(uint64_t id){

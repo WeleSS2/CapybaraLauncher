@@ -138,7 +138,6 @@
 #include "qt/customModules/tasklist.h"
 #include "qt/webEngineBackend/webenginebackend.h"
 
-#include "epicapi(eossdk)/eossdkaccess.h"
 
 void settingsLoading()
 {
