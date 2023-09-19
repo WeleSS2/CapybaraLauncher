@@ -131,23 +131,13 @@ void GameChanger::setCurrentGame(uint64_t index) const {
 
     if(std::filesystem::exists("steam_appid.txt"))
     {
-        //std::filesystem::remove("steam_appid.txt");
+        std::filesystem::remove("steam_appid.txt");
 
-        std::fstream file;
-        file.open("steam_appid.txt", std::ios::out);
-        if(file.is_open())
-        {
-            file << std::to_string(GlobalDataObj->LocalSettingsObj.currentGame.gameId);
-            //file << "281990";
-        }
-        else
-        {
-            LoggingSystem::saveLog("gamechanger.cpp: setCurrentGame: Error while creating new steamapp.");
-        }
+        fileSaver();
     }
     else
     {
-        LoggingSystem::saveLog("gamechanger.cpp: setCurrentGame: Error while removing steamapp.");
+        fileSaver();
     }
 
     // Guard did file is saved already
@@ -186,6 +176,21 @@ void GameChanger::setCurrentGame(uint64_t index) const {
     else
     {
         LoggingSystem::saveLog("main.cpp: Failed to open local mods folder");
+    }
+}
+
+void GameChanger::fileSaver() const
+{
+    std::fstream file;
+    file.open("steam_appid.txt", std::ios::out);
+    if(file.is_open())
+    {
+        file << std::to_string(GlobalDataObj->LocalSettingsObj.currentGame.gameId);
+        //file << "281990";
+    }
+    else
+    {
+        LoggingSystem::saveLog("gamechanger.cpp: setCurrentGame: Error while creating new steamapp.");
     }
 }
 

@@ -48,7 +48,6 @@ Window {
     property bool modListEnabled: true
     property bool rightPanelEnabled: true
     property bool bottomGameMenuEnabled: true
-
     property string rectangleColor: "#FC070707"
     property string rectangleBorder: "#F9DFDFDF"
 

@@ -18,7 +18,6 @@ GithubNews::GithubNews()
 
 // Get universal and game specific news
 const void GithubNews::getAllNews(QVector<NewsItem> &vector, uint64_t gameId, QString mainFolder){
-    qDebug() << "Loading NEWS         " + mainFolder;
     getUniversalNews(vector, mainFolder);
     getNewsForGame(vector, gameId, mainFolder);
     if(vector.size() > 1)

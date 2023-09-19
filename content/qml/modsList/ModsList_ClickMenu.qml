@@ -11,7 +11,7 @@ Rectangle {
     property string currentPackname
     property string currentId
 
-    x: qmlModsList.mousePositionX - 25
+    x: (qmlModsList.mousePositionX - 25) > (500 * mainwindow.baseScale) ? 500 : qmlModsList.mousePositionX - 25
     y: ((qmlModsList.mousePositionY - 50) < (mainwindow.height - 350)) ? qmlModsList.mousePositionY - 50 : qmlModsList.mousePositionY - 325
     width: 500 * mainwindow.baseScale
     height: 350 * mainwindow.baseScale
@@ -308,8 +308,6 @@ Rectangle {
                 if(!hovered){
                     actionMenu.visible = false;
                     qmlModsList.globalActionMenuOpen = false;
-                    rightPanelEnabled = true;
-                    qmlModsList.z = 0;
                 }
             }
         }

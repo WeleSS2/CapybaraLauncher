@@ -11,6 +11,7 @@ Item {
     property int baseW: 1000
     property int mousePositionX
     property int mousePositionY
+    property int openMenus: 0
     enabled: modListEnabled
 
     ListView {
@@ -158,7 +159,6 @@ Item {
                     if (mouse.button === Qt.RightButton)
                     {
                         globalActionMenuOpen = true;
-                        rightPanelEnabled = false;
                         qmlModsList.z = 1;
 
                         mousePositionX = position.x;
@@ -238,6 +238,11 @@ Item {
 
     ModsList_Right{
         id: qmlModsListRight
+        z: 0
+    }
+
+    ModsList_AllModsMenu {
+        id: qmlModsListAllModsMenu
         z: 0
     }
 

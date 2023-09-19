@@ -32,13 +32,24 @@ Item {
                         {
                             textInputRect.visible = false;
                             rightPanelEnabled = true;
-                            qmlModsList.z = 0;
+
+                            qmlModsList.openMenus--;
+                            if (qmlModsList.openMenus === 0)
+                            {
+                                qmlModsList.z = 0;
+                            }
                         }
                         else
                         {
                             textInputRect.visible = true;
                             rightPanelEnabled = false;
-                            qmlModsList.z = 2;
+
+                            qmlModsList.openMenus++;
+                            if (qmlModsList.openMenus === 1)
+                            {
+                                qmlModsList.z = 2;
+                            }
+
                             textEdit.focus = true;
                         }
                     }
@@ -54,16 +65,32 @@ Item {
             bBackground.visible: false
             bImage.source: "../../images/icons/dots.png"
             bDesc: "Multiple mods options"
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    if(Qt.LeftButton)
+            onClicked: {
+                if(Qt.LeftButton)
+                {
+                    if(qmlModsListAllModsMenu.visible)
                     {
-                        // TODO show menu for selected mods
+                        rightPanelEnabled = true;
+
+                        qmlModsList.openMenus--;
+                        if (qmlModsList.openMenus === 0)
+                        {
+                            qmlModsList.z = 0;
+                        }
+
+                        qmlModsListAllModsMenu.visible = false;
                     }
-                    else if(Qt.RightButton)
+                    else
                     {
-                        // TODO show menu for all mods
+                        rightPanelEnabled = false;
+
+                        qmlModsList.openMenus++;
+                        if (qmlModsList.openMenus === 1)
+                        {
+                            qmlModsList.z = 2;
+                        }
+
+                        qmlModsListAllModsMenu.visible = true;
                     }
                 }
             }
@@ -115,7 +142,7 @@ Item {
 
     CustomButton {
         id: textInputRect
-        x: -200
+        x: 40
         y: -30
         width: 230
         height: 30
@@ -126,7 +153,7 @@ Item {
         bHover: false
         TextEdit {
             id: textEdit
-            x: 5
+            x: parent.x + 30
             width: 200
             height: 30
             font.pointSize: 15
@@ -140,7 +167,6 @@ Item {
             }
         }
         CustomButton {
-            x: parent.x + 170
             width: 30
             height: 30
             //color: "transparent"

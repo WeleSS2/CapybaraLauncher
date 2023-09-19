@@ -34,8 +34,11 @@ public:
 
     cGameChangerList *list() const;
     void setList(cGameChangerList *list);
+    //
+        Q_INVOKABLE void setCurrentGame(uint64_t index) const;
+        void fileSaver() const;
+    //
 
-    Q_INVOKABLE void setCurrentGame(uint64_t index) const;
     Q_INVOKABLE int getCurrentGameId() const;
 private:
     cGameChangerList *mList;

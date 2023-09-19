@@ -103,6 +103,8 @@
  *
  * Fixes:
  * - Change mod color in launcher after update
+ * - Fix game id afer 1st launch
+ * - Fix game connector (check if enabled) on start
  *
  * LOG01 - IMPLEMENTATION FOR LOGS, find later and fill
  */
@@ -190,10 +192,11 @@ int main(int argc, char *argv[])
 
     LoggingSystem::clearLogs();
 
-
+    LoggingSystem::saveLog("main: App Starting.");
     //--------------------------------------------
     //            Load default game
     //--------------------------------------------
+    LoggingSystem::saveLog("main: Load default.");
 
     if(GlobalDataObj->LocalSettingsObj.currentGame.gameId > 0){
         GameChanger obj;
@@ -210,6 +213,7 @@ int main(int argc, char *argv[])
     //---------------------------------------------
     //                 GameChanger
     //---------------------------------------------
+    LoggingSystem::saveLog("main: Gamechanger.");
 
     qmlRegisterType<GameChanger>("cGameChangerListUrl", 1, 0, "GameChanger");
     qmlRegisterUncreatableType<cGameChangerList>("cGameChangerListUrl", 1, 0, "GameChangerList", QString("I dont have any reason"));
@@ -219,6 +223,7 @@ int main(int argc, char *argv[])
     //---------------------------------------------
     //                  ModsList
     //---------------------------------------------
+    LoggingSystem::saveLog("main: Modslist.");
 
     qmlRegisterType<Mods>("cMods", 1, 0, "Mods");
     qmlRegisterUncreatableType<ModsList>("cMods", 1, 0, "ModsList", QString("Sometthing"));
@@ -228,6 +233,7 @@ int main(int argc, char *argv[])
     //--------------------------------------------
     //               Local Modpacks
     //--------------------------------------------
+    LoggingSystem::saveLog("main: Modpacks.");
 
     qmlRegisterType<ModpacksList>("ModPacksList", 1, 0, "ModpacksList");
     qmlRegisterUncreatableType<ModpacksContent>("ModPacksList", 1, 0, "ModpacksContent", QString("Sometthing"));
@@ -238,6 +244,7 @@ int main(int argc, char *argv[])
     //--------------------------------------------
     //                News module
     //--------------------------------------------
+    LoggingSystem::saveLog("main: News.");
 
     qmlRegisterType<News>("cNews", 1, 0, "News");
     qmlRegisterUncreatableType<News>("cNews", 1, 0, "DevNewsList", QString("Smth"));
@@ -249,6 +256,7 @@ int main(int argc, char *argv[])
     //--------------------------------------------
     //              QtGeneralBackend
     //--------------------------------------------
+    LoggingSystem::saveLog("main: QtGeneralBackend.");
 
     QtGeneralBackend qtGeneralBackend(nullptr, &taskList);
     engine.rootContext()->setContextProperty("qtGeneralBackendObj", &qtGeneralBackend);
@@ -256,6 +264,7 @@ int main(int argc, char *argv[])
     //--------------------------------------------
     //                  InfoBox
     //--------------------------------------------
+    LoggingSystem::saveLog("main: Other things.");
 
     engine.rootContext()->setContextProperty("ObjInfoBox", new InfoBox(&engine));
 

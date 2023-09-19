@@ -49,6 +49,11 @@ Button {
                 }
             }
         }
+        MouseArea {
+            anchors.fill: parent
+            enabled: !parent.enabled
+            hoverEnabled: true
+        }
     }
     indicator: Text {
         id: customButtonText
@@ -61,6 +66,7 @@ Button {
     }
     Item {
         anchors.fill: parent
+        enabled: parent.enabled
         ToolTip {
             visible: buttonIsHovered && bDesc !== ""
             contentItem: Text {
