@@ -1,3 +1,6 @@
+Project abandoned from 2 reasons. 1 Qt Creator destroyed original repository (Thanks auto-update), 2nd it's a waste of time to create apps for games when you can just make games yourself.
+
+
 # Capybara Laucher
 
 A simple application for Total War game series which allow to manage mods and create mods list, also content creators are able to add their news to launcher :) This is beta version and aren't everything added yet but i'll work over it.
