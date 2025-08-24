@@ -1,4 +1,7 @@
-Project abandoned from 2 reasons. 1 Qt Creator destroyed original repository (Thanks auto-update), 2nd i need to focus on more life-oriented project.
+Project abandoned moved to closed repository where new launcher have been made.
+
+Link:
+---In progress---
 
 
 # Capybara Laucher
